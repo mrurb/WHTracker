@@ -99,4 +99,29 @@ namespace WHTracker.Services.Models
         public bool? WarEligible { get; set; }
     }
 
-}
+    [DataContract]
+    public class Alliance
+    {
+        [DataMember(Name = "creator_corporation_id")]
+        public int CreatorCorporationId { get; set; }
+
+        [DataMember(Name = "creator_id")]
+        public int CreatorId { get; set; }
+
+        [DataMember(Name = "date_founded")]
+        public DateTime? DateFounded { get; set; }
+
+        [DataMember(Name = "executor_corporation_id")]
+        public int? ExecutorCorporationId { get; set; }
+
+        [DataMember(Name = "faction_id")]
+        public int? FactionId { get; set; }
+
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "ticker")]
+        public string Ticker { get; set; }
+    }
+
+    }
