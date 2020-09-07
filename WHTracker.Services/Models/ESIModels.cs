@@ -2,125 +2,122 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WHTracker.Services.Models
 {
-    [DataContract]
     public class SolarSystem
     {
-        [DataMember(Name = "constellation_id")]
+        [JsonPropertyName("constellation_id")]
         public int ConstellationId { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "planets")]
+        [JsonPropertyName("planets")]
         public IEnumerable<Planet>? Planets { get; set; }
 
-        [DataMember(Name = "position")]
+        [JsonPropertyName("position")]
         public Position Position { get; set; }
 
-        [DataMember(Name = "security_class")]
+        [JsonPropertyName("security_class")]
         public string? SecurityClass { get; set; }
 
-        [DataMember(Name = "security_status")]
+        [JsonPropertyName("security_status")]
         public float SecurityStatus { get; set; }
 
-        [DataMember(Name = "star_id")]
+        [JsonPropertyName("star_id")]
         public int? StarId { get; set; }
 
-        [DataMember(Name = "stargates")]
+        [JsonPropertyName("stargates")]
         public IEnumerable<int>? Stargates { get; set; }
 
-        [DataMember(Name = "stations")]
+        [JsonPropertyName("stations")]
         public IEnumerable<int>? Stations { get; set; }
 
-        [DataMember(Name = "system_status")]
+        [JsonPropertyName("system_status")]
         public int SystemId { get; set; }
     }
 
-    [DataContract]
     public class Planet
     {
-        [DataMember(Name = "asteroid_belts")]
+        [JsonPropertyName("asteroid_belts")]
         public IEnumerable<int>? AsteroidBelts { get; set; }
 
-        [DataMember(Name = "moons")]
+        [JsonPropertyName("moons")]
         public IEnumerable<int>? Moons { get; set; }
 
-        [DataMember(Name = "planet_id")]
+        [JsonPropertyName("planet_id")]
         public int PlanteId { get; set; }
 
     }
 
-    [DataContract]
     public class Corporation
     {
-        [DataMember(Name = "alliance_id")]
+        [JsonPropertyName("alliance_id")]
         public int? AllianceId { get; set; }
 
-        [DataMember(Name = "ceo_id")]
+        [JsonPropertyName("ceo_id")]
         public int CeoId { get; set; }
 
-        [DataMember(Name = "creator_id")]
+        [JsonPropertyName("creator_id")]
         public int CreatorId { get; set; }
 
-        [DataMember(Name = "date_founded")]
+        [JsonPropertyName("date_founded")]
         public DateTime? DateFounded { get; set; }
 
-        [DataMember(Name = "description")]
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
 
-        [DataMember(Name = "faction_id")]
+        [JsonPropertyName("faction_id")]
         public int? FactionId { get; set; }
 
-        [DataMember(Name = "home_station_id")]
+        [JsonPropertyName("home_station_id")]
         public int? HomeStationId { get; set; }
 
-        [DataMember(Name = "member_count")]
+        [JsonPropertyName("member_count")]
         public int MemberCount { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "shares")]
+        [JsonPropertyName("shares")]
         public int? Shares { get; set; }
 
-        [DataMember(Name = "tax_rate")]
+        [JsonPropertyName("tax_rate")]
         public float TaxRate { get; set; }
 
-        [DataMember(Name = "ticker")]
+        [JsonPropertyName("ticker")]
         public string Ticker { get; set; }
 
-        [DataMember(Name = "url")]
+        [JsonPropertyName("url")]
         public string? Url { get; set; }
 
-        [DataMember(Name = "war_eligible")]
+        [JsonPropertyName("war_eligible")]
         public bool? WarEligible { get; set; }
     }
 
-    [DataContract]
     public class Alliance
     {
-        [DataMember(Name = "creator_corporation_id")]
+        [JsonPropertyName("creator_corporation_id")]
         public int CreatorCorporationId { get; set; }
 
-        [DataMember(Name = "creator_id")]
+        [JsonPropertyName("creator_id")]
         public int CreatorId { get; set; }
 
-        [DataMember(Name = "date_founded")]
+        [JsonPropertyName("date_founded")]
         public DateTime? DateFounded { get; set; }
 
-        [DataMember(Name = "executor_corporation_id")]
+        [JsonPropertyName("executor_corporation_id")]
         public int? ExecutorCorporationId { get; set; }
 
-        [DataMember(Name = "faction_id")]
+        [JsonPropertyName("faction_id")]
         public int? FactionId { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "ticker")]
+        [JsonPropertyName("ticker")]
         public string Ticker { get; set; }
     }
 

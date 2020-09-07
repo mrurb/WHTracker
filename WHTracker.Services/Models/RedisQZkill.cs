@@ -1,181 +1,174 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace WHTracker.Services.Models
 {
     //RedisQZkill
-    [DataContract]
     public class RedisQZkill
     {
-        [DataMember(Name = "package")]
+        [JsonPropertyName("package")]
         public Package? Package { get; set; }
     }
 
-    [DataContract]
     public class Package
     {
-        [DataMember(Name = "killID")]
+        [JsonPropertyName("killID")]
         public int KillId { get; set; }
 
-        [DataMember(Name = "killmail")]
+        [JsonPropertyName("killmail")]
         public Killmail Killmail { get; set; }
 
-        [DataMember(Name = "zkb")]
+        [JsonPropertyName("zkb")]
         public Zkb Zkb { get; set; }
     }
 
-    [DataContract]
     public class Killmail
     {
-        [DataMember(Name = "attackers")]
+        [JsonPropertyName("attackers")]
         public IEnumerable<Attacker> Attackers { get; set; }
 
-        [DataMember(Name = "killmail_id")]
+        [JsonPropertyName("killmail_id")]
         public int KillmailId { get; set; }
 
-        [DataMember(Name = "killmail_time")]
+        [JsonPropertyName("killmail_time")]
         public DateTime KillmailTime { get; set; }
 
-        [DataMember(Name = "moon_id")]
+        [JsonPropertyName("moon_id")]
         public int? MoonId { get; set; }
 
-        [DataMember(Name = "solar_system_id")]
+        [JsonPropertyName("solar_system_id")]
         public int SolarSystemId { get; set; }
 
-        [DataMember(Name = "victim")]
+        [JsonPropertyName("victim")]
         public Victim victim { get; set; }
 
-        [DataMember(Name = "war_id")]
+        [JsonPropertyName("war_id")]
         public int? WarId { get; set; }
     }
 
-    [DataContract]
     public class Victim
     {
-        [DataMember(Name = "alliance_id")]
+        [JsonPropertyName("alliance_id")]
         public int? AllianceId { get; set; }
 
-        [DataMember(Name = "character_id")]
+        [JsonPropertyName("character_id")]
         public int? CharacterId { get; set; }
 
-        [DataMember(Name = "corporation_id")]
+        [JsonPropertyName("corporation_id")]
         public int? CorporationId { get; set; }
 
-        [DataMember(Name = "damage_taken")]
+        [JsonPropertyName("damage_taken")]
         public int DamageTaken { get; set; }
 
-        [DataMember(Name = "faction_id")]
+        [JsonPropertyName("faction_id")]
         public int? FactionId { get; set; }
 
-        [DataMember(Name = "items")]
+        [JsonPropertyName("items")]
         public IEnumerable<Item>? Items { get; set; }
 
-        [DataMember(Name = "position")]
+        [JsonPropertyName("position")]
         public Position? Position { get; set; }
 
-        [DataMember(Name = "ship_type_id")]
+        [JsonPropertyName("ship_type_id")]
         public int ShipTypeId { get; set; }
     }
 
-    [DataContract]
     public class Position
     {
 
-        [DataMember(Name = "x")]
+        [JsonPropertyName("x")]
         public float X { get; set; }
 
-        [DataMember(Name = "y")]
+        [JsonPropertyName("y")]
         public float Y { get; set; }
 
-        [DataMember(Name = "z")]
+        [JsonPropertyName("z")]
         public float Z { get; set; }
     }
 
-    [DataContract]
     public class Item
     {
 
-        [DataMember(Name = "flag")]
+        [JsonPropertyName("flag")]
         public int Flag { get; set; }
 
-        [DataMember(Name = "item_type_id")]
+        [JsonPropertyName("item_type_id")]
         public int ItemTypeId { get; set; }
 
-        [DataMember(Name = "items")]
+        [JsonPropertyName("items")]
         public IEnumerable<Item>? Items { get; set; }
 
-        [DataMember(Name = "quantity_destroyed")]
+        [JsonPropertyName("quantity_destroyed")]
         public int? QuantityDestroyed { get; set; }
 
-        [DataMember(Name = "singleton")]
+        [JsonPropertyName("singleton")]
         public int Singleton { get; set; }
 
-        [DataMember(Name = "quantity_dropped")]
+        [JsonPropertyName("quantity_dropped")]
         public int? QuantityDropped { get; set; }
     }
 
-    [DataContract]
     public class Attacker
     {
 
-        [DataMember(Name = "alliance_id")]
+        [JsonPropertyName("alliance_id")]
         public int? AllianceId { get; set; }
 
-        [DataMember(Name = "character_id")]
+        [JsonPropertyName("character_id")]
         public int? CharacterId { get; set; }
 
-        [DataMember(Name = "corporation_id")]
+        [JsonPropertyName("corporation_id")]
         public int? CorporationId { get; set; }
 
-        [DataMember(Name = "damage_done")]
+        [JsonPropertyName("damage_done")]
         public int DamageDone { get; set; }
 
-        [DataMember(Name = "faction_id")]
+        [JsonPropertyName("faction_id")]
         public int? FactionId { get; set; }
 
-        [DataMember(Name = "final_blow")]
+        [JsonPropertyName("final_blow")]
         public bool FinalBlow { get; set; }
 
-        [DataMember(Name = "security_status")]
+        [JsonPropertyName("security_status")]
         public float SecurityStatus { get; set; }
 
-        [DataMember(Name = "ship_type_id")]
+        [JsonPropertyName("ship_type_id")]
         public int? ShipTypeId { get; set; }
 
-        [DataMember(Name = "weapon_type_id")]
+        [JsonPropertyName("weapon_type_id")]
         public int? WeaponTypeId { get; set; }
     }
 
-    [DataContract]
     public class Zkb
     {
 
-        [DataMember(Name = "locationID")]
+        [JsonPropertyName("locationID")]
         public int LocationId { get; set; }
 
-        [DataMember(Name = "hash")]
+        [JsonPropertyName("hash")]
         public string Gash { get; set; }
 
-        [DataMember(Name = "fittedValue")]
+        [JsonPropertyName("fittedValue")]
         public float FittedValue { get; set; }
 
-        [DataMember(Name = "totalValue")]
+        [JsonPropertyName("totalValue")]
         public float TotalValue { get; set; }
 
-        [DataMember(Name = "points")]
+        [JsonPropertyName("points")]
         public int Points { get; set; }
 
-        [DataMember(Name = "npc")]
+        [JsonPropertyName("npc")]
         public bool Npc { get; set; }
 
-        [DataMember(Name = "solo")]
+        [JsonPropertyName("solo")]
         public bool Solo { get; set; }
 
-        [DataMember(Name = "awox")]
+        [JsonPropertyName("awox")]
         public bool Awox { get; set; }
 
-        [DataMember(Name = "href")]
+        [JsonPropertyName("href")]
         public string Href { get; set; }
     }
 
