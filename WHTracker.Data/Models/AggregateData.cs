@@ -4,13 +4,21 @@ using System.Text;
 
 namespace WHTracker.Data.Models
 {
-    public class DailyAggregateCorporation
+    public class AggregateData
     {
-        public int DailyAggregateCorporationID { get; set; }
-        public int CorporationID { get; set; }
-        public int CorporationMembersCount { get; set; }
-        public int Kills { get; set; }
-        public int Losses { get; set; }
+        public DateTime TimeStamp { get; set; }
+
+        public int MembersCount { get; set; }
+        public int KillsTotal { get; set; }
+        public int LossesTotal { get; set; }
+        public int KillsSubCap { get; set; }
+        public int LossesSubCap { get; set; }
+        public int KillsCapital { get; set; }
+        public int LossesCapital { get; set; }
+        public int KillsStrcture { get; set; }
+        public int LossesStrcture { get; set; }
+
+
         public int ISKKilledTotal { get; set; }
         public int ISKLostTotal { get; set; }
         public int ISKKilledSubCap { get; set; }

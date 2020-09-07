@@ -8,6 +8,6 @@ namespace WHTracker.Data.Models
     {
         public int KiilmailID { get; set; }
         public string KillmailHash { get; set; }
-        public DateTime dateTime { get; set; }
+        public DateTime TimeStamp { get; set; }
     }
 }

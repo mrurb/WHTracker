@@ -9,9 +9,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WHTracker.Data\WHTracker.Data.csproj" />
     <ProjectReference Include="..\WHTracker.Options\WHTracker.Options.csproj" />
     <ProjectReference Include="..\WHTracker.Services\WHTracker.Services.csproj" />
   </ItemGroup>
