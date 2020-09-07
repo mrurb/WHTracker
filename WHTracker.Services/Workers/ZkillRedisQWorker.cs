@@ -40,9 +40,9 @@ namespace WHTracker.Services.Workers
         private async void DoWork(object state)
         {
             RedisQZkill res;
-            while ((res = await zKillRedisQAPI.GetRedisQCall(3)).package is not null)
+            while ((res = await zKillRedisQAPI.GetRedisQCall(3)).Package is not null)
             {
-                _logger.LogInformation("{0}", res.package.killID);
+                _logger.LogInformation("{0}", res.Package.killID);
             }
 
 

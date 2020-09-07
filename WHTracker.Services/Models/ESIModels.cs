@@ -11,10 +11,13 @@ namespace WHTracker.Services.Models
         [DataMember(Name = "constellation_id")]
         public int ConstellationId { get; set; }
 
+        [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "planets")]
         public IEnumerable<Planet> Planets { get; set; }
 
+        [DataMember(Name = "position")]
         public Position Position { get; set; }
 
         [DataMember(Name = "security_class")]
@@ -26,8 +29,10 @@ namespace WHTracker.Services.Models
         [DataMember(Name = "star_id")]
         public int StarId { get; set; }
 
+        [DataMember(Name = "stargates")]
         public IEnumerable<int> Stargates { get; set; }
 
+        [DataMember(Name = "stations")]
         public IEnumerable<int> Stations { get; set; }
 
         [DataMember(Name = "system_status")]
@@ -40,6 +45,7 @@ namespace WHTracker.Services.Models
         [DataMember(Name = "asteroid_belts")]
         public IEnumerable<int> AsteroidBelts { get; set; }
 
+        [DataMember(Name = "moons")]
         public IEnumerable<int> Moons { get; set; }
 
         [DataMember(Name = "planet_id")]
