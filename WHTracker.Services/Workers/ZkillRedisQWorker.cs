@@ -38,7 +38,7 @@ namespace WHTracker.Services.Workers
         {
             _logger.LogInformation("Timed Hosted Service running.");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(3));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(15));
 
             return Task.CompletedTask;
         }
@@ -62,10 +62,14 @@ namespace WHTracker.Services.Workers
                     var context =
                         scope.ServiceProvider
                             .GetRequiredService<ApplicationContext>();
+                    var aggregateService =
+                        scope.ServiceProvider
+                            .GetRequiredService<AggregateService>();
                     lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
                     
                     foreach (var killmail in lists)
                     {
+                        await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);
                         if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
                         {
                             _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);

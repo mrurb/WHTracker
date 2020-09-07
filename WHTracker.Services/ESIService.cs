@@ -76,6 +76,18 @@ namespace WHTracker.Services
             return corporationIds;
         }
 
+        public async Task<int> GetAllianceMemberCount(int allianceId)
+        {
+            IEnumerable<int> corps = await GetAllianceCorporations(allianceId);
+            int members = 0;
+            foreach(var corp in corps)
+            {
+                var corpData = await GetCorporation(corp);
+                members += corpData.MemberCount;
+            }
+            return members;
+        }
+
         public async Task<Killmail> GetKillmail(int killmailId, string killmailHash)
         {
             string requestUri = $"/v1/killmails/{killmailId}/{killmailHash}/";

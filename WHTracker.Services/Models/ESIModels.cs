@@ -80,7 +80,7 @@ namespace WHTracker.Services.Models
         public string Name { get; set; }
 
         [JsonPropertyName("shares")]
-        public int? Shares { get; set; }
+        public long? Shares { get; set; }
 
         [JsonPropertyName("tax_rate")]
         public float TaxRate { get; set; }
@@ -123,7 +123,7 @@ namespace WHTracker.Services.Models
     public class EveType
     {
         [JsonPropertyName("capacity")]
-        public int? Capacity { get; set; }
+        public float? Capacity { get; set; }
 
         [JsonPropertyName("description")]
         public string Description { get; set; }
