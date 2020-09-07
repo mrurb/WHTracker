@@ -32,6 +32,8 @@ namespace WHTracker
         {
             services.AddControllersWithViews();
             services.AddZKillRedisQAPI();
+            services.AddESIService();
+            services.AddAggregateServices();
             services.AddHostedService<ZkillRedisQWorker>();
 
             services.AddDbContext<ApplicationContext>(options =>

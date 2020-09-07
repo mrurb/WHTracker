@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,14 @@ namespace WHTracker.Services
 {
     public class AggregateService
     {
+        private readonly ILogger<AggregateService> _logger;
         private readonly ApplicationContext context;
         private readonly ESIService eSIService;
 
 
-        public AggregateService(ApplicationContext context, ESIService eSIService)
+        public AggregateService(ILogger<AggregateService> _logger, ApplicationContext context, ESIService eSIService)
         {
+            this._logger = _logger;
             this.context = context;
             this.eSIService = eSIService;
         }
@@ -29,6 +32,30 @@ namespace WHTracker.Services
 
         public async Task<DailyAggregateCorporation> GetOrCreateDailyAggregateCorporation(int corporationId, DateTime date)
         {
+            Data.Models.Corporation corp = await context.Corporations.FirstOrDefaultAsync(x => x.CorporationId == corporationId);
+
+            if (corp == null)
+            {
+                var corpdata = await eSIService.GetCorporation(corporationId);
+
+                corp = new Data.Models.Corporation();
+                corp.CorporationId = corporationId;
+                corp.CorporationName = corpdata.Name;
+                corp.CorporationTicker = corpdata.Ticker;
+                corp.MemberCount = corpdata.MemberCount;
+                corp.LastUpdated = DateTime.UtcNow;
+
+                await context.AddAsync(corp);
+            }
+            else if (corp.LastUpdated < DateTime.UtcNow.AddHours(-24))
+            {
+                var corpdata = await eSIService.GetCorporation(corporationId);
+                corp.CorporationName = corpdata.Name;
+                corp.CorporationTicker = corpdata.Ticker;
+                corp.MemberCount = corpdata.MemberCount;
+                corp.LastUpdated = DateTime.UtcNow;
+            }
+
             DailyAggregateCorporation aggregate = await GetDailyAggregateCorporation(corporationId, date);
             if(aggregate == null)
             {
@@ -49,6 +76,30 @@ namespace WHTracker.Services
 
         public async Task<DailyAggregateAlliance> GetOrCreateDailyAggregateAlliance(int allianceId, DateTime date)
         {
+            Data.Models.Alliance alliance = await context.Alliances.FirstOrDefaultAsync(x => x.AllianceId == allianceId);
+
+            if (alliance == null)
+            {
+                var alliancedata = await eSIService.GetAlliance(allianceId);
+
+                alliance = new Data.Models.Alliance();
+                alliance.AllianceId = allianceId;
+                alliance.AllianceName = alliancedata.Name;
+                alliance.AllianceTicker = alliancedata.Ticker;
+                alliance.MemberCount = await eSIService.GetAllianceMemberCount(allianceId);
+                alliance.LastUpdated = DateTime.UtcNow;
+
+                await context.AddAsync(alliance);
+            }
+            else if (alliance.LastUpdated < DateTime.UtcNow.AddHours(-24))
+            {
+                var alliancedata = await eSIService.GetAlliance(allianceId);
+                alliance.AllianceName = alliancedata.Name;
+                alliance.AllianceTicker = alliancedata.Ticker;
+                alliance.MemberCount = await eSIService.GetAllianceMemberCount(allianceId);
+                alliance.LastUpdated = DateTime.UtcNow;
+            }
+
             DailyAggregateAlliance aggregate = await GetDailyAggregateAlliance(allianceId, date);
             if (aggregate == null)
             {
@@ -78,6 +129,7 @@ namespace WHTracker.Services
                 // Process Victim
                 if(killmail.victim.CorporationId != null)
                 {
+                    _logger.LogInformation("Loss for corp: {0}", killmail.victim.CorporationId);
                     DailyAggregateCorporation victimAggregate = await GetOrCreateDailyAggregateCorporation(killmail.victim.CorporationId.Value, killmail.KillmailTime.Date);
                     IncrementAggregate(victimAggregate, victimType, value, killmail.victim.DamageTaken, false);
                 }
@@ -93,6 +145,7 @@ namespace WHTracker.Services
                 var attackerCorporations = killmail.Attackers.Where(a => a.CorporationId != null && a.CorporationId != killmail.victim.CorporationId).Select(a => a.CorporationId.Value).Distinct();
                 foreach (var corporation in attackerCorporations)
                 {
+                    _logger.LogInformation("Kill for corp: {0}", killmail.victim.CorporationId);
                     DailyAggregateCorporation attackerAggregate = await GetOrCreateDailyAggregateCorporation(corporation, killmail.KillmailTime.Date);
                     IncrementAggregate(attackerAggregate, victimType, value, killmail.Attackers.Where(a => a.CorporationId == corporation).Sum(a => a.DamageDone), true);
                 }
@@ -343,7 +396,7 @@ namespace WHTracker.Services
 
         public bool IsWormholeKill(Killmail killmail)
         {
-            return killmail.SolarSystemId > 3100000 && killmail.SolarSystemId < 32000000;
+            return killmail.SolarSystemId > 31000000 && killmail.SolarSystemId < 32000000;
         }
         #endregion
     }
