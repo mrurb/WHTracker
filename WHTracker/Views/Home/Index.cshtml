@@ -1,57 +1,299 @@
-﻿@{
+﻿@model IEnumerable<WHTracker.Data.Models.DailyAggregateCorporation>
+@{
     ViewData["Title"] = "Home Page";
 }
 @section Stylesheets{
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
 }
 
-    <div class="text-center">
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < 5000; i++)
-                {
-                    <tr>
-                        <td>@i</td>
-                        <td>@i</td>
-                        <td>Edinburgh</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                        <td>$320,800</td>
-                    </tr>
-                }
+<div class="text-center">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Corporation.CorporationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MembersCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KillsTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LossesTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KillsSubCap)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LossesSubCap)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KillsCapital)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LossesCapital)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KillsStructure)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LossesStructure)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKKilledTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKLostTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKKilledSubCap)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKLostSubCap)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKKilledCapital)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKLostCapital)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKKilledStructure)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKLostStructure)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageDealtTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageTakenTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageDealtSubCap)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageTakenSubCap)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageDealtCapital)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageTakenCapital)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageDealtStructure)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageTakenStructure)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RorqualKills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RorqualLosses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DreadKills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DreadLosses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarrierKills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarrierLosses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FaxesKills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FaxesLosses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MediumStructureKills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MediumStructureLosses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LargeStructureKills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LargeStructureLosses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.XLStructureKills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.XLStructureLosses)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Corporation.CorporationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MembersCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KillsTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LossesTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KillsSubCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LossesSubCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KillsCapital)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LossesCapital)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KillsStructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LossesStructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKKilledTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKLostTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKKilledSubCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKLostSubCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKKilledCapital)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKLostCapital)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKKilledStructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKLostStructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageDealtTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageTakenTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageDealtSubCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageTakenSubCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageDealtCapital)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageTakenCapital)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageDealtStructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageTakenStructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RorqualKills)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RorqualLosses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DreadKills)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DreadLosses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarrierKills)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarrierLosses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FaxesKills)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FaxesLosses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MediumStructureKills)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MediumStructureLosses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LargeStructureKills)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LargeStructureLosses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.XLStructureKills)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.XLStructureLosses)
+                </td>
+            </tr>
+            }
 
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
 
-    @section Scripts{
-        <script>
-    $(document).ready(function () {
-        $('#example').DataTable({
-            scrollY: 600
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                scrollY: 600
+            });
         });
-    });
-        </script>
-        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    }
+    </script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+}
+
+@for (int i = 0; i < 1; i++)
+{
+    <tr>
+        <td>@i</td>
+        <td>@i</td>
+        <td>Edinburgh</td>
+        <td>61</td>
+        <td>2011/04/25</td>
+        <td>$320,800</td>
+    </tr>
+}

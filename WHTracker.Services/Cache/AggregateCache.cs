@@ -15,6 +15,10 @@ namespace WHTracker.Services.Cache
         public List<(DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)> dailyAggregateCorporations { get; set; }
         public List<DailyAggregateAlliance> dailyAggregateAlliances { get; set; }
 
+        public AggregateCache()
+        {
+            dailyAggregateCorporations = new List<(DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)>();
+        }
 
         public (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)? GetAggregateCorporation(DateTime dateTime)
         {

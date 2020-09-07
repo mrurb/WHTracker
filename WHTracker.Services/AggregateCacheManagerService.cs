@@ -25,7 +25,7 @@ namespace WHTracker.Services
         {
             (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)? aggregate = aggregateCache.GetAggregateCorporation(dateTime);
 
-            if (aggregate is not null)
+            if (aggregate.Value.dailyAggregateCorporation is not null)
             {
                 if (aggregate.Value.lastPulled < DateTime.UtcNow.AddHours(-1))
                 {
@@ -48,7 +48,7 @@ namespace WHTracker.Services
 
         private async Task<(DateTime Date, DateTime UtcNow, List<DailyAggregateCorporation> lists)> GetDACFromDatabase(DateTime dateTime)
         {
-            List<DailyAggregateCorporation> lists = await applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).ToListAsync();
+            List<DailyAggregateCorporation> lists = await applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Corporation).ToListAsync();
             var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
             return newAggregate;
         }

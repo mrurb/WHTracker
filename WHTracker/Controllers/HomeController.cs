@@ -8,21 +8,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using WHTracker.Models;
+using WHTracker.Services;
 
 namespace WHTracker.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AggregateCacheManagerService aggregateCacheManagerService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AggregateCacheManagerService aggregateCacheManagerService)
         {
             _logger = logger;
+            this.aggregateCacheManagerService = aggregateCacheManagerService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+            (DateTime day, DateTime lastPulled, IEnumerable<Data.Models.DailyAggregateCorporation> dailyAggregateCorporation) p = await aggregateCacheManagerService.GetAggregateCorporation(DateTime.UtcNow);
+            return View(p.dailyAggregateCorporation);
         }
 
         public IActionResult Privacy()
