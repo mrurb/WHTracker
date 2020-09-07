@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHTracker", "WHTracker\WHTracker.csproj", "{3BF57BB4-538B-42FB-96DB-A2C579370E0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHTracker.Services", "WHTracker.Services\WHTracker.Services.csproj", "{6E7C8804-3D73-4949-BB83-804653525FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHTracker.Services", "WHTracker.Services\WHTracker.Services.csproj", "{6E7C8804-3D73-4949-BB83-804653525FED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHTracker.Options", "WHTracker.Options\WHTracker.Options.csproj", "{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6E7C8804-3D73-4949-BB83-804653525FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E7C8804-3D73-4949-BB83-804653525FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E7C8804-3D73-4949-BB83-804653525FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
