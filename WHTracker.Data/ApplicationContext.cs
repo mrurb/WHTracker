@@ -3,7 +3,7 @@
 using System;
 
 using WHTracker.Data.Models;
-
+#nullable disable
 namespace WHTracker.Data
 {
     public class ApplicationContext : DbContext

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+#nullable disable
 namespace WHTracker.Data.Models
 {
     public class Alliance

@@ -7,9 +7,9 @@ namespace WHTracker.Options
 {
     public class Zkillsettings
     {
-        public string QueueID { get; set; }
-        public string RedisQEndpoint { get; set; }
-        public string ZkillEndpoint { get; set; }
+        public string? QueueID { get; set; }
+        public string? RedisQEndpoint { get; set; }
+        public string? ZkillEndpoint { get; set; }
 
     }
 }
