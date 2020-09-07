@@ -38,7 +38,7 @@ namespace WHTracker.Services.Workers
         {
             _logger.LogInformation("Timed Hosted Service running.");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(3));
 
             return Task.CompletedTask;
         }
@@ -62,16 +62,26 @@ namespace WHTracker.Services.Workers
                     var context =
                         scope.ServiceProvider
                             .GetRequiredService<ApplicationContext>();
-                    lists = killmails.Where(x => context.Killmails.Any(c => x.Package.Zkb.Gash == c.KillmailHash && x.Package.KillId == c.KiilmailId)).ToList();
+                    lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
+                    
+                    foreach (var killmail in lists)
+                    {
+                        if (killmail.Package.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
+                        {
+                            _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
+                        }
+                        else
+                        {
+                            _logger.LogDebug("kspace {0}", killmail.Package?.KillId);
 
+                        }
+
+                    }
 
                 }
 
 
-                foreach (var killmail in lists)
-                {
-                    _logger.LogInformation("WH system kill {0}", killmail.Package?.KillId);
-                }
+
             }
             _logger.LogInformation("Zkill redisQ done working");
         }
