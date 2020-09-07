@@ -40,7 +40,7 @@ namespace WHTracker.Services.Workers
         private async void DoWork(object state)
         {
             RedisQZkill res;
-            while ((res = await zKillRedisQAPI.GetRedisQCall(3)).package is not null)
+            while ((res = await zKillRedisQAPI.GetRedisQCall(3)).Package is not null)
             {
                 if(res.package.zkb.locationID >= 31000000 && res.package.zkb.locationID <= 32000000)
                 {

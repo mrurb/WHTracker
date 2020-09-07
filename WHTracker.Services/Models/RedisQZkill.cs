@@ -1,79 +1,167 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace WHTracker.Services.Models
 {
     //RedisQZkill
+    [DataContract]
     public class RedisQZkill
     {
-        public Package package { get; set; }
+        [DataMember(Name = "package")]
+        public Package Package { get; set; }
     }
 
+    [DataContract]
     public class Package
     {
-        public int killID { get; set; }
-        public Killmail killmail { get; set; }
-        public Zkb zkb { get; set; }
+        [DataMember(Name = "killID")]
+        public int KillId { get; set; }
+
+        [DataMember(Name = "killmail")]
+        public Killmail Killmail { get; set; }
+
+        [DataMember(Name = "zkb")]
+        public Zkb Zkb { get; set; }
     }
 
+    [DataContract]
     public class Killmail
     {
-        public Attacker[] attackers { get; set; }
-        public int killmail_id { get; set; }
-        public DateTime killmail_time { get; set; }
-        public int solar_system_id { get; set; }
+        [DataMember(Name = "attackers")]
+        public IEnumerable<Attacker> Attackers { get; set; }
+
+        [DataMember(Name = "killmail_id")]
+        public int KillmailId { get; set; }
+
+        [DataMember(Name = "killmail_time")]
+        public DateTime KillmailTime { get; set; }
+
+        [DataMember(Name = "solar_system_id")]
+        public int SolarSystemId { get; set; }
+
+        [DataMember(Name = "victim")]
         public Victim victim { get; set; }
     }
 
+    [DataContract]
     public class Victim
     {
-        public int alliance_id { get; set; }
-        public int character_id { get; set; }
-        public int corporation_id { get; set; }
-        public int damage_taken { get; set; }
-        public Item[] items { get; set; }
-        public Position position { get; set; }
-        public int ship_type_id { get; set; }
+        [DataMember(Name = "alliance_id")]
+        public int AllianceId { get; set; }
+
+        [DataMember(Name = "character_id")]
+        public int CharacterId { get; set; }
+
+        [DataMember(Name = "corporation_id")]
+        public int CorporationId { get; set; }
+
+        [DataMember(Name = "damage_taken")]
+        public int DamageTaken { get; set; }
+
+        [DataMember(Name = "items")]
+        public IEnumerable<Item> Items { get; set; }
+
+        [DataMember(Name = "position")]
+        public Position Position { get; set; }
+
+        [DataMember(Name = "ship_type_id")]
+        public int ShipTypeId { get; set; }
     }
 
+    [DataContract]
     public class Position
     {
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
+
+        [DataMember(Name = "x")]
+        public float X { get; set; }
+
+        [DataMember(Name = "y")]
+        public float Y { get; set; }
+
+        [DataMember(Name = "z")]
+        public float Z { get; set; }
     }
 
+    [DataContract]
     public class Item
     {
-        public int flag { get; set; }
-        public int item_type_id { get; set; }
-        public int quantity_destroyed { get; set; }
-        public int singleton { get; set; }
-        public int quantity_dropped { get; set; }
+
+        [DataMember(Name = "flag")]
+        public int Flag { get; set; }
+
+        [DataMember(Name = "item_type_id")]
+        public int ItemTypeId { get; set; }
+
+        [DataMember(Name = "quantity_destroyed")]
+        public int QuantityDestroyed { get; set; }
+
+        [DataMember(Name = "singleton")]
+        public int Singleton { get; set; }
+
+        [DataMember(Name = "quantity_dropped")]
+        public int QuantityDropped { get; set; }
     }
 
+    [DataContract]
     public class Attacker
     {
-        public int alliance_id { get; set; }
-        public int character_id { get; set; }
-        public int corporation_id { get; set; }
-        public int damage_done { get; set; }
-        public bool final_blow { get; set; }
-        public float security_status { get; set; }
-        public int ship_type_id { get; set; }
-        public int weapon_type_id { get; set; }
+
+        [DataMember(Name = "alliance_id")]
+        public int AllianceId { get; set; }
+
+        [DataMember(Name = "character_id")]
+        public int CharacterId { get; set; }
+
+        [DataMember(Name = "corporation_id")]
+        public int CorporationId { get; set; }
+
+        [DataMember(Name = "damage_done")]
+        public int DamageDone { get; set; }
+
+        [DataMember(Name = "final_blow")]
+        public bool FinalBlow { get; set; }
+
+        [DataMember(Name = "security_status")]
+        public float SecurityStatus { get; set; }
+
+        [DataMember(Name = "ship_type_id")]
+        public int ShipTypeId { get; set; }
+
+        [DataMember(Name = "weapon_type_id")]
+        public int WeaponTypeId { get; set; }
     }
 
+    [DataContract]
     public class Zkb
     {
-        public int locationID { get; set; }
-        public string hash { get; set; }
-        public float fittedValue { get; set; }
-        public float totalValue { get; set; }
-        public int points { get; set; }
-        public bool npc { get; set; }
-        public bool solo { get; set; }
-        public bool awox { get; set; }
-        public string href { get; set; }
+
+        [DataMember(Name = "locationID")]
+        public int LocationId { get; set; }
+
+        [DataMember(Name = "hash")]
+        public string Gash { get; set; }
+
+        [DataMember(Name = "fittedValue")]
+        public float FittedValue { get; set; }
+
+        [DataMember(Name = "totalValue")]
+        public float TotalValue { get; set; }
+
+        [DataMember(Name = "points")]
+        public int Points { get; set; }
+
+        [DataMember(Name = "npc")]
+        public bool Npc { get; set; }
+
+        [DataMember(Name = "solo")]
+        public bool Solo { get; set; }
+
+        [DataMember(Name = "awox")]
+        public bool Awox { get; set; }
+
+        [DataMember(Name = "href")]
+        public string Href { get; set; }
     }
 
 
