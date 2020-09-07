@@ -66,7 +66,7 @@ namespace WHTracker.Services.Workers
                     
                     foreach (var killmail in lists)
                     {
-                        if (killmail.Package.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
+                        if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
                         {
                             _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
                         }
