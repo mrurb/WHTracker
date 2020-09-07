@@ -27,7 +27,7 @@ namespace WHTracker.Services
 
             if (aggregate.Value.dailyAggregateCorporation is not null)
             {
-                if (aggregate.Value.lastPulled < DateTime.UtcNow.AddHours(-1))
+                if (aggregate.Value.lastPulled < DateTime.UtcNow.AddMinutes(-5))
                 {
                     (DateTime Date, DateTime UtcNow, List<DailyAggregateCorporation> lists) newAggregate = await GetDACFromDatabase(dateTime);
                     aggregateCache.Update(newAggregate);

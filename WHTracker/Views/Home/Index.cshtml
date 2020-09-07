@@ -29,6 +29,12 @@
                     @Html.DisplayNameFor(model => model.LossesSubCap)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.KillsPod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LossesPod)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.KillsCapital)
                 </th>
                 <th>
@@ -45,6 +51,12 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ISKLostTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKKilledPod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISKLostPod)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ISKKilledSubCap)
@@ -69,6 +81,12 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.DamageTakenTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageDealtPod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DamageTakenPod)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.DamageDealtSubCap)
@@ -137,7 +155,7 @@
             {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Corporation.CorporationName)
+                    <a href="https://zkillboard.com/corporation/@Html.DisplayFor(modelItem => item.Corporation.CorporationId)/" target="_blank"> @Html.DisplayFor(modelItem => item.Corporation.CorporationName)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MembersCount)
@@ -153,6 +171,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LossesSubCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KillsPod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LossesPod)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.KillsCapital)
@@ -171,6 +195,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ISKLostTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKKilledPod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISKLostPod)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ISKKilledSubCap)
@@ -195,6 +225,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DamageTakenTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageDealtPod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DamageTakenPod)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DamageDealtSubCap)
@@ -261,16 +297,6 @@
 
 
         </tbody>
-        <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-            </tr>
-        </tfoot>
     </table>
 </div>
 
@@ -278,7 +304,8 @@
     <script>
         $(document).ready(function () {
             $('#example').DataTable({
-                scrollY: 600
+                scrollY: 600,
+                scrollX: 1000
             });
         });
     </script>
@@ -286,7 +313,7 @@
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 }
 
-@for (int i = 0; i < 1; i++)
+<!--@for (int i = 0; i < 1; i++)
 {
     <tr>
         <td>@i</td>
@@ -296,4 +323,4 @@
         <td>2011/04/25</td>
         <td>$320,800</td>
     </tr>
-}
+}-->

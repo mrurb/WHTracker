@@ -214,6 +214,12 @@ namespace WHTracker.Services
                         data.RorqualKills += 1;
                     }
                 }
+                else if (IsPod(type.TypeId))
+                {
+                    data.KillsPod += 1;
+                    data.ISKKilledPod += value;
+                    data.DamageDealtPod += damage;
+                }
                 else
                 {
                     data.KillsSubCap += 1;
@@ -269,6 +275,12 @@ namespace WHTracker.Services
                     {
                         data.RorqualLosses += 1;
                     }
+                }
+                else if (IsPod(type.TypeId))
+                {
+                    data.LossesPod += 1;
+                    data.ISKLostPod += value;
+                    data.DamageTakenPod += damage;
                 }
                 else
                 {
@@ -387,6 +399,11 @@ namespace WHTracker.Services
         {
 
             return typeId == 35836;
+        }
+        public bool IsPod(int typeId)
+        {
+
+            return typeId == 670 || typeId == 33328;
         }
 
         public async Task<float> CalculateKillmailValue(Killmail killmail)

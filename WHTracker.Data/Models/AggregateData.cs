@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace WHTracker.Data.Models
@@ -9,10 +10,13 @@ namespace WHTracker.Data.Models
         public DateTime TimeStamp { get; set; }
 
         public int MembersCount { get; set; }
+
         public int KillsTotal { get; set; }
         public int LossesTotal { get; set; }
         public int KillsSubCap { get; set; }
         public int LossesSubCap { get; set; }
+        public int KillsPod { get; set; }
+        public int LossesPod { get; set; }
         public int KillsCapital { get; set; }
         public int LossesCapital { get; set; }
         public int KillsStructure { get; set; }
@@ -21,6 +25,8 @@ namespace WHTracker.Data.Models
 
         public float ISKKilledTotal { get; set; }
         public float ISKLostTotal { get; set; }
+        public float ISKKilledPod { get; set; }
+        public float ISKLostPod { get; set; }
         public float ISKKilledSubCap { get; set; }
         public float ISKLostSubCap { get; set; }
         public float ISKKilledCapital { get; set; }
@@ -30,6 +36,8 @@ namespace WHTracker.Data.Models
 
         public int DamageDealtTotal { get; set; }
         public int DamageTakenTotal { get; set; }
+        public int DamageDealtPod { get; set; }
+        public int DamageTakenPod { get; set; }
         public int DamageDealtSubCap { get; set; }
         public int DamageTakenSubCap { get; set; }
         public int DamageDealtCapital { get; set; }
@@ -46,11 +54,18 @@ namespace WHTracker.Data.Models
         public int CarrierLosses { get; set; }
         public int FaxesKills { get; set; }
         public int FaxesLosses { get; set; }
+        [DisplayName("AK")]
+        [Title("Medium Structure kills")]
         public int MediumStructureKills { get; set; }
+        [DisplayName("AL")]
         public int MediumStructureLosses { get; set; }
+        [DisplayName("FK")]
         public int LargeStructureKills { get; set; }
+        [DisplayName("FL")]
         public int LargeStructureLosses { get; set; }
+        [DisplayName("KK")]
         public int XLStructureKills { get; set; }
+        [DisplayName("LK")]
         public int XLStructureLosses { get; set; }
     }
 }
