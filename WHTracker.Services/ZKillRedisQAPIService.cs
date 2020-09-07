@@ -10,7 +10,7 @@ using WHTracker.Services.Models;
 
 namespace WHTracker.Services
 {
-    internal class ZKillRedisQAPIService
+    public class ZKillRedisQAPIService
     {
         private readonly HttpClient client;
         private readonly Zkillsettings zkillsettings;
@@ -28,14 +28,20 @@ namespace WHTracker.Services
         }
 
 
-        public async Task<RedisQZkill> GetRedisQCall()
+        public async Task<RedisQZkill> GetRedisQCall(int ttw = 0)
         {
-            HttpResponseMessage response = await client.GetAsync($"/listen.php?queueID={zkillsettings.QueueID}");
+            string requestUri = $"/listen.php?queueID={zkillsettings.QueueID}";
+            if (ttw is not 0)
+            {
+                requestUri += $"&ttw={ttw}";
+            }
+            HttpResponseMessage response = await client.GetAsync(requestUri);
 
             response.EnsureSuccessStatusCode();
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<RedisQZkill>(responseStream);
+            RedisQZkill redisQZkill = await JsonSerializer.DeserializeAsync<RedisQZkill>(responseStream);
+            return redisQZkill;
         }
     }
 }

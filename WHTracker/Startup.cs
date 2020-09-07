@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using WHTracker.Services;
+using WHTracker.Services.Workers;
+
 namespace WHTracker
 {
     public class Startup
@@ -25,7 +28,8 @@ namespace WHTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddHttpClient();
+            services.AddZKillRedisQAPI();
+            services.AddHostedService<ZkillRedisQWorker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

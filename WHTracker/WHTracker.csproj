@@ -4,10 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <UserSecretsId>7588ea7f-f3ce-4e76-b46e-ffddba02ed16</UserSecretsId>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WHTracker.Options\WHTracker.Options.csproj" />
+    <ProjectReference Include="..\WHTracker.Services\WHTracker.Services.csproj" />
   </ItemGroup>
 
 </Project>
