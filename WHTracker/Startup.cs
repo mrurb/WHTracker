@@ -39,6 +39,7 @@ namespace WHTracker
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSingleton<AggregateCache>();
+            services.AddScoped<AggregateCacheManagerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
