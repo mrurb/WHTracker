@@ -75,5 +75,17 @@ namespace WHTracker.Services
             IEnumerable<int> corporationIds = await JsonSerializer.DeserializeAsync<IEnumerable<int>>(responseStream);
             return corporationIds;
         }
+
+        public async Task<Killmail> GetKillmail(int killmailId, string killmailHash)
+        {
+            string requestUri = $"/v1/killmails/{killmailId}/{killmailHash}/";
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            Killmail killmail = await JsonSerializer.DeserializeAsync<Killmail>(responseStream);
+            return killmail;
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace WHTracker.Data.Models
 
         public int DailyAggregateAllianceID { get; set; }
 
-        public int AllianceID { get; set; }
+        public int AllianceId { get; set; }
 
         public Alliance Alliance { get; set; }
 

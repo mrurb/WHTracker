@@ -25,27 +25,34 @@ namespace WHTracker.Data
 
 
             builder.Entity<Killmails>()
-                .HasKey(c => c.KiilmailID);
+                .HasKey(c => c.KiilmailId);
 
             builder.Entity<DailyAggregateAlliance>()
                 .HasKey(k => k.DailyAggregateAllianceID);
 
             builder.Entity<DailyAggregateAlliance>()
                 .HasOne(c => c.Alliance)
-                .WithMany(g => g.dailyAggregateAlliances)
-                .HasForeignKey(s => s.AllianceID);
+                .WithMany(g => g.DailyAggregateAlliances)
+                .HasForeignKey(s => s.AllianceId);
 
             builder.Entity<DailyAggregateCorporation>()
-                .HasKey(k => k.DailyAggregateCorporationID);
+                .HasKey(k => k.DailyAggregateCorporationId);
             builder.Entity<DailyAggregateCorporation>()
                 .HasOne(c => c.Corporation)
-                .WithMany(g => g.dailyAggregateCorporations)
+                .WithMany(g => g.DailyAggregateCorporations)
                 .HasForeignKey(s => s.CorporationID);
 
             builder.Entity<Corporation>()
-                .HasKey(k => k.CorporationID);
+                .HasKey(k => k.CorporationId);
+            builder.Entity<Corporation>()
+                .Property(k => k.CorporationId)
+                .ValueGeneratedNever();
+
             builder.Entity<Alliance>()
-                .HasKey(k => k.AllianceID);
+                .HasKey(k => k.AllianceId);
+            builder.Entity<Alliance>()
+                .Property(k => k.AllianceId)
+                .ValueGeneratedNever();
 
         }
 
