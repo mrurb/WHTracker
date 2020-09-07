@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WHTracker.Data;
@@ -41,6 +42,26 @@ namespace WHTracker.Services
             return aggregate;
         }
 
+        public async Task<DailyAggregateAlliance> GetDailyAggregateAlliance(int allianceId, DateTime date)
+        {
+            return await context.DailyAggregateAlliances.FirstOrDefaultAsync(x => x.AllianceId == allianceId && x.TimeStamp == date);
+        }
+
+        public async Task<DailyAggregateAlliance> GetOrCreateDailyAggregateAlliance(int allianceId, DateTime date)
+        {
+            DailyAggregateAlliance aggregate = await GetDailyAggregateAlliance(allianceId, date);
+            if (aggregate == null)
+            {
+                aggregate = new DailyAggregateAlliance();
+
+                aggregate.AllianceId = allianceId;
+                aggregate.TimeStamp = date;
+
+                context.Attach(aggregate);
+            }
+            return aggregate;
+        }
+
         public async Task ProcessKillmail(Killmail killmail)
         {
             float value = await CalculateKillmailValue(killmail);
@@ -57,9 +78,34 @@ namespace WHTracker.Services
                 // Process Victim
                 if(killmail.victim.CorporationId != null)
                 {
-
+                    DailyAggregateCorporation victimAggregate = await GetOrCreateDailyAggregateCorporation(killmail.victim.CorporationId.Value, killmail.KillmailTime.Date);
+                    IncrementAggregate(victimAggregate, victimType, value, killmail.victim.DamageTaken, false);
                 }
 
+                if (killmail.victim.AllianceId != null)
+                {
+                    DailyAggregateAlliance victimAggregate = await GetOrCreateDailyAggregateAlliance(killmail.victim.AllianceId.Value, killmail.KillmailTime.Date);
+                    IncrementAggregate(victimAggregate, victimType, value, killmail.victim.DamageTaken, false);
+                }
+
+
+                // Process Attackers
+                var attackerCorporations = killmail.Attackers.Where(a => a.CorporationId != null && a.CorporationId != killmail.victim.CorporationId).Select(a => a.CorporationId.Value).Distinct();
+                foreach (var corporation in attackerCorporations)
+                {
+                    DailyAggregateCorporation attackerAggregate = await GetOrCreateDailyAggregateCorporation(corporation, killmail.KillmailTime.Date);
+                    IncrementAggregate(attackerAggregate, victimType, value, killmail.Attackers.Where(a => a.CorporationId == corporation).Sum(a => a.DamageDone), true);
+                }
+
+
+                var attackerAlliances = killmail.Attackers.Where(a => a.AllianceId != null && a.AllianceId != killmail.victim.AllianceId).Select(a => a.AllianceId.Value).Distinct();
+                foreach (var alliance in attackerAlliances)
+                {
+                    DailyAggregateAlliance attackerAggregate = await GetOrCreateDailyAggregateAlliance(alliance, killmail.KillmailTime.Date);
+                    IncrementAggregate(attackerAggregate, victimType, value, killmail.Attackers.Where(a => a.AllianceId == alliance).Sum(a => a.DamageDone), true);
+                }
+
+                await context.SaveChangesAsync();
 
             }
 
