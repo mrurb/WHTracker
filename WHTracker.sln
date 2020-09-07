@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHTracker", "WHTracker\WHTr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHTracker.Services", "WHTracker.Services\WHTracker.Services.csproj", "{6E7C8804-3D73-4949-BB83-804653525FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHTracker.Options", "WHTracker.Options\WHTracker.Options.csproj", "{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHTracker.Options", "WHTracker.Options\WHTracker.Options.csproj", "{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHTracker.Data", "WHTracker.Data\WHTracker.Data.csproj", "{8A398377-8DBB-459B-92E1-C2AC26B57A06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3E37C10-73BC-4B79-8D05-04F7ED9F85FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A398377-8DBB-459B-92E1-C2AC26B57A06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A398377-8DBB-459B-92E1-C2AC26B57A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A398377-8DBB-459B-92E1-C2AC26B57A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A398377-8DBB-459B-92E1-C2AC26B57A06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
