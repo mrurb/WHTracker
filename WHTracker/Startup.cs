@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 using WHTracker.Data;
 using WHTracker.Services;
+using WHTracker.Services.Cache;
 using WHTracker.Services.Workers;
 
 namespace WHTracker
@@ -36,6 +37,8 @@ namespace WHTracker
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSingleton<AggregateCache>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

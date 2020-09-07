@@ -21,8 +21,8 @@
                 @for (int i = 0; i < 5000; i++)
                 {
                     <tr>
-                        <td>Tiger Nixon @i</td>
-                        <td>System Architect</td>
+                        <td>@i</td>
+                        <td>@i</td>
                         <td>Edinburgh</td>
                         <td>61</td>
                         <td>2011/04/25</td>
@@ -47,8 +47,11 @@
     @section Scripts{
         <script>
     $(document).ready(function () {
-                $('#example').DataTable();
-            });</script>
+        $('#example').DataTable({
+            scrollY: 600
+        });
+    });
+        </script>
         <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     }

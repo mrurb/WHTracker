@@ -182,6 +182,8 @@ namespace WHTracker.Services
             return data;
         }
 
+        #region Checkers
+
         public bool IsCapital(EveType type)
         {
 
@@ -297,5 +299,6 @@ namespace WHTracker.Services
         {
             return killmail.SolarSystemId > 3100000 && killmail.SolarSystemId < 32000000;
         }
+        #endregion
     }
 }
