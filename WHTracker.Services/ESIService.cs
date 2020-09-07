@@ -39,5 +39,17 @@ namespace WHTracker.Services
             SolarSystem solarSystem = await JsonSerializer.DeserializeAsync<SolarSystem>(responseStream);
             return solarSystem;
         }
+
+        public async Task<Corporation> GetCorporation(int corporationId)
+        {
+            string requestUri = $"/v4/corporations/{corporationId}/";
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            Corporation corporation = await JsonSerializer.DeserializeAsync<Corporation>(responseStream);
+            return corporation;
+        }
     }
 }
