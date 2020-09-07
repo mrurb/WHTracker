@@ -62,7 +62,7 @@ namespace WHTracker.Services.Workers
                     var context =
                         scope.ServiceProvider
                             .GetRequiredService<ApplicationContext>();
-                    lists = killmails.Where(x => context.Killmails.Any(c => x.Package.Zkb.Gash == c.KillmailHash && x.Package.KillId == c.KiilmailId)).ToList();
+                    lists = killmails.Where(x => context.Killmails.Any(c => x.Package.Zkb.Hash == c.KillmailHash && x.Package.KillId == c.KiilmailId)).ToList();
 
 
                 }
