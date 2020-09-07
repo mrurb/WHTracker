@@ -9,7 +9,7 @@ namespace WHTracker.Services.Models
     public class RedisQZkill
     {
         [DataMember(Name = "package")]
-        public Package Package { get; set; }
+        public Package? Package { get; set; }
     }
 
     [DataContract]
@@ -37,33 +37,42 @@ namespace WHTracker.Services.Models
         [DataMember(Name = "killmail_time")]
         public DateTime KillmailTime { get; set; }
 
+        [DataMember(Name = "moon_id")]
+        public int? MoonId { get; set; }
+
         [DataMember(Name = "solar_system_id")]
         public int SolarSystemId { get; set; }
 
         [DataMember(Name = "victim")]
         public Victim victim { get; set; }
+
+        [DataMember(Name = "war_id")]
+        public int? WarId { get; set; }
     }
 
     [DataContract]
     public class Victim
     {
         [DataMember(Name = "alliance_id")]
-        public int AllianceId { get; set; }
+        public int? AllianceId { get; set; }
 
         [DataMember(Name = "character_id")]
-        public int CharacterId { get; set; }
+        public int? CharacterId { get; set; }
 
         [DataMember(Name = "corporation_id")]
-        public int CorporationId { get; set; }
+        public int? CorporationId { get; set; }
 
         [DataMember(Name = "damage_taken")]
         public int DamageTaken { get; set; }
 
+        [DataMember(Name = "faction_id")]
+        public int? FactionId { get; set; }
+
         [DataMember(Name = "items")]
-        public IEnumerable<Item> Items { get; set; }
+        public IEnumerable<Item>? Items { get; set; }
 
         [DataMember(Name = "position")]
-        public Position Position { get; set; }
+        public Position? Position { get; set; }
 
         [DataMember(Name = "ship_type_id")]
         public int ShipTypeId { get; set; }
@@ -93,14 +102,17 @@ namespace WHTracker.Services.Models
         [DataMember(Name = "item_type_id")]
         public int ItemTypeId { get; set; }
 
+        [DataMember(Name = "items")]
+        public IEnumerable<Item>? Items { get; set; }
+
         [DataMember(Name = "quantity_destroyed")]
-        public int QuantityDestroyed { get; set; }
+        public int? QuantityDestroyed { get; set; }
 
         [DataMember(Name = "singleton")]
         public int Singleton { get; set; }
 
         [DataMember(Name = "quantity_dropped")]
-        public int QuantityDropped { get; set; }
+        public int? QuantityDropped { get; set; }
     }
 
     [DataContract]
@@ -108,16 +120,19 @@ namespace WHTracker.Services.Models
     {
 
         [DataMember(Name = "alliance_id")]
-        public int AllianceId { get; set; }
+        public int? AllianceId { get; set; }
 
         [DataMember(Name = "character_id")]
-        public int CharacterId { get; set; }
+        public int? CharacterId { get; set; }
 
         [DataMember(Name = "corporation_id")]
-        public int CorporationId { get; set; }
+        public int? CorporationId { get; set; }
 
         [DataMember(Name = "damage_done")]
         public int DamageDone { get; set; }
+
+        [DataMember(Name = "faction_id")]
+        public int? FactionId { get; set; }
 
         [DataMember(Name = "final_blow")]
         public bool FinalBlow { get; set; }
@@ -126,10 +141,10 @@ namespace WHTracker.Services.Models
         public float SecurityStatus { get; set; }
 
         [DataMember(Name = "ship_type_id")]
-        public int ShipTypeId { get; set; }
+        public int? ShipTypeId { get; set; }
 
         [DataMember(Name = "weapon_type_id")]
-        public int WeaponTypeId { get; set; }
+        public int? WeaponTypeId { get; set; }
     }
 
     [DataContract]
