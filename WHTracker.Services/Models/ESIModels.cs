@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace WHTracker.Services.Models
@@ -121,4 +119,74 @@ namespace WHTracker.Services.Models
         public string Ticker { get; set; }
     }
 
+
+    public class EveType
+    {
+        [JsonPropertyName("capacity")]
+        public int? Capacity { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("dogma_attributes")]
+        public IEnumerable<DogmaAttributes>? DogmaAttributes { get; set; }
+
+        [JsonPropertyName("dogma_effects")]
+        public IEnumerable<DogmaEffects>? DogmaEffects { get; set; }
+
+        [JsonPropertyName("graphic_id")]
+        public int? GraphicId { get; set; }
+
+        [JsonPropertyName("group_id")]
+        public int GroupId { get; set; }
+
+        [JsonPropertyName("icon_id")]
+        public int? IconId { get; set; }
+
+        [JsonPropertyName("market_group_id")]
+        public int? MarketGroupId { get; set; }
+
+        [JsonPropertyName("mass")]
+        public float? Mass { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("packaged_volume")]
+        public float? PackagedVolume { get; set; }
+
+        [JsonPropertyName("portion_size")]
+        public int? PortionSize { get; set; }
+
+        [JsonPropertyName("published")]
+        public bool Published { get; set; }
+
+        [JsonPropertyName("radius")]
+        public float? Radius { get; set; }
+
+        [JsonPropertyName("type_id")]
+        public int TypeId { get; set; }
+
+        [JsonPropertyName("volume")]
+        public float? Volume { get; set; }
     }
+
+    public class DogmaAttributes
+    {
+        [JsonPropertyName("attribute_id")]
+        public int AttributeId { get; set; }
+
+        [JsonPropertyName("value")]
+        public float Value { get; set; }
+    }
+
+    public class DogmaEffects
+    {
+        [JsonPropertyName("effect_id")]
+        public int EffectId { get; set; }
+
+        [JsonPropertyName("is_default")]
+        public bool IsDefault { get; set; }
+    }
+
+}

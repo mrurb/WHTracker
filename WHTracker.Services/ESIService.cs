@@ -87,5 +87,17 @@ namespace WHTracker.Services
             Killmail killmail = await JsonSerializer.DeserializeAsync<Killmail>(responseStream);
             return killmail;
         }
+
+        public async Task<EveType> GetEveType(int typeId)
+        {
+            string requestUri = $"/v3/universe/types/{typeId}/";
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            EveType type = await JsonSerializer.DeserializeAsync<EveType>(responseStream);
+            return type;
+        }
     }
 }

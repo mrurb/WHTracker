@@ -15,8 +15,8 @@ namespace WHTracker.Data.Models
         public int LossesSubCap { get; set; }
         public int KillsCapital { get; set; }
         public int LossesCapital { get; set; }
-        public int KillsStrcture { get; set; }
-        public int LossesStrcture { get; set; }
+        public int KillsStructure { get; set; }
+        public int LossesStructure { get; set; }
 
 
         public float ISKKilledTotal { get; set; }
@@ -38,22 +38,19 @@ namespace WHTracker.Data.Models
         public int DamageTakenStructure { get; set; }
 
 
-        public int PointsKilledTotal { get; set; }
-        public int PointsLostTotal { get; set; }
-        public int PointsKilledSubCap { get; set; }
-        public int PointsLostSubCap { get; set; }
-        public int PointsKilledCapital { get; set; }
-        public int PointsLostCapital { get; set; }
-        public int PointsKilledStructure { get; set; }
-        public int PointsLostStructure { get; set; }
-
-
         public int RorqualKills { get; set; }
+        public int RorqualLosses { get; set; }
         public int DreadKills { get; set; }
+        public int DreadLosses { get; set; }
         public int CarrierKills { get; set; }
+        public int CarrierLosses { get; set; }
         public int FaxesKills { get; set; }
-        public int MediumStrctureKills { get; set; }
-        public int LargetrctureKills { get; set; }
-        public int XLStrctureKills { get; set; }
+        public int FaxesLosses { get; set; }
+        public int MediumStructureKills { get; set; }
+        public int MediumStructureLosses { get; set; }
+        public int LargeStructureKills { get; set; }
+        public int LargeStructureLosses { get; set; }
+        public int XLStructureKills { get; set; }
+        public int XLStructureLosses { get; set; }
     }
 }
