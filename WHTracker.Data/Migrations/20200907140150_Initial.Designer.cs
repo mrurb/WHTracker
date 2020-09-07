@@ -9,8 +9,8 @@ using WHTracker.Data;
 namespace WHTracker.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200907112646_init")]
-    partial class init
+    [Migration("20200907140150_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,8 +21,7 @@ namespace WHTracker.Data.Migrations
 
             modelBuilder.Entity("WHTracker.Data.Models.Alliance", b =>
                 {
-                    b.Property<int>("AllianceID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("AllianceId")
                         .HasColumnType("int");
 
                     b.Property<string>("AllianceName")
@@ -37,15 +36,14 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("MemberCount")
                         .HasColumnType("int");
 
-                    b.HasKey("AllianceID");
+                    b.HasKey("AllianceId");
 
                     b.ToTable("Alliances");
                 });
 
             modelBuilder.Entity("WHTracker.Data.Models.Corporation", b =>
                 {
-                    b.Property<int>("CorporationID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CorporationId")
                         .HasColumnType("int");
 
                     b.Property<string>("CorporationName")
@@ -60,7 +58,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("MemberCount")
                         .HasColumnType("int");
 
-                    b.HasKey("CorporationID");
+                    b.HasKey("CorporationId");
 
                     b.ToTable("Corporations");
                 });
@@ -71,7 +69,7 @@ namespace WHTracker.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AllianceID")
+                    b.Property<int>("AllianceId")
                         .HasColumnType("int");
 
                     b.Property<int>("CarrierKills")
@@ -199,14 +197,14 @@ namespace WHTracker.Data.Migrations
 
                     b.HasKey("DailyAggregateAllianceID");
 
-                    b.HasIndex("AllianceID");
+                    b.HasIndex("AllianceId");
 
                     b.ToTable("DailyAggregateAlliances");
                 });
 
             modelBuilder.Entity("WHTracker.Data.Models.DailyAggregateCorporation", b =>
                 {
-                    b.Property<int>("DailyAggregateCorporationID")
+                    b.Property<int>("DailyAggregateCorporationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -336,7 +334,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("XLStrctureKills")
                         .HasColumnType("int");
 
-                    b.HasKey("DailyAggregateCorporationID");
+                    b.HasKey("DailyAggregateCorporationId");
 
                     b.HasIndex("CorporationID");
 
@@ -345,8 +343,7 @@ namespace WHTracker.Data.Migrations
 
             modelBuilder.Entity("WHTracker.Data.Models.Killmails", b =>
                 {
-                    b.Property<int>("KiilmailID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("KiilmailId")
                         .HasColumnType("int");
 
                     b.Property<string>("KillmailHash")
@@ -355,7 +352,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("KiilmailID");
+                    b.HasKey("KiilmailId");
 
                     b.ToTable("Killmails");
                 });
@@ -363,8 +360,8 @@ namespace WHTracker.Data.Migrations
             modelBuilder.Entity("WHTracker.Data.Models.DailyAggregateAlliance", b =>
                 {
                     b.HasOne("WHTracker.Data.Models.Alliance", "Alliance")
-                        .WithMany("dailyAggregateAlliances")
-                        .HasForeignKey("AllianceID")
+                        .WithMany("DailyAggregateAlliances")
+                        .HasForeignKey("AllianceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -372,7 +369,7 @@ namespace WHTracker.Data.Migrations
             modelBuilder.Entity("WHTracker.Data.Models.DailyAggregateCorporation", b =>
                 {
                     b.HasOne("WHTracker.Data.Models.Corporation", "Corporation")
-                        .WithMany("dailyAggregateCorporations")
+                        .WithMany("DailyAggregateCorporations")
                         .HasForeignKey("CorporationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

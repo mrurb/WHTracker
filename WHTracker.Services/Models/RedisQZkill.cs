@@ -148,7 +148,7 @@ namespace WHTracker.Services.Models
         public int LocationId { get; set; }
 
         [JsonPropertyName("hash")]
-        public string Gash { get; set; }
+        public string Hash { get; set; }
 
         [JsonPropertyName("fittedValue")]
         public float FittedValue { get; set; }

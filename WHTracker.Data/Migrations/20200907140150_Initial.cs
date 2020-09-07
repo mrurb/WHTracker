@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WHTracker.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,8 +12,7 @@ namespace WHTracker.Data.Migrations
                 name: "Alliances",
                 columns: table => new
                 {
-                    AllianceID = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AllianceId = table.Column<int>(nullable: false),
                     AllianceName = table.Column<string>(nullable: true),
                     AllianceTicker = table.Column<string>(nullable: true),
                     MemberCount = table.Column<int>(nullable: false),
@@ -21,15 +20,14 @@ namespace WHTracker.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Alliances", x => x.AllianceID);
+                    table.PrimaryKey("PK_Alliances", x => x.AllianceId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Corporations",
                 columns: table => new
                 {
-                    CorporationID = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CorporationId = table.Column<int>(nullable: false),
                     CorporationName = table.Column<string>(nullable: true),
                     CorporationTicker = table.Column<string>(nullable: true),
                     MemberCount = table.Column<int>(nullable: false),
@@ -37,21 +35,20 @@ namespace WHTracker.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Corporations", x => x.CorporationID);
+                    table.PrimaryKey("PK_Corporations", x => x.CorporationId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Killmails",
                 columns: table => new
                 {
-                    KiilmailID = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    KiilmailId = table.Column<int>(nullable: false),
                     KillmailHash = table.Column<string>(nullable: true),
                     TimeStamp = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Killmails", x => x.KiilmailID);
+                    table.PrimaryKey("PK_Killmails", x => x.KiilmailId);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,16 +98,16 @@ namespace WHTracker.Data.Migrations
                     MediumStrctureKills = table.Column<int>(nullable: false),
                     LargetrctureKills = table.Column<int>(nullable: false),
                     XLStrctureKills = table.Column<int>(nullable: false),
-                    AllianceID = table.Column<int>(nullable: false)
+                    AllianceId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DailyAggregateAlliances", x => x.DailyAggregateAllianceID);
                     table.ForeignKey(
-                        name: "FK_DailyAggregateAlliances_Alliances_AllianceID",
-                        column: x => x.AllianceID,
+                        name: "FK_DailyAggregateAlliances_Alliances_AllianceId",
+                        column: x => x.AllianceId,
                         principalTable: "Alliances",
-                        principalColumn: "AllianceID",
+                        principalColumn: "AllianceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -118,7 +115,7 @@ namespace WHTracker.Data.Migrations
                 name: "DailyAggregateCorporations",
                 columns: table => new
                 {
-                    DailyAggregateCorporationID = table.Column<int>(nullable: false)
+                    DailyAggregateCorporationId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TimeStamp = table.Column<DateTime>(nullable: false),
                     MembersCount = table.Column<int>(nullable: false),
@@ -165,19 +162,19 @@ namespace WHTracker.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DailyAggregateCorporations", x => x.DailyAggregateCorporationID);
+                    table.PrimaryKey("PK_DailyAggregateCorporations", x => x.DailyAggregateCorporationId);
                     table.ForeignKey(
                         name: "FK_DailyAggregateCorporations_Corporations_CorporationID",
                         column: x => x.CorporationID,
                         principalTable: "Corporations",
-                        principalColumn: "CorporationID",
+                        principalColumn: "CorporationId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DailyAggregateAlliances_AllianceID",
+                name: "IX_DailyAggregateAlliances_AllianceId",
                 table: "DailyAggregateAlliances",
-                column: "AllianceID");
+                column: "AllianceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DailyAggregateCorporations_CorporationID",

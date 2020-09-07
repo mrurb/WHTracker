@@ -342,7 +342,6 @@ namespace WHTracker.Data.Migrations
             modelBuilder.Entity("WHTracker.Data.Models.Killmails", b =>
                 {
                     b.Property<int>("KiilmailId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("KillmailHash")
