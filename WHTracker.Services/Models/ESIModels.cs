@@ -15,25 +15,25 @@ namespace WHTracker.Services.Models
         public string Name { get; set; }
 
         [DataMember(Name = "planets")]
-        public IEnumerable<Planet> Planets { get; set; }
+        public IEnumerable<Planet>? Planets { get; set; }
 
         [DataMember(Name = "position")]
         public Position Position { get; set; }
 
         [DataMember(Name = "security_class")]
-        public string SecurityClass { get; set; }
+        public string? SecurityClass { get; set; }
 
         [DataMember(Name = "security_status")]
         public float SecurityStatus { get; set; }
 
         [DataMember(Name = "star_id")]
-        public int StarId { get; set; }
+        public int? StarId { get; set; }
 
         [DataMember(Name = "stargates")]
-        public IEnumerable<int> Stargates { get; set; }
+        public IEnumerable<int>? Stargates { get; set; }
 
         [DataMember(Name = "stations")]
-        public IEnumerable<int> Stations { get; set; }
+        public IEnumerable<int>? Stations { get; set; }
 
         [DataMember(Name = "system_status")]
         public int SystemId { get; set; }
@@ -43,13 +43,60 @@ namespace WHTracker.Services.Models
     public class Planet
     {
         [DataMember(Name = "asteroid_belts")]
-        public IEnumerable<int> AsteroidBelts { get; set; }
+        public IEnumerable<int>? AsteroidBelts { get; set; }
 
         [DataMember(Name = "moons")]
-        public IEnumerable<int> Moons { get; set; }
+        public IEnumerable<int>? Moons { get; set; }
 
         [DataMember(Name = "planet_id")]
         public int PlanteId { get; set; }
 
     }
+
+    [DataContract]
+    public class Corporation
+    {
+        [DataMember(Name = "alliance_id")]
+        public int? AllianceId { get; set; }
+
+        [DataMember(Name = "ceo_id")]
+        public int CeoId { get; set; }
+
+        [DataMember(Name = "creator_id")]
+        public int CreatorId { get; set; }
+
+        [DataMember(Name = "date_founded")]
+        public DateTime? DateFounded { get; set; }
+
+        [DataMember(Name = "description")]
+        public string? Description { get; set; }
+
+        [DataMember(Name = "faction_id")]
+        public int? FactionId { get; set; }
+
+        [DataMember(Name = "home_station_id")]
+        public int? HomeStationId { get; set; }
+
+        [DataMember(Name = "member_count")]
+        public int MemberCount { get; set; }
+
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "shares")]
+        public int? Shares { get; set; }
+
+        [DataMember(Name = "tax_rate")]
+        public float TaxRate { get; set; }
+
+        [DataMember(Name = "ticker")]
+        public string Ticker { get; set; }
+
+        [DataMember(Name = "url")]
+        public string? Url { get; set; }
+
+        [DataMember(Name = "war_eligible")]
+        public bool? WarEligible { get; set; }
+    }
+
 }
