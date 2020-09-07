@@ -41,6 +41,8 @@ namespace WHTracker.Services
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
             RedisQZkill redisQZkill = await JsonSerializer.DeserializeAsync<RedisQZkill>(responseStream);
+
+            var test = await response.Content.ReadAsStringAsync();
             return redisQZkill;
         }
     }
