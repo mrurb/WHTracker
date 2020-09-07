@@ -47,7 +47,5 @@ namespace WHTracker.Data.Models
         public int MediumStrctureKills { get; set; }
         public int LargetrctureKills { get; set; }
         public int XLStrctureKills { get; set; }
-
-
     }
 }
