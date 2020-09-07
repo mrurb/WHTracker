@@ -26,6 +26,10 @@ namespace WHTracker.Data
 
             builder.Entity<Killmails>()
                 .HasKey(c => c.KiilmailId);
+            builder.Entity<Killmails>()
+                .Property(k => k.KiilmailId)
+                .ValueGeneratedNever();
+
 
             builder.Entity<DailyAggregateAlliance>()
                 .HasKey(k => k.DailyAggregateAllianceID);
