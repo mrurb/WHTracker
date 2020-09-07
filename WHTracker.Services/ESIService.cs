@@ -39,5 +39,41 @@ namespace WHTracker.Services
             SolarSystem solarSystem = await JsonSerializer.DeserializeAsync<SolarSystem>(responseStream);
             return solarSystem;
         }
+
+        public async Task<Corporation> GetCorporation(int corporationId)
+        {
+            string requestUri = $"/v4/corporations/{corporationId}/";
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            Corporation corporation = await JsonSerializer.DeserializeAsync<Corporation>(responseStream);
+            return corporation;
+        }
+
+        public async Task<Alliance> GetAlliance(int allianceId)
+        {
+            string requestUri = $"/v4/alliances/{allianceId}/";
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            Alliance alliance = await JsonSerializer.DeserializeAsync<Alliance>(responseStream);
+            return alliance;
+        }
+
+        public async Task<IEnumerable<int>> GetAllianceCorporations(int allianceId)
+        {
+            string requestUri = $"/v2/alliances/{allianceId}/corporations/";
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            IEnumerable<int> corporationIds = await JsonSerializer.DeserializeAsync<IEnumerable<int>>(responseStream);
+            return corporationIds;
+        }
     }
 }
