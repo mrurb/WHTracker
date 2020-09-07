@@ -19,7 +19,7 @@ namespace WHTracker.Services.Workers
         private readonly ILogger<ZkillRedisQWorker> _logger;
         private readonly ZKillRedisQAPIService zKillRedisQAPI;
         private readonly ApplicationContext applicationContext;
-        private Timer _timer;
+        private Timer? _timer;
 
         public ZkillRedisQWorker(ILogger<ZkillRedisQWorker> logger, ZKillRedisQAPIService zKillRedisQAPI, ApplicationContext applicationContext)
         {
@@ -42,7 +42,7 @@ namespace WHTracker.Services.Workers
             return Task.CompletedTask;
         }
 
-        private async void DoWork(object state)
+        private async void DoWork(object? state)
         {
             IQueryable<Data.Models.Killmails> queryables = applicationContext.Killmails.Where(c => c.TimeStamp.Date == DateTime.UtcNow.Date);
 
@@ -58,10 +58,10 @@ namespace WHTracker.Services.Workers
             applicationContext.Killmails.Where(c => killmails.Any(x => x.Package.Zkb.Gash == c.KillmailHash && x.Package.KillId == c.KiilmailId)).ToList();
             
             foreach (var killmail in from killmail in killmails
-                                     where killmail.Package.Zkb.LocationId >= 31000000 && killmail.Package.Zkb.LocationId <= 32000000
+                                     where killmail.Package?.Zkb.LocationId >= 31000000 && killmail.Package?.Zkb.LocationId <= 32000000
                                      select killmail)
             {
-                _logger.LogInformation("WH system kill {0}", killmail.Package.KillId);
+                _logger.LogInformation("WH system kill {0}", killmail.Package?.KillId);
             }
 
             _logger.LogInformation("Zkill redisQ done working");
