@@ -19,19 +19,19 @@ namespace WHTracker.Data.Models
         public int LossesStrcture { get; set; }
 
 
-        public int ISKKilledTotal { get; set; }
-        public int ISKLostTotal { get; set; }
-        public int ISKKilledSubCap { get; set; }
-        public int ISKLostSubCap { get; set; }
-        public int ISKKilledCapital { get; set; }
-        public int ISKLostCapital { get; set; }
-        public int ISKKilledStructure { get; set; }
-        public int ISKLostStructure { get; set; }
+        public float ISKKilledTotal { get; set; }
+        public float ISKLostTotal { get; set; }
+        public float ISKKilledSubCap { get; set; }
+        public float ISKLostSubCap { get; set; }
+        public float ISKKilledCapital { get; set; }
+        public float ISKLostCapital { get; set; }
+        public float ISKKilledStructure { get; set; }
+        public float ISKLostStructure { get; set; }
 
         public int DamageDealtTotal { get; set; }
         public int DamageTakenTotal { get; set; }
         public int DamageDealtSubCap { get; set; }
-        public int DamageTakenSubCAp { get; set; }
+        public int DamageTakenSubCap { get; set; }
         public int DamageDealtCapital { get; set; }
         public int DamageTakenCapital { get; set; }
         public int DamageDealtStructure { get; set; }
