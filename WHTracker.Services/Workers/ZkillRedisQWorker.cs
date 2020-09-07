@@ -42,14 +42,14 @@ namespace WHTracker.Services.Workers
             RedisQZkill res;
             while ((res = await zKillRedisQAPI.GetRedisQCall(3)).Package is not null)
             {
-                if(res.package.zkb.locationID >= 31000000 && res.package.zkb.locationID <= 32000000)
+                if(res.Package.Zkb.LocationId >= 31000000 && res.Package.Zkb.LocationId <= 32000000)
                 {
-                    _logger.LogInformation("WH system kill {0}", res.package.killID);
+                    _logger.LogInformation("WH system kill {0}", res.Package.KillId);
 
 
                 }
 
-                _logger.LogInformation("{0}", res.package.killID);
+                _logger.LogInformation("{0}", res.Package.KillId);
             }
 
 
