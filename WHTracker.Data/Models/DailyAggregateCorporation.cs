@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 #nullable disable
 namespace WHTracker.Data.Models
 {
@@ -8,7 +9,7 @@ namespace WHTracker.Data.Models
     {
         public int DailyAggregateCorporationId { get; set; }
         public int CorporationID { get; set; }
-        public Corporation Corporation { get; set; }
+        public virtual Corporation corporation { get; set; }
     }
 
 

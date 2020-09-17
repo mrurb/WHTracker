@@ -25,8 +25,7 @@ namespace WHTracker.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<Data.Models.DailyAggregateCorporation> dailyAggregateCorporation) p = await aggregateCacheManagerService.GetAggregateCorporation(DateTime.UtcNow);
-            return View(p.dailyAggregateCorporation);
+            return View();
         }
 
         public IActionResult Privacy()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 #nullable disable
 namespace WHTracker.Data.Models
 {
@@ -10,7 +11,7 @@ namespace WHTracker.Data.Models
         public string CorporationTicker { get; set; }
         public int MemberCount { get; set; }
         public DateTime LastUpdated { get; set; }
-
+        [JsonIgnore]
         public IEnumerable<DailyAggregateCorporation> DailyAggregateCorporations { get; set; }
     }
 }

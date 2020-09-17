@@ -10,7 +10,7 @@ namespace WHTracker.Data.Models
         public string AllianceTicker { get; set; }
         public int MemberCount { get; set; }
         public DateTime LastUpdated { get; set; }
-
+        [System.Text.Json.Serialization.JsonIgnore]
         public IEnumerable<DailyAggregateAlliance> DailyAggregateAlliances { get; set; }
     }
 }
