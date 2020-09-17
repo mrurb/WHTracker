@@ -80,18 +80,76 @@ namespace WHTracker.Services
         {
             List<DailyAggregateAlliance> lists = await applicationContext.DailyAggregateAlliances.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Alliance).ToListAsync();
             var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
-           // await GetMACFromDatabase(dateTime);
+           await GetMACFromDatabase(dateTime);
             return newAggregate;
         }
 
 
         private async Task GetMACFromDatabase(DateTime dateTime)
         {
-            IQueryable<IGrouping<int, DailyAggregateCorporation>> queryables = applicationContext.DailyAggregateCorporations.GroupBy(c => c.TimeStamp.Month);
-            var lists = await queryables.ToListAsync();
-            //var lists = await applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Month == dateTime.Month).GroupBy(c => o).ToListAsync();
-            var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
-            //return newAggregate;.Include(c => c.corporation)
+            try
+            {
+            var queryables = await applicationContext.DailyAggregateCorporations.GroupBy(p => new { p.CorporationID, p.TimeStamp.Year, p.TimeStamp.Month})
+                    .Select(c => new { 
+                        c.Key.CorporationID,
+                        c.Key.Year,
+                        c.Key.Month,
+
+                        KillsTotal = c.Sum(x => x.KillsTotal),
+                        LossesTotal = c.Sum(x => x.LossesTotal),
+                        KillsSubCap = c.Sum(x => x.KillsSubCap),
+                        LossesSubCap = c.Sum(x => x.LossesSubCap),
+                        KillsPod = c.Sum(x => x.KillsPod),
+                        LossesPod = c.Sum(x => x.LossesPod),
+                        KillsCapital = c.Sum(x => x.KillsCapital),
+                        LossesCapital = c.Sum(x => x.LossesCapital),
+                        KillsStructure = c.Sum(x => x.KillsStructure),
+                        LossesStructure = c.Sum(x => x.LossesStructure),
+
+                        ISKKilledTotal = c.Sum(x => x.ISKKilledTotal),
+                        ISKLostTotal = c.Sum(x => x.ISKLostTotal),
+                        ISKKilledPod = c.Sum(x => x.ISKKilledPod),
+                        ISKLostPod = c.Sum(x => x.ISKLostPod),
+                        ISKKilledSubCap = c.Sum(x => x.ISKKilledSubCap),
+                        ISKLostSubCap = c.Sum(x => x.ISKLostSubCap),
+                        ISKKilledCapital = c.Sum(x => x.ISKKilledCapital),
+                        ISKKilledStructure = c.Sum(x => x.ISKKilledStructure),
+                        ISKLostStructure = c.Sum(x => x.ISKLostStructure),
+
+                        DamageDealtTotal = c.Sum(x => x.DamageDealtTotal),
+                        DamageTakenTotal = c.Sum(x => x.DamageTakenTotal),
+                        DamageDealtPod = c.Sum(x => x.DamageDealtPod),
+                        DamageTakenPod = c.Sum(x => x.DamageTakenPod),
+                        DamageDealtSubCap = c.Sum(x => x.DamageDealtSubCap),
+                        DamageTakenSubCap = c.Sum(x => x.DamageTakenSubCap),
+                        DamageDealtCapital = c.Sum(x => x.DamageDealtCapital),
+                        DamageTakenCapital = c.Sum(x => x.DamageTakenCapital),
+                        DamageDealtStructure = c.Sum(x => x.DamageDealtStructure),
+                        DamageTakenStructure = c.Sum(x => x.DamageTakenStructure),
+
+                        RorqualKills = c.Sum(x => x.RorqualKills),
+                        RorqualLosses = c.Sum(x => x.RorqualLosses),
+                        DreadKills = c.Sum(x => x.DreadKills),
+                        DreadLosses = c.Sum(x => x.DreadLosses),
+                        CarrierKills = c.Sum(x => x.CarrierKills),
+                        CarrierLosses = c.Sum(x => x.CarrierLosses),
+                        FaxesKills = c.Sum(x => x.FaxesKills),
+                        FaxesLosses = c.Sum(x => x.FaxesLosses),
+                        MediumStructureKills = c.Sum(x => x.MediumStructureKills),
+                        MediumStructureLosses = c.Sum(x => x.MediumStructureLosses),
+                        LargeStructureKills = c.Sum(x => x.LargeStructureKills),
+                        LargeStructureLosses = c.Sum(x => x.LargeStructureLosses),
+                        XLStructureKills = c.Sum(x => x.XLStructureKills),
+                        XLStructureLosses = c.Sum(x => x.XLStructureLosses),
+                    }).ToListAsync();
+                //var lists = await applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Month == dateTime.Month).GroupBy(c => o).ToListAsync();
+                //var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
+                //return newAggregate;.Include(c => c.corporation)
+                var b = queryables;
+            } catch(Exception ex)
+            {
+                var a = ex;
+            }
         }
     }
 }
