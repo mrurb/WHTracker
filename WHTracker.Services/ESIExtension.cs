@@ -3,6 +3,7 @@ using Polly;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WHTracker.Services.Cache;
 
 namespace WHTracker.Services
 {
@@ -10,6 +11,7 @@ namespace WHTracker.Services
     {
         public static IServiceCollection AddESIService(this IServiceCollection services)
         {
+            services.AddSingleton<ESICache>();
 
             services.AddHttpClient<ESIService>()
                 .AddTransientHttpErrorPolicy(p => p.RetryAsync(3))
