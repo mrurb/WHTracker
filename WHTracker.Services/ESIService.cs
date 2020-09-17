@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WHTracker.Options;
+using WHTracker.Services.Cache;
 using WHTracker.Services.Models;
 
 namespace WHTracker.Services
@@ -14,8 +15,9 @@ namespace WHTracker.Services
     {
         private readonly HttpClient client;
         private readonly ESISettings eSIsettings;
+        private readonly ESICache cache;
 
-        public ESIService(HttpClient httpClient, IConfiguration configuration)
+        public ESIService(HttpClient httpClient, IConfiguration configuration, ESICache cache)
         {
             eSIsettings = configuration.GetSection("ESISettings").Get<ESISettings>();
 
@@ -25,6 +27,7 @@ namespace WHTracker.Services
             httpClient.DefaultRequestHeaders.Add("User-Agent", "WHTracker");
 
             this.client = httpClient;
+            this.cache = cache;
         }
 
 
@@ -102,6 +105,12 @@ namespace WHTracker.Services
 
         public async Task<EveType> GetEveType(int typeId)
         {
+            var cacheType = cache.GetType(typeId);
+            if (cacheType != null)
+            {
+                return cacheType;
+            }
+
             string requestUri = $"/v3/universe/types/{typeId}/";
             HttpResponseMessage response = await client.GetAsync(requestUri);
 
@@ -109,6 +118,9 @@ namespace WHTracker.Services
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
             EveType type = await JsonSerializer.DeserializeAsync<EveType>(responseStream);
+
+            cache.AddType(typeId, type);
+
             return type;
         }
     }
