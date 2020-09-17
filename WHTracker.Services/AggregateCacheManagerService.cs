@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 using WHTracker.Data;
@@ -80,21 +81,22 @@ namespace WHTracker.Services
         {
             List<DailyAggregateAlliance> lists = await applicationContext.DailyAggregateAlliances.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Alliance).ToListAsync();
             var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
-           await GetMACFromDatabase(dateTime);
+           //await GetMACFromDatabase(dateTime);
             return newAggregate;
         }
 
 
         private async Task GetMACFromDatabase(DateTime dateTime)
         {
-            try
-            {
-            var queryables = await applicationContext.DailyAggregateCorporations.GroupBy(p => new { p.CorporationID, p.TimeStamp.Year, p.TimeStamp.Month})
-                    .Select(c => new { 
-                        c.Key.CorporationID,
-                        c.Key.Year,
-                        c.Key.Month,
+                var queryables = await applicationContext.DailyAggregateCorporations
+                    .Where(c => c.TimeStamp.Month == dateTime.Month)
+                    .GroupBy (p => new {  p.corporation.CorporationName, p.corporation.CorporationId, p.corporation.CorporationTicker , p.TimeStamp.Year, p.TimeStamp.Month })
+                        .Select(c => new DailyAggregateCorporation {
 
+                        //CorporationID = c.Key.CorporationID,
+                        corporation = new Corporation { CorporationId = c.Key.CorporationId, CorporationName = c.Key.CorporationName, CorporationTicker = c.Key.CorporationTicker},
+                        TimeStamp = new DateTime(c.Key.Year, c.Key.Month, 1),
+                        //corporation = c.FirstOrDefault().corporation,
                         KillsTotal = c.Sum(x => x.KillsTotal),
                         LossesTotal = c.Sum(x => x.LossesTotal),
                         KillsSubCap = c.Sum(x => x.KillsSubCap),
@@ -141,15 +143,13 @@ namespace WHTracker.Services
                         LargeStructureLosses = c.Sum(x => x.LargeStructureLosses),
                         XLStructureKills = c.Sum(x => x.XLStructureKills),
                         XLStructureLosses = c.Sum(x => x.XLStructureLosses),
-                    }).ToListAsync();
+                        })
+                        .ToListAsync();
+
                 //var lists = await applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Month == dateTime.Month).GroupBy(c => o).ToListAsync();
                 //var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
                 //return newAggregate;.Include(c => c.corporation)
-                var b = queryables;
-            } catch(Exception ex)
-            {
-                var a = ex;
-            }
+    
         }
     }
 }
