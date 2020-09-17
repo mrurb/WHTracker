@@ -16,6 +16,8 @@ namespace WHTracker.Data
         public DbSet<Killmails> Killmails { get; set; }
         public DbSet<DailyAggregateCorporation> DailyAggregateCorporations { get; set; }
         public DbSet<DailyAggregateAlliance> DailyAggregateAlliances { get; set; }
+        public DbSet<MonthlyAggregateCorporation> MonthlyAggregateCorporations { get; set; }
+        public DbSet<MonthlyAggregateAlliance> MonthlyAggregateAlliances { get; set; }
         public DbSet<Corporation> Corporations { get; set; }
         public DbSet<Alliance> Alliances { get; set; }
 
@@ -44,6 +46,21 @@ namespace WHTracker.Data
             builder.Entity<DailyAggregateCorporation>()
                 .HasOne(c => c.corporation)
                 .WithMany(g => g.DailyAggregateCorporations)
+                .HasForeignKey(s => s.CorporationID);
+
+            builder.Entity<MonthlyAggregateAlliance>()
+                .HasKey(k => k.MonthlyAggregateAllianceID);
+
+            builder.Entity<MonthlyAggregateAlliance>()
+                .HasOne(c => c.Alliance)
+                .WithMany(g => g.MonthlyAggregateAlliances)
+                .HasForeignKey(s => s.AllianceId);
+
+            builder.Entity<MonthlyAggregateCorporation>()
+                .HasKey(k => k.MonthlyAggregateCorporationId);
+            builder.Entity<MonthlyAggregateCorporation>()
+                .HasOne(c => c.corporation)
+                .WithMany(g => g.MonthlyAggregateCorporations)
                 .HasForeignKey(s => s.CorporationID);
 
             builder.Entity<Corporation>()

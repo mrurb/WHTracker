@@ -13,5 +13,7 @@ namespace WHTracker.Data.Models
         public DateTime LastUpdated { get; set; }
         [JsonIgnore]
         public IEnumerable<DailyAggregateCorporation> DailyAggregateCorporations { get; set; }
+        [JsonIgnore]
+        public IEnumerable<MonthlyAggregateCorporation> MonthlyAggregateCorporations { get; set; }
     }
 }
