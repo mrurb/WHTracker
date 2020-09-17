@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using WHTracker.Data;
+using WHTracker.Data.Models;
 using WHTracker.Services;
 using WHTracker.Services.Cache;
 using WHTracker.Services.Workers;
@@ -40,7 +41,10 @@ namespace WHTracker
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddSingleton<AggregateCache>();
+            services.AddSingleton<AggregateCache<DailyAggregateAlliance>>();
+            services.AddSingleton<AggregateCache<DailyAggregateCorporation>>();
+            services.AddSingleton<AggregateCache<MonthlyAggregateAlliance>>();
+            services.AddSingleton<AggregateCache<MonthlyAggregateCorporation>>();
             services.AddScoped<AggregateCacheManagerService>();
         }
 

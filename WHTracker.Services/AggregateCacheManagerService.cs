@@ -14,24 +14,30 @@ namespace WHTracker.Services
 {
     public class AggregateCacheManagerService
     {
-        private readonly AggregateCache aggregateCache;
+        private readonly AggregateCache<DailyAggregateAlliance> aggregateCacheAD;
+        private readonly AggregateCache<DailyAggregateCorporation> aggregateCacheCD;
+        private readonly AggregateCache<MonthlyAggregateAlliance> aggregateCacheAM;
+        private readonly AggregateCache<MonthlyAggregateCorporation> aggregateCacheCM;
         private readonly ApplicationContext applicationContext;
 
-        public AggregateCacheManagerService(AggregateCache aggregateCache, ApplicationContext applicationContext)
+        public AggregateCacheManagerService(AggregateCache<DailyAggregateAlliance> aggregateCache, AggregateCache<DailyAggregateCorporation> aggregateCacheCD, AggregateCache<MonthlyAggregateAlliance> aggregateCacheAM, AggregateCache<MonthlyAggregateCorporation> aggregateCacheCM, ApplicationContext applicationContext)
         {
-            this.aggregateCache = aggregateCache;
+            this.aggregateCacheAD = aggregateCache;
+            this.aggregateCacheCD = aggregateCacheCD;
+            this.aggregateCacheAM = aggregateCacheAM;
+            this.aggregateCacheCM = aggregateCacheCM;
             this.applicationContext = applicationContext;
         }
         public async Task<(DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)> GetAggregateCorporation(DateTime dateTime)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)? aggregate = aggregateCache.GetAggregateCorporation(dateTime);
+            (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)? aggregate = aggregateCacheCD.GetAggregateCorporation(dateTime);
 
             if (aggregate.Value.dailyAggregateCorporation is not null)
             {
                 if (aggregate.Value.lastPulled < DateTime.UtcNow.AddMinutes(-5))
                 {
                     (DateTime Date, DateTime UtcNow, List<DailyAggregateCorporation> lists) newAggregate = await GetDACFromDatabase(dateTime);
-                    aggregateCache.Update(newAggregate);
+                    aggregateCacheCD.Update(newAggregate);
                     return newAggregate;
                 }
                 else
@@ -42,20 +48,20 @@ namespace WHTracker.Services
             else
             {
                 (DateTime Date, DateTime UtcNow, List<DailyAggregateCorporation> lists) newAggregate = await GetDACFromDatabase(dateTime);
-                aggregateCache.Add(newAggregate);
+                aggregateCacheCD.Add(newAggregate);
                 return newAggregate;
             }
         }
         public async Task<(DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateAlliance> dailyAggregateAlliances)> GetAggregateAlliance(DateTime dateTime)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateAlliance> dailyAggregateAlliances)? aggregate = aggregateCache.GetAggregateAlliance(dateTime);
+            (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateAlliance> dailyAggregateAlliances)? aggregate = aggregateCacheAD.GetAggregateCorporation(dateTime);
 
             if (aggregate.Value.dailyAggregateAlliances is not null)
             {
                 if (aggregate.Value.lastPulled < DateTime.UtcNow.AddMinutes(-5))
                 {
                     (DateTime Date, DateTime UtcNow, List<DailyAggregateAlliance> lists) newAggregate = await GetDAAFromDatabase(dateTime);
-                    aggregateCache.Update(newAggregate);
+                    aggregateCacheAD.Update(newAggregate);
                     return newAggregate;
                 }
                 else
@@ -66,7 +72,7 @@ namespace WHTracker.Services
             else
             {
                 (DateTime Date, DateTime UtcNow, List<DailyAggregateAlliance> lists) newAggregate = await GetDAAFromDatabase(dateTime);
-                aggregateCache.Add(newAggregate);
+                aggregateCacheAD.Add(newAggregate);
                 return newAggregate;
             }
         }
