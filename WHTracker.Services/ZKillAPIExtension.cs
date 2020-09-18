@@ -1,11 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 using Polly;
 
 using System;
-
-using WHTracker.Options;
 
 namespace WHTracker.Services
 {

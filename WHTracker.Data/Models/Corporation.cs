@@ -6,9 +6,9 @@ namespace WHTracker.Data.Models
 {
     public class Corporation
     {
-        public int CorporationId { get; set; }
-        public string CorporationName { get; set; }
-        public string CorporationTicker { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Ticker { get; set; }
         public int MemberCount { get; set; }
         public DateTime LastUpdated { get; set; }
         [JsonIgnore]

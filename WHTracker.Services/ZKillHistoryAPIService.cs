@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+
 using WHTracker.Options;
 
 namespace WHTracker.Services

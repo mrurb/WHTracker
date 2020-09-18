@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+
 using WHTracker.Options;
 using WHTracker.Services.Cache;
 using WHTracker.Services.Models;
@@ -83,7 +84,7 @@ namespace WHTracker.Services
         {
             IEnumerable<int> corps = await GetAllianceCorporations(allianceId);
             int members = 0;
-            foreach(var corp in corps)
+            foreach (var corp in corps)
             {
                 var corpData = await GetCorporation(corp);
                 members += corpData.MemberCount;

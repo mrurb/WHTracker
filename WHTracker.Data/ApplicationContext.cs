@@ -64,15 +64,15 @@ namespace WHTracker.Data
                 .HasForeignKey(s => s.CorporationID);
 
             builder.Entity<Corporation>()
-                .HasKey(k => k.CorporationId);
+                .HasKey(k => k.Id);
             builder.Entity<Corporation>()
-                .Property(k => k.CorporationId)
+                .Property(k => k.Id)
                 .ValueGeneratedNever();
 
             builder.Entity<Alliance>()
-                .HasKey(k => k.AllianceId);
+                .HasKey(k => k.Id);
             builder.Entity<Alliance>()
-                .Property(k => k.AllianceId)
+                .Property(k => k.Id)
                 .ValueGeneratedNever();
 
         }

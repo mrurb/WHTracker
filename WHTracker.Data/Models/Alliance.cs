@@ -5,9 +5,9 @@ namespace WHTracker.Data.Models
 {
     public class Alliance
     {
-        public int AllianceId { get; set; }
-        public string AllianceName { get; set; }
-        public string AllianceTicker { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Ticker { get; set; }
         public int MemberCount { get; set; }
         public DateTime LastUpdated { get; set; }
         [System.Text.Json.Serialization.JsonIgnore]

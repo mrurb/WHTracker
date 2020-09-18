@@ -81,7 +81,7 @@
                 "lengthMenu": [10,20 , 30, 60, 120],
                 pageLength: 30,
                 ajax: "/api/Aggregate/corporation/day/@DateTime.UtcNow.ToString("yyyy-MM-dd")",
-                "order": [[3, "desc"]],
+                "order": [[4, "desc"]],
                 columns: [
                     {
                         "className": 'details-control',
@@ -93,9 +93,9 @@
                         render: function (data, type, row) {
                             var catype = $("#CAType").val() == "Corporation" ? "corporations" : "alliances";
                             var zkcatype = $("#CAType").val() == "Corporation" ? "corporation" : "alliance";
-                            var caid = $("#CAType").val() == "Corporation" ? row.corporationID : row.allianceId;
-                            var caname = $("#CAType").val() == "Corporation" ? row.corporation.corporationName : row.alliance.allianceName;
-                            return '<a href="https://zkillboard.com/' + zkcatype + '/' + caid + '/" target="_Blank"><img height="24px" src="https://images.evetech.net/' + catype + '/' + caid + '/logo?size=32"/> ' + caname + '</a>';
+                            var ca = $("#CAType").val() == "Corporation" ? row.corporation : row.alliance;
+                            console.log(ca);
+                            return '<a href="https://zkillboard.com/' + zkcatype + '/' + ca.id + '/" target="_Blank"><img height="24px" src="https://images.evetech.net/' + catype + '/' + ca.id + '/logo?size=32"/> ' + ca.name + '</a>';
                         },
                     },
                     { "data": "killsTotal" },
@@ -134,7 +134,7 @@
                 }
                 else {
                     // Open this row
-                    row.child(format(row.data())).show();
+                    row.child(template("ChildTemplate",row.data())).show();
                     tr.addClass('shown');
                 }
             });
@@ -157,24 +157,23 @@
             })
         });
 
-        function format(d) {
-            // `d` is the original data object for the row
-            return '<table cellpadding="5" cellspacing="0" border="0" style="margin-left:34px;">' +
-                '<tr>' +
-                '<td>Full name:</td>' +
-                '<td>' + d.corporation.corporationName + '</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>Ticker:</td>' +
-                '<td>' + d.corporation.corporationTicker + '</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>Extra info:</td>' +
-                '<td></td>' +
-                '</tr>' +
-                '</table>';
-        }
+        function template(templateid, data) {
+            return document.getElementById(templateid).innerHTML
+                .replace(
+                    /{(\w.*)}/g, // or /{(\w*)}/g for "{this} instead of %this%"
+                    function (m, key) {
+                        var keys = key.split(".");
+                        if (keys.length > 1) {
+                            if (keys[0] == "corporation" || keys[0] == "alliance") {
+                                keys[0] = $("#CAType").val() == "Corporation" ? "corporation" : "alliance";
+                            }
+                            return data.hasOwnProperty(keys[0]) ? data[keys[0]][keys[1]] : ""
+                        }
 
+                        return data.hasOwnProperty(key) ? data[key] : "";
+                    }
+                );
+        }
 
         function getDay() {
             var date = new Date();
@@ -196,6 +195,140 @@
         }
 
     </script>
+    <template id="ChildTemplate">
+        <table  style="margin-left:34px;display:inline;">
+            <tr>
+                <td>Name</td>
+                <td>{corporation.name}</td>
+
+            </tr>
+            <tr>
+                <td>Ticker:</td>
+                <td>{corporation.ticker}</td>
+            </tr>
+            <tr>
+                <td>Member count:</td>
+                <td>{corporation.memberCount}</td>
+            </tr>
+        </table>
+        <table style="margin-left:34px;display:inline;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Kills</th>
+                    <th>Losses</th>
+                    <th>ISk Killed</th>
+                    <th>ISK Lost</th>
+                    <th>Damage dealt</th>
+                    <th>Damage taken</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>total:</td>
+                    <td>{killsTotal}</td>
+                    <td>{lossesTotal}</td>
+                    <td>{iskKilledTotal}</td>
+                    <td>{iskLostTotal}</td>
+                    <td>{damageDealtTotal}</td>
+                    <td>{damageTakenTotal}</td>
+                </tr>
+                <tr>
+                    <td>Pod:</td>
+                    <td>{killsPod}</td>
+                    <td>{lossesPod}</td>
+                    <td>{iskKilledPod}</td>
+                    <td>{iskLostPod}</td>
+                    <td>{damageDealtPod}</td>
+                    <td>{damageTakenPod}</td>
+                </tr>
+                <tr>
+                    <td>Sub cap:</td>
+                    <td>{killsSubCap}</td>
+                    <td>{lossesSubCap}</td>
+                    <td>{iskKilledSubCap}</td>
+                    <td>{iskLostSubCap}</td>
+                    <td>{damageDealtSubCap}</td>
+                    <td>{damageTakenSubCap}</td>
+                </tr>
+                <tr>
+                    <td>Capital:</td>
+                    <td>{killsCapital}</td>
+                    <td>{lossesCapital}</td>
+                    <td>{iskKilledCapital}</td>
+                    <td>{iskLostCapital}</td>
+                    <td>{damageDealtCapital}</td>
+                    <td>{damageTakenCapital}</td>
+                </tr>
+                <tr>
+                    <td>Structure:</td>
+                    <td>{killsStructure}</td>
+                    <td>{lossesStructure}</td>
+                    <td>{iskKilledStructure}</td>
+                    <td>{iskLostStructure}</td>
+                    <td>{damageDealtStructure}</td>
+                    <td>{damageTakenStructure}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table style="margin-left:34px;display:inline;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Kills</th>
+                    <th>Losses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Rorqual:</td>
+                    <td>{rorqualKills}</td>
+                    <td>{rorqualLosses}</td>
+                </tr>
+                <tr>
+                    <td>Dread:</td>
+                    <td>{dreadKills}</td>
+                    <td>{dreadLosses}</td>
+                </tr>
+                <tr>
+                    <td>Carrier:</td>
+                    <td>{carrierKills}</td>
+                    <td>{carrierLosses}</td>
+                </tr>
+                <tr>
+                    <td>Faxes:</td>
+                    <td>{faxesKills}</td>
+                    <td>{faxesLosses}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table style="margin-left:34px;display:inline;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Kills</th>
+                    <th>Losses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Medium structure:</td>
+                    <td>{mediumStructureKills}</td>
+                    <td>{mediumStructureLosses}</td>
+                </tr>
+                <tr>
+                    <td>Large structure:</td>
+                    <td>{largeStructureKills}</td>
+                    <td>{largeStructureLosses}</td>
+                </tr>
+                <tr>
+                    <td>XL structure:</td>
+                    <td>{xlStructureKills}</td>
+                    <td>{xlStructureLosses}</td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 }

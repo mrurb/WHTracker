@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+
 using Polly;
+
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 using WHTracker.Services.Cache;
 
 namespace WHTracker.Services

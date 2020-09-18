@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
 using WHTracker.Data;
 using WHTracker.Data.Models;
 using WHTracker.Services.Models;
@@ -36,7 +37,7 @@ namespace WHTracker.Services
 
         public async Task<DailyAggregateCorporation> GetOrCreateDailyAggregateCorporation(int corporationId, DateTime date)
         {
-            Data.Models.Corporation corp = await context.Corporations.FirstOrDefaultAsync(x => x.CorporationId == corporationId);
+            Data.Models.Corporation corp = await context.Corporations.FirstOrDefaultAsync(x => x.Id == corporationId);
             corp = await GetOrCreateCorporation(corporationId, corp);
 
             DailyAggregateCorporation aggregate = await GetDailyAggregateCorporation(corporationId, date);
@@ -55,7 +56,7 @@ namespace WHTracker.Services
         public async Task<MonthlyAggregateCorporation> GetOrCreateMonthlyAggregateCorporation(int corporationId, DateTime date)
         {
             var dateMonth = new DateTime(date.Year, date.Month, 1);
-            Data.Models.Corporation corp = await context.Corporations.FirstOrDefaultAsync(x => x.CorporationId == corporationId);
+            Data.Models.Corporation corp = await context.Corporations.FirstOrDefaultAsync(x => x.Id == corporationId);
             corp = await GetOrCreateCorporation(corporationId, corp);
 
             MonthlyAggregateCorporation aggregate = await GetMonthlyAggregateCorporation(corporationId, dateMonth);
@@ -78,9 +79,9 @@ namespace WHTracker.Services
                 var corpdata = await eSIService.GetCorporation(corporationId);
 
                 corp = new Data.Models.Corporation();
-                corp.CorporationId = corporationId;
-                corp.CorporationName = corpdata.Name;
-                corp.CorporationTicker = corpdata.Ticker;
+                corp.Id = corporationId;
+                corp.Name = corpdata.Name;
+                corp.Ticker = corpdata.Ticker;
                 corp.MemberCount = corpdata.MemberCount;
                 corp.LastUpdated = DateTime.UtcNow;
 
@@ -89,8 +90,8 @@ namespace WHTracker.Services
             else if (corp.LastUpdated < DateTime.UtcNow.AddHours(-24))
             {
                 var corpdata = await eSIService.GetCorporation(corporationId);
-                corp.CorporationName = corpdata.Name;
-                corp.CorporationTicker = corpdata.Ticker;
+                corp.Name = corpdata.Name;
+                corp.Ticker = corpdata.Ticker;
                 corp.MemberCount = corpdata.MemberCount;
                 corp.LastUpdated = DateTime.UtcNow;
             }
@@ -110,7 +111,7 @@ namespace WHTracker.Services
 
         public async Task<DailyAggregateAlliance> GetOrCreateDailyAggregateAlliance(int allianceId, DateTime date)
         {
-            Data.Models.Alliance alliance = await context.Alliances.FirstOrDefaultAsync(x => x.AllianceId == allianceId);
+            Data.Models.Alliance alliance = await context.Alliances.FirstOrDefaultAsync(x => x.Id == allianceId);
             alliance = await GetOrCreateAlliance(allianceId, alliance);
 
             DailyAggregateAlliance aggregate = await GetDailyAggregateAlliance(allianceId, date);
@@ -128,7 +129,7 @@ namespace WHTracker.Services
         public async Task<MonthlyAggregateAlliance> GetOrCreateMonthlyAggregateAlliance(int allianceId, DateTime date)
         {
             var dateMonth = new DateTime(date.Year, date.Month, 1);
-            Data.Models.Alliance alliance = await context.Alliances.FirstOrDefaultAsync(x => x.AllianceId == allianceId);
+            Data.Models.Alliance alliance = await context.Alliances.FirstOrDefaultAsync(x => x.Id == allianceId);
             alliance = await GetOrCreateAlliance(allianceId, alliance);
 
             MonthlyAggregateAlliance aggregate = await GetMonthlyAggregateAlliance(allianceId, dateMonth);
@@ -151,9 +152,9 @@ namespace WHTracker.Services
                 var alliancedata = await eSIService.GetAlliance(allianceId);
 
                 alliance = new Data.Models.Alliance();
-                alliance.AllianceId = allianceId;
-                alliance.AllianceName = alliancedata.Name;
-                alliance.AllianceTicker = alliancedata.Ticker;
+                alliance.Id = allianceId;
+                alliance.Name = alliancedata.Name;
+                alliance.Ticker = alliancedata.Ticker;
                 alliance.MemberCount = await eSIService.GetAllianceMemberCount(allianceId);
                 alliance.LastUpdated = DateTime.UtcNow;
 
@@ -162,8 +163,8 @@ namespace WHTracker.Services
             else if (alliance.LastUpdated < DateTime.UtcNow.AddHours(-24))
             {
                 var alliancedata = await eSIService.GetAlliance(allianceId);
-                alliance.AllianceName = alliancedata.Name;
-                alliance.AllianceTicker = alliancedata.Ticker;
+                alliance.Name = alliancedata.Name;
+                alliance.Ticker = alliancedata.Ticker;
                 alliance.MemberCount = await eSIService.GetAllianceMemberCount(allianceId);
                 alliance.LastUpdated = DateTime.UtcNow;
             }
@@ -185,7 +186,7 @@ namespace WHTracker.Services
                 EveType victimType = await eSIService.GetEveType(killmail.victim.ShipTypeId);
 
                 // Process Victim
-                if(killmail.victim.CorporationId != null)
+                if (killmail.victim.CorporationId != null)
                 {
                     _logger.LogInformation("Loss for corp: {0}", killmail.victim.CorporationId);
                     DailyAggregateCorporation victimAggregate = await GetOrCreateDailyAggregateCorporation(killmail.victim.CorporationId.Value, killmail.KillmailTime.Date);

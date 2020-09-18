@@ -1,17 +1,15 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 using WHTracker.Data;
 using WHTracker.Services.Models;
-using WHTracker.Data.Models;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace WHTracker.Services.Workers
 {
@@ -66,7 +64,7 @@ namespace WHTracker.Services.Workers
                         scope.ServiceProvider
                             .GetRequiredService<AggregateService>();
                     lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
-                    
+
                     foreach (var killmail in lists)
                     {
                         await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);

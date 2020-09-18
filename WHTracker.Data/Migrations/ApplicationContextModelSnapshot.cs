@@ -19,14 +19,8 @@ namespace WHTracker.Data.Migrations
 
             modelBuilder.Entity("WHTracker.Data.Models.Alliance", b =>
                 {
-                    b.Property<int>("AllianceId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
-
-                    b.Property<string>("AllianceName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("AllianceTicker")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime(6)");
@@ -34,21 +28,21 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("MemberCount")
                         .HasColumnType("int");
 
-                    b.HasKey("AllianceId");
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Ticker")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Alliances");
                 });
 
             modelBuilder.Entity("WHTracker.Data.Models.Corporation", b =>
                 {
-                    b.Property<int>("CorporationId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
-
-                    b.Property<string>("CorporationName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("CorporationTicker")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime(6)");
@@ -56,7 +50,13 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("MemberCount")
                         .HasColumnType("int");
 
-                    b.HasKey("CorporationId");
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Ticker")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Corporations");
                 });
