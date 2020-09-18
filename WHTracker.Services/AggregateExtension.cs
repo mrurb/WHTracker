@@ -8,6 +8,7 @@ namespace WHTracker.Services
         {
 
             services.AddScoped<AggregateService>();
+            services.AddScoped<AggregateReposetory>();
 
             return services;
         }
