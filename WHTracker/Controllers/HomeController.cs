@@ -14,16 +14,12 @@ namespace WHTracker.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly AggregateReposetory aggregateCacheManagerService;
 
-        public HomeController(ILogger<HomeController> logger, AggregateReposetory aggregateCacheManagerService)
+        public HomeController( )
         {
-            _logger = logger;
-            this.aggregateCacheManagerService = aggregateCacheManagerService;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public IActionResult Index()
         {
             return View();
         }

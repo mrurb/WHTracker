@@ -26,7 +26,7 @@ namespace WHTracker.Services
 
         public List<DailyAggregateCorporation> GetDACFromDatabaseAsync(DateTime dateTime)
         {
-            List<DailyAggregateCorporation> lists = applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.corporation).FromCache(MemoryCacheEntryOptions, Tag.Daily.ToString()).ToList();
+            List<DailyAggregateCorporation> lists = applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Corporation).FromCache(MemoryCacheEntryOptions, Tag.Daily.ToString()).ToList();
             return lists;
         }
         public List<DailyAggregateAlliance> GetDAAFromDatabaseAsync(DateTime dateTime)

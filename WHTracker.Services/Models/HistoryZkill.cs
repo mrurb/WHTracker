@@ -8,15 +8,11 @@ namespace WHTracker.Services.Models
     {
         public DateTime Date { get; set; }
 
-        public ICollection<KillmailHash> KillmailHashes { get; set; }
+        public ICollection<KillmailHash>? KillmailHashes { get; set; }
     }
 
     public class KillmailHash
     {
-        public KillmailHash()
-        {
-
-        }
 
         public KillmailHash(int killId, string killHash)
         {
@@ -28,6 +24,6 @@ namespace WHTracker.Services.Models
         public int KillId { get; set; }
 
         // Eve KillHash
-        public string KillHash { get; set; }
+        public string? KillHash { get; set; }
     }
 }

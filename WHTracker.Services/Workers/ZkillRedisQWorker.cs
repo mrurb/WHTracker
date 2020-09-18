@@ -55,28 +55,25 @@ namespace WHTracker.Services.Workers
             List<RedisQZkill> lists;
             if (killmails.Any())
             {
-                using (var scope = services.CreateScope())
+                using var scope = services.CreateScope();
+                var context =
+                    scope.ServiceProvider
+                        .GetRequiredService<ApplicationContext>();
+                var aggregateService =
+                    scope.ServiceProvider
+                        .GetRequiredService<AggregateService>();
+                lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
+
+                foreach (var killmail in lists)
                 {
-                    var context =
-                        scope.ServiceProvider
-                            .GetRequiredService<ApplicationContext>();
-                    var aggregateService =
-                        scope.ServiceProvider
-                            .GetRequiredService<AggregateService>();
-                    lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
-
-                    foreach (var killmail in lists)
+                    await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);
+                    if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
                     {
-                        await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);
-                        if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
-                        {
-                            _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
-                        }
-                        else
-                        {
-                            _logger.LogDebug("kspace {0}", killmail.Package?.KillId);
-
-                        }
+                        _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
+                    }
+                    else
+                    {
+                        _logger.LogDebug("kspace {0}", killmail.Package?.KillId);
 
                     }
 

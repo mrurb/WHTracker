@@ -43,10 +43,11 @@ namespace WHTracker.Services
             DailyAggregateCorporation aggregate = await GetDailyAggregateCorporation(corporationId, date);
             if (aggregate == null)
             {
-                aggregate = new DailyAggregateCorporation();
-
-                aggregate.CorporationID = corporationId;
-                aggregate.TimeStamp = date;
+                aggregate = new DailyAggregateCorporation
+                {
+                    CorporationID = corporationId,
+                    TimeStamp = date
+                };
 
                 context.Attach(aggregate);
             }
@@ -62,10 +63,11 @@ namespace WHTracker.Services
             MonthlyAggregateCorporation aggregate = await GetMonthlyAggregateCorporation(corporationId, dateMonth);
             if (aggregate == null)
             {
-                aggregate = new MonthlyAggregateCorporation();
-
-                aggregate.CorporationID = corporationId;
-                aggregate.TimeStamp = date;
+                aggregate = new MonthlyAggregateCorporation
+                {
+                    CorporationID = corporationId,
+                    TimeStamp = date
+                };
 
                 context.Attach(aggregate);
             }
@@ -78,12 +80,14 @@ namespace WHTracker.Services
             {
                 var corpdata = await eSIService.GetCorporation(corporationId);
 
-                corp = new Data.Models.Corporation();
-                corp.Id = corporationId;
-                corp.Name = corpdata.Name;
-                corp.Ticker = corpdata.Ticker;
-                corp.MemberCount = corpdata.MemberCount;
-                corp.LastUpdated = DateTime.UtcNow;
+                corp = new Data.Models.Corporation
+                {
+                    Id = corporationId,
+                    Name = corpdata.Name,
+                    Ticker = corpdata.Ticker,
+                    MemberCount = corpdata.MemberCount,
+                    LastUpdated = DateTime.UtcNow
+                };
 
                 await context.AddAsync(corp);
             }
@@ -117,10 +121,11 @@ namespace WHTracker.Services
             DailyAggregateAlliance aggregate = await GetDailyAggregateAlliance(allianceId, date);
             if (aggregate == null)
             {
-                aggregate = new DailyAggregateAlliance();
-
-                aggregate.AllianceId = allianceId;
-                aggregate.TimeStamp = date;
+                aggregate = new DailyAggregateAlliance
+                {
+                    AllianceId = allianceId,
+                    TimeStamp = date
+                };
 
                 context.Attach(aggregate);
             }
@@ -135,10 +140,11 @@ namespace WHTracker.Services
             MonthlyAggregateAlliance aggregate = await GetMonthlyAggregateAlliance(allianceId, dateMonth);
             if (aggregate == null)
             {
-                aggregate = new MonthlyAggregateAlliance();
-
-                aggregate.AllianceId = allianceId;
-                aggregate.TimeStamp = date;
+                aggregate = new MonthlyAggregateAlliance
+                {
+                    AllianceId = allianceId,
+                    TimeStamp = date
+                };
 
                 context.Attach(aggregate);
             }
@@ -151,12 +157,14 @@ namespace WHTracker.Services
             {
                 var alliancedata = await eSIService.GetAlliance(allianceId);
 
-                alliance = new Data.Models.Alliance();
-                alliance.Id = allianceId;
-                alliance.Name = alliancedata.Name;
-                alliance.Ticker = alliancedata.Ticker;
-                alliance.MemberCount = await eSIService.GetAllianceMemberCount(allianceId);
-                alliance.LastUpdated = DateTime.UtcNow;
+                alliance = new Data.Models.Alliance
+                {
+                    Id = allianceId,
+                    Name = alliancedata.Name,
+                    Ticker = alliancedata.Ticker,
+                    MemberCount = await eSIService.GetAllianceMemberCount(allianceId),
+                    LastUpdated = DateTime.UtcNow
+                };
 
                 await context.AddAsync(alliance);
             }
@@ -183,32 +191,32 @@ namespace WHTracker.Services
             // Check wormmhole kill
             if (IsWormholeKill(killmail))
             {
-                EveType victimType = await eSIService.GetEveType(killmail.victim.ShipTypeId);
+                EveType victimType = await eSIService.GetEveType(killmail.Victim.ShipTypeId);
 
                 // Process Victim
-                if (killmail.victim.CorporationId != null)
+                if (killmail.Victim.CorporationId != null)
                 {
-                    _logger.LogInformation("Loss for corp: {0}", killmail.victim.CorporationId);
-                    DailyAggregateCorporation victimAggregate = await GetOrCreateDailyAggregateCorporation(killmail.victim.CorporationId.Value, killmail.KillmailTime.Date);
+                    _logger.LogInformation("Loss for corp: {0}", killmail.Victim.CorporationId);
+                    DailyAggregateCorporation victimAggregate = await GetOrCreateDailyAggregateCorporation(killmail.Victim.CorporationId.Value, killmail.KillmailTime.Date);
                     //MonthlyAggregateCorporation victimAggregateMonthly = await GetOrCreateMonthlyAggregateCorporation(killmail.victim.CorporationId.Value, killmail.KillmailTime.Date);
-                    IncrementAggregate(victimAggregate, victimType, value, killmail.victim.DamageTaken, false);
+                    IncrementAggregate(victimAggregate, victimType, value, killmail.Victim.DamageTaken, false);
                     //IncrementAggregate(victimAggregateMonthly, victimType, value, killmail.victim.DamageTaken, false);
                 }
 
-                if (killmail.victim.AllianceId != null)
+                if (killmail.Victim.AllianceId != null)
                 {
-                    DailyAggregateAlliance victimAggregate = await GetOrCreateDailyAggregateAlliance(killmail.victim.AllianceId.Value, killmail.KillmailTime.Date);
+                    DailyAggregateAlliance victimAggregate = await GetOrCreateDailyAggregateAlliance(killmail.Victim.AllianceId.Value, killmail.KillmailTime.Date);
                     //MonthlyAggregateAlliance victimAggregateMonthly = await GetOrCreateMonthlyAggregateAlliance(killmail.victim.AllianceId.Value, killmail.KillmailTime.Date);
-                    IncrementAggregate(victimAggregate, victimType, value, killmail.victim.DamageTaken, false);
+                    IncrementAggregate(victimAggregate, victimType, value, killmail.Victim.DamageTaken, false);
                     //IncrementAggregate(victimAggregateMonthly, victimType, value, killmail.victim.DamageTaken, false);
                 }
 
 
                 // Process Attackers
-                var attackerCorporations = killmail.Attackers.Where(a => a.CorporationId != null && a.CorporationId != killmail.victim.CorporationId).Select(a => a.CorporationId.Value).Distinct();
+                var attackerCorporations = killmail.Attackers.Where(a => a.CorporationId != null && a.CorporationId != killmail.Victim.CorporationId).Select(a => a.CorporationId.Value).Distinct();
                 foreach (var corporation in attackerCorporations)
                 {
-                    _logger.LogInformation("Kill for corp: {0}", killmail.victim.CorporationId);
+                    _logger.LogInformation("Kill for corp: {0}", killmail.Victim.CorporationId);
                     DailyAggregateCorporation attackerAggregate = await GetOrCreateDailyAggregateCorporation(corporation, killmail.KillmailTime.Date);
                     //MonthlyAggregateCorporation monthlyAggregateCorporation = await GetOrCreateMonthlyAggregateCorporation(corporation, killmail.KillmailTime.Date);
                     IncrementAggregate(attackerAggregate, victimType, value, killmail.Attackers.Where(a => a.CorporationId == corporation).Sum(a => a.DamageDone), true);
@@ -216,7 +224,7 @@ namespace WHTracker.Services
                 }
 
 
-                var attackerAlliances = killmail.Attackers.Where(a => a.AllianceId != null && a.AllianceId != killmail.victim.AllianceId).Select(a => a.AllianceId.Value).Distinct();
+                var attackerAlliances = killmail.Attackers.Where(a => a.AllianceId != null && a.AllianceId != killmail.Victim.AllianceId).Select(a => a.AllianceId.Value).Distinct();
                 foreach (var alliance in attackerAlliances)
                 {
                     DailyAggregateAlliance attackerAggregate = await GetOrCreateDailyAggregateAlliance(alliance, killmail.KillmailTime.Date);

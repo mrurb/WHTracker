@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
+#nullable disable
 namespace WHTracker.Services.Models
 {
     //RedisQZkill
     public class RedisQZkill
     {
         [JsonPropertyName("package")]
-        public Package? Package { get; set; }
+        public Package Package { get; set; }
     }
 
     public class Package
@@ -42,7 +43,7 @@ namespace WHTracker.Services.Models
         public int SolarSystemId { get; set; }
 
         [JsonPropertyName("victim")]
-        public Victim victim { get; set; }
+        public Victim Victim { get; set; }
 
         [JsonPropertyName("war_id")]
         public int? WarId { get; set; }
@@ -66,10 +67,10 @@ namespace WHTracker.Services.Models
         public int? FactionId { get; set; }
 
         [JsonPropertyName("items")]
-        public IEnumerable<Item>? Items { get; set; }
+        public IEnumerable<Item> Items { get; set; }
 
         [JsonPropertyName("position")]
-        public Position? Position { get; set; }
+        public Position Position { get; set; }
 
         [JsonPropertyName("ship_type_id")]
         public int ShipTypeId { get; set; }
@@ -98,7 +99,7 @@ namespace WHTracker.Services.Models
         public int ItemTypeId { get; set; }
 
         [JsonPropertyName("items")]
-        public IEnumerable<Item>? Items { get; set; }
+        public IEnumerable<Item> Items { get; set; }
 
         [JsonPropertyName("quantity_destroyed")]
         public int? QuantityDestroyed { get; set; }

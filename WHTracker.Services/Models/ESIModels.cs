@@ -10,13 +10,13 @@ namespace WHTracker.Services.Models
         public int ConstellationId { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("planets")]
         public IEnumerable<Planet>? Planets { get; set; }
 
         [JsonPropertyName("position")]
-        public Position Position { get; set; }
+        public Position? Position { get; set; }
 
         [JsonPropertyName("security_class")]
         public string? SecurityClass { get; set; }
@@ -77,7 +77,7 @@ namespace WHTracker.Services.Models
         public int MemberCount { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("shares")]
         public long? Shares { get; set; }
@@ -86,7 +86,7 @@ namespace WHTracker.Services.Models
         public float TaxRate { get; set; }
 
         [JsonPropertyName("ticker")]
-        public string Ticker { get; set; }
+        public string? Ticker { get; set; }
 
         [JsonPropertyName("url")]
         public string? Url { get; set; }
@@ -113,10 +113,10 @@ namespace WHTracker.Services.Models
         public int? FactionId { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("ticker")]
-        public string Ticker { get; set; }
+        public string? Ticker { get; set; }
     }
 
 
@@ -126,7 +126,7 @@ namespace WHTracker.Services.Models
         public float? Capacity { get; set; }
 
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonPropertyName("dogma_attributes")]
         public IEnumerable<DogmaAttributes>? DogmaAttributes { get; set; }
@@ -150,7 +150,7 @@ namespace WHTracker.Services.Models
         public float? Mass { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("packaged_volume")]
         public float? PackagedVolume { get; set; }

@@ -30,7 +30,7 @@ namespace WHTracker.Services
 
         public async Task<Dictionary<int, string>> GetHistoryData(DateTime date)
         {
-            string requestUri = $"/api/history/{date.ToString("yyyyMMdd")}.json";
+            string requestUri = $"/api/history/{date:yyyyMMdd}.json";
             HttpResponseMessage response = await client.GetAsync(requestUri);
 
             response.EnsureSuccessStatusCode();

@@ -9,7 +9,7 @@ namespace WHTracker.Data.Models
     {
         public int DailyAggregateCorporationId { get; set; }
         public int CorporationID { get; set; }
-        public virtual Corporation corporation { get; set; }
+        public virtual Corporation Corporation { get; set; }
     }
 
 
