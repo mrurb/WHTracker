@@ -25,4 +25,13 @@
     <ProjectReference Include="..\WHTracker.Services\WHTracker.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\rem.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

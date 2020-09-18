@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 using System;
 using System.Collections.Generic;
@@ -9,90 +10,52 @@ using System.Threading.Tasks;
 using WHTracker.Data;
 using WHTracker.Data.Models;
 using WHTracker.Services.Cache;
+using Z.EntityFramework.Plus;
 
 namespace WHTracker.Services
 {
-    public class AggregateCacheManagerService
+    public class AggregateReposetory
     {
-        private readonly AggregateCache<DailyAggregateAlliance> aggregateCacheAD;
-        private readonly AggregateCache<DailyAggregateCorporation> aggregateCacheCD;
-        private readonly AggregateCache<MonthlyAggregateAlliance> aggregateCacheAM;
-        private readonly AggregateCache<MonthlyAggregateCorporation> aggregateCacheCM;
         private readonly ApplicationContext applicationContext;
 
-        public AggregateCacheManagerService(AggregateCache<DailyAggregateAlliance> aggregateCache, AggregateCache<DailyAggregateCorporation> aggregateCacheCD, AggregateCache<MonthlyAggregateAlliance> aggregateCacheAM, AggregateCache<MonthlyAggregateCorporation> aggregateCacheCM, ApplicationContext applicationContext)
+        private static readonly MemoryCacheEntryOptions MemoryCacheEntryOptions = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(5) };
+
+        public AggregateReposetory(ApplicationContext applicationContext)
         {
-            this.aggregateCacheAD = aggregateCache;
-            this.aggregateCacheCD = aggregateCacheCD;
-            this.aggregateCacheAM = aggregateCacheAM;
-            this.aggregateCacheCM = aggregateCacheCM;
             this.applicationContext = applicationContext;
+            QueryCacheManager.DefaultMemoryCacheEntryOptions = MemoryCacheEntryOptions;
         }
-        public async Task<(DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)> GetAggregateCorporation(DateTime dateTime)
+
+        public List<DailyAggregateCorporation> GetDACFromDatabaseAsync(DateTime dateTime)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateCorporation> dailyAggregateCorporation)? aggregate = aggregateCacheCD.GetAggregateCorporation(dateTime);
-
-            if (aggregate.Value.dailyAggregateCorporation is not null)
-            {
-                if (aggregate.Value.lastPulled < DateTime.UtcNow.AddMinutes(-5))
-                {
-                    (DateTime Date, DateTime UtcNow, List<DailyAggregateCorporation> lists) newAggregate = await GetDACFromDatabase(dateTime);
-                    aggregateCacheCD.Update(newAggregate);
-                    return newAggregate;
-                }
-                else
-                {
-                    return aggregate.Value;
-                }
-            }
-            else
-            {
-                (DateTime Date, DateTime UtcNow, List<DailyAggregateCorporation> lists) newAggregate = await GetDACFromDatabase(dateTime);
-                aggregateCacheCD.Add(newAggregate);
-                return newAggregate;
-            }
+            List<DailyAggregateCorporation> lists = applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.corporation).FromCache(MemoryCacheEntryOptions, Tag.Daily.ToString()).ToList();
+            return lists;
         }
-        public async Task<(DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateAlliance> dailyAggregateAlliances)> GetAggregateAlliance(DateTime dateTime)
+        public List<DailyAggregateAlliance> GetDAAFromDatabaseAsync(DateTime dateTime)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<DailyAggregateAlliance> dailyAggregateAlliances)? aggregate = aggregateCacheAD.GetAggregateCorporation(dateTime);
-
-            if (aggregate.Value.dailyAggregateAlliances is not null)
-            {
-                if (aggregate.Value.lastPulled < DateTime.UtcNow.AddMinutes(-5))
-                {
-                    (DateTime Date, DateTime UtcNow, List<DailyAggregateAlliance> lists) newAggregate = await GetDAAFromDatabase(dateTime);
-                    aggregateCacheAD.Update(newAggregate);
-                    return newAggregate;
-                }
-                else
-                {
-                    return aggregate.Value;
-                }
-            }
-            else
-            {
-                (DateTime Date, DateTime UtcNow, List<DailyAggregateAlliance> lists) newAggregate = await GetDAAFromDatabase(dateTime);
-                aggregateCacheAD.Add(newAggregate);
-                return newAggregate;
-            }
+            List<DailyAggregateAlliance> lists = applicationContext.DailyAggregateAlliances.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Alliance).FromCache(Tag.Daily.ToString()).ToList();
+            return lists;
         }
 
-        private async Task<(DateTime Date, DateTime UtcNow, List<DailyAggregateCorporation> lists)> GetDACFromDatabase(DateTime dateTime)
+        public List<MonthlyAggregateCorporation> GetMACFromDatabaseAsync(DateTime dateTime)
         {
-            List<DailyAggregateCorporation> lists = await applicationContext.DailyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.corporation).ToListAsync();
-            var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
-            return newAggregate;
+            List<MonthlyAggregateCorporation> lists = applicationContext.MonthlyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.corporation).FromCache(Tag.Monthly.ToString()).ToList();
+            return lists;
         }
-        private async Task<(DateTime Date, DateTime UtcNow, List<DailyAggregateAlliance> lists)> GetDAAFromDatabase(DateTime dateTime)
+        public List<MonthlyAggregateAlliance> GetMAAFromDatabaseAsync(DateTime dateTime)
         {
-            List<DailyAggregateAlliance> lists = await applicationContext.DailyAggregateAlliances.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Alliance).ToListAsync();
-            var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
-           //await GetMACFromDatabase(dateTime);
-            return newAggregate;
+            List<MonthlyAggregateAlliance> lists = applicationContext.MonthlyAggregateAlliances.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Alliance).FromCache(Tag.Monthly.ToString()).ToList();
+            return lists;
+        }
+
+        enum Tag
+        {
+            Daily,
+            Monthly
         }
 
 
-        private async Task GetMACFromDatabase(DateTime dateTime)
+        /*private async Task GetMACFromDatabase(DateTime dateTime)
         {
                 var queryables = await applicationContext.DailyAggregateCorporations
                     .Where(c => c.TimeStamp.Month == dateTime.Month)
@@ -156,6 +119,6 @@ namespace WHTracker.Services
                 //var newAggregate = (dateTime.Date, DateTime.UtcNow, lists);
                 //return newAggregate;.Include(c => c.corporation)
     
-        }
+        }*/
     }
 }

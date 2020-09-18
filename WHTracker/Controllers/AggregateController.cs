@@ -16,51 +16,49 @@ namespace WHTracker.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ResponseCache(Duration = 300, VaryByQueryKeys = new string[] { "date" })]
     public class AggregateController : ControllerBase
     {
-        private readonly AggregateCacheManagerService aggregateCacheManagerService;
+        private readonly AggregateReposetory aggregateCacheManagerService;
 
-        public AggregateController(AggregateCacheManagerService aggregateCacheManagerService)
+        public AggregateController(AggregateReposetory aggregateCacheManagerService)
         {
             this.aggregateCacheManagerService = aggregateCacheManagerService;
         }
 
         // GET: api/<ValuesController1>
         [HttpGet("Corporation/day/{date}")]
-        public async Task<JsonDataCorporation> GetCorporationDayAsync(DateTime date)
+        public JsonData<DailyAggregateCorporation> GetCorporationDay(DateTime date)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<Data.Models.DailyAggregateCorporation> dailyAggregateCorporation) p = await aggregateCacheManagerService.GetAggregateCorporation(date);
+            var p = aggregateCacheManagerService.GetDACFromDatabaseAsync(date);
     
-            JsonDataCorporation jsonData = new JsonDataCorporation ( p.dailyAggregateCorporation );
+            JsonData<DailyAggregateCorporation> jsonData = new JsonData<DailyAggregateCorporation> ( p );
             return jsonData;
 
         }
 
         [HttpGet("Alliance/day/{date}")]
-        public async Task<JsonDataAlliance> GetAllianceDayAsync(DateTime date)
+        public JsonData<DailyAggregateAlliance> GetAllianceDay(DateTime date)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<Data.Models.DailyAggregateAlliance> dailyAggregateAlliances) p = await aggregateCacheManagerService.GetAggregateAlliance(date);
-
-            JsonDataAlliance jsonData = new JsonDataAlliance(p.dailyAggregateAlliances);
+            var p = aggregateCacheManagerService.GetDAAFromDatabaseAsync(date);
+            JsonData<DailyAggregateAlliance> jsonData = new JsonData<DailyAggregateAlliance>(p);
             return jsonData;
 
         }
         [HttpGet("Corporation/month/{date}")]
-        public async Task<JsonDataCorporation> GetCorporationMonthAsync(DateTime date)
+        public JsonData<MonthlyAggregateCorporation> GetCorporationMonth(DateTime date)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<Data.Models.DailyAggregateCorporation> dailyAggregateCorporation) p = await aggregateCacheManagerService.GetAggregateCorporation(date);
-
-            JsonDataCorporation jsonData = new JsonDataCorporation(p.dailyAggregateCorporation);
+            var p = aggregateCacheManagerService.GetMACFromDatabaseAsync(date);
+            JsonData<MonthlyAggregateCorporation> jsonData = new JsonData<MonthlyAggregateCorporation>(p);
             return jsonData;
 
         }
 
         [HttpGet("Alliance/month/{date}")]
-        public async Task<JsonDataAlliance> GetAllainceMonthAsync(DateTime date)
+        public JsonData<MonthlyAggregateAlliance> GetAllainceMonth(DateTime date)
         {
-            (DateTime day, DateTime lastPulled, IEnumerable<Data.Models.DailyAggregateAlliance> dailyAggregateAlliances) p = await aggregateCacheManagerService.GetAggregateAlliance(date);
-
-            JsonDataAlliance jsonData = new JsonDataAlliance(p.dailyAggregateAlliances);
+            var p = aggregateCacheManagerService.GetMAAFromDatabaseAsync(date);
+            JsonData<MonthlyAggregateAlliance> jsonData = new JsonData<MonthlyAggregateAlliance>(p);
             return jsonData;
 
         }

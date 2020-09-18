@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +32,8 @@ namespace WHTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCaching();
+
             services.AddControllersWithViews();
             services.AddZKillRedisQAPI();
             services.AddESIService();
@@ -41,11 +44,7 @@ namespace WHTracker
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddSingleton<AggregateCache<DailyAggregateAlliance>>();
-            services.AddSingleton<AggregateCache<DailyAggregateCorporation>>();
-            services.AddSingleton<AggregateCache<MonthlyAggregateAlliance>>();
-            services.AddSingleton<AggregateCache<MonthlyAggregateCorporation>>();
-            services.AddScoped<AggregateCacheManagerService>();
+            services.AddScoped<AggregateReposetory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +60,22 @@ namespace WHTracker
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseResponseCaching();
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.GetTypedHeaders().CacheControl =
+                    new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                    {
+                        Public = true,
+                        MaxAge = TimeSpan.FromSeconds(10)
+                    };
+                context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
+                    new string[] { "Accept-Encoding" };
+
+                await next();
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
