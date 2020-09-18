@@ -6,16 +6,25 @@
 }
 
 <div class="">
-    <select id="DMPick" >
-        <option value="day">Daily</option>
-        <option value="month">Monthly</option>
-    </select>
-    <input type="date" class="picker" value="@DateTime.UtcNow.ToString("yyyy-MM-dd")" id="date" />
-    <select id="CAType" class="picker">
-        <option>Corporation</option>
-        <option>Alliance</option>
-    </select>
-    <table id="whdata" class="table table-striped table-bordered whdata" style="width:100%">
+    <div class="row">
+        <div class="col-1">
+
+            <select id="DMPick" class="form-control form-control-sm">
+                <option value="day">Daily</option>
+                <option value="month">Monthly</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <input type="date" class="picker form-control form-control-sm" value="@DateTime.UtcNow.ToString("yyyy-MM-dd")" id="date" />
+        </div>
+        <div class="col-1">
+            <select id="CAType" class="picker form-control form-control-sm">
+                <option>Corporation</option>
+                <option>Alliance</option>
+            </select>
+        </div>
+    </div>
+    <table id="whdata" class="table table-dark table-striped table-bordered whdata" style="width:100%">
         <thead>
             <tr>
                 <th>
