@@ -8,7 +8,7 @@ namespace WHTracker.Services.MiscServices
     {
         public LastUpdatedService()
         {
-            Time = DateTime.UtcNow;
+            Time = new DateTime();
         }
 
         public DateTime Time { get; private set; }
