@@ -1,5 +1,16 @@
 ﻿$(document).ready(function () {
 
+    $.fn.dataTable.render.ISK = function () {
+        return function (data, type, row) {
+            if (type === 'display') {
+                return abbreviateNumber(data) + " ISK";
+            }
+
+            // Search, order and type can use the original data
+            return data;
+        };
+    };
+
     var table = $('#whdata').DataTable({
         scrollY: 650,
         scrollY: '69VH',
@@ -63,14 +74,12 @@
             },
             {
                 "data": "iskKilledTotal",
-                render: {
-                    _: $.fn.dataTable.render.number(',', '.', 0, '', ' ISK')
-                },
+                render: $.fn.dataTable.render.ISK(),
                 orderSequence: ["desc", "asc"]
             },
             {
                 "data": "iskLostTotal",
-                render: $.fn.dataTable.render.number(',', '.', 0, '', ' ISK'),
+                render: $.fn.dataTable.render.ISK(),
                 orderSequence: ["desc", "asc"]
             },
             {
@@ -150,28 +159,73 @@
     })
 
 
-
 });
 //End Setup
 
 
+var SI_SYMBOL = ["", "K", "M", "B", "T", "P", "E"];
+
+function abbreviateNumber(number) {
+
+    // what tier? (determines SI symbol)
+    var tier = Math.log10(number) / 3 | 0;
+
+    // if zero, we don't need a suffix
+    if (tier == 0) return number;
+
+    // get suffix and determine scale
+    var suffix = SI_SYMBOL[tier];
+    var scale = Math.pow(10, tier * 3);
+
+    // scale the number
+    var scaled = number / scale;
+
+    // format number and add suffix
+    return scaled.toFixed(1) + suffix;
+}
+
+
+function abbreviateISK(number) {
+    return abbreviateNumber(number) + " ISK";
+}
 
 function template(templateid, data) {
     return document.getElementById(templateid).innerHTML
         .replace(
             /{(\w.*)}/g,
             function (m, key) {
-                var keys = key.split(".");
+                var varible = key.split(",");
+                var keys = varible[0].split(".");
                 if (keys.length > 1) {
                     if (keys[0] == "corporation" || keys[0] == "alliance") {
                         keys[0] = $("#CAType").val() == "Corporation" ? "corporation" : "alliance";
                     }
-                    return data.hasOwnProperty(keys[0]) ? data[keys[0]][keys[1]] : ""
+                    var returnData = data.hasOwnProperty(keys[0]) ? data[keys[0]][keys[1]] : "";
+                    if (varible.length > 1) {
+                        return TemplateFormat(returnData, varible[1]);
+                    }
+                    return returnData
                 }
 
-                return data.hasOwnProperty(key) ? data[key] : "";
+                var returnData = data.hasOwnProperty(varible[0]) ? data[varible[0]] : "";
+                if (varible.length > 1) {
+                    return TemplateFormat(returnData, varible[1]);
+                }
+                return returnData
             }
         );
+}
+
+
+function TemplateFormat(number, senum) {
+    switch (senum) {
+        case "isk":
+            return abbreviateISK(number);
+        case "number":
+            return abbreviateNumber(number);
+        default:
+            return abbreviateNumber(number);
+    }
 }
 
 function getDay() {
