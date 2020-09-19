@@ -32,7 +32,6 @@ namespace WHTracker.Data
                 .Property(k => k.KiilmailId)
                 .ValueGeneratedNever();
 
-
             builder.Entity<DailyAggregateAlliance>()
                 .HasKey(k => k.DailyAggregateAllianceID);
 

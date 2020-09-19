@@ -40,9 +40,12 @@ namespace WHTracker
             services.AddAggregateServices();
             services.AddHostedService<ZkillRedisQWorker>();
 
-            services.AddDbContext<ApplicationContext>(options =>
+            services.AddDbContext<ApplicationContext>(options => {
                 options.UseMySql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection"));
+                //options.EnableSensitiveDataLogging();
+                }
+                );
 
         }
 

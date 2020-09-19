@@ -30,15 +30,24 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    @{
+        string divclass = @ViewData["Def"] != null ? "container" : "container-fluid";
+        <div class="@divclass">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - WHTracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-6">
+                    &copy; 2020 - WHTracker - <a href="https://github.com/mrurb/WHTracker" target="_blank">GitHub</a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+                <div class="col-6">
+                    <div>EVE Online and the EVE logo are the registered trademarks of CCP hf.</div>
+                </div>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

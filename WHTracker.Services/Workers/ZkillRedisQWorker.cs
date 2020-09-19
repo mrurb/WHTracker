@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using WHTracker.Data;
+using WHTracker.Data.Models;
 using WHTracker.Services.Models;
 
 namespace WHTracker.Services.Workers
@@ -49,10 +50,14 @@ namespace WHTracker.Services.Workers
             RedisQZkill res;
             while ((res = await zKillRedisQAPI.GetRedisQCall(3)).Package is not null)
             {
-                killmails.Add(res);
-                _logger.LogInformation("Killmail: {0}", res.Package.KillId);
+                if (!killmails.Any(c => c.Package.KillId == res.Package.KillId))
+                {
+                    killmails.Add(res);
+                    _logger.LogDebug("Killmail: {0}", res.Package.KillId);
+                }
             }
             List<RedisQZkill> lists;
+            int WHKills = 0;
             if (killmails.Any())
             {
                 using var scope = services.CreateScope();
@@ -63,12 +68,12 @@ namespace WHTracker.Services.Workers
                     scope.ServiceProvider
                         .GetRequiredService<AggregateService>();
                 lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
-
                 foreach (var killmail in lists)
                 {
                     await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);
                     if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
                     {
+                        WHKills += 1;
                         _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
                     }
                     else
@@ -76,13 +81,14 @@ namespace WHTracker.Services.Workers
                         _logger.LogDebug("kspace {0}", killmail.Package?.KillId);
 
                     }
-
                 }
 
-
+                List<Killmails> KillMails = lists.Select(c => new Killmails { KiilmailId = c.Package.KillId, KillmailHash = c.Package.Zkb.Hash, TimeStamp = c.Package.Killmail.KillmailTime }).ToList();
+                await context.AddRangeAsync(KillMails);
+                await context.SaveChangesAsync();
 
             }
-            _logger.LogInformation("Zkill redisQ done working");
+            _logger.LogInformation("Zkill redisQ done working processed {0} WH kills", WHKills);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
