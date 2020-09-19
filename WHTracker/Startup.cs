@@ -16,6 +16,7 @@ using WHTracker.Data;
 using WHTracker.Data.Models;
 using WHTracker.Services;
 using WHTracker.Services.Cache;
+using WHTracker.Services.MiscServices;
 using WHTracker.Services.Workers;
 
 namespace WHTracker
@@ -39,6 +40,8 @@ namespace WHTracker
             services.AddESIService();
             services.AddAggregateServices();
             services.AddHostedService<ZkillRedisQWorker>();
+
+            services.AddSingleton<LastUpdatedService>();
 
             services.AddDbContext<ApplicationContext>(options => {
                 options.UseMySql(

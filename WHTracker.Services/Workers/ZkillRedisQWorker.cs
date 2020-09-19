@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using WHTracker.Data;
 using WHTracker.Data.Models;
+using WHTracker.Services.MiscServices;
 using WHTracker.Services.Models;
 
 namespace WHTracker.Services.Workers
@@ -19,13 +20,15 @@ namespace WHTracker.Services.Workers
         private readonly ILogger<ZkillRedisQWorker> _logger;
         private readonly ZKillRedisQAPIService zKillRedisQAPI;
         private readonly IServiceProvider services;
+        private readonly LastUpdatedService lastUpdatedService;
         private Timer? _timer;
 
-        public ZkillRedisQWorker(ILogger<ZkillRedisQWorker> logger, ZKillRedisQAPIService zKillRedisQAPI, IServiceProvider services)
+        public ZkillRedisQWorker(ILogger<ZkillRedisQWorker> logger, ZKillRedisQAPIService zKillRedisQAPI, IServiceProvider services, LastUpdatedService lastUpdatedService)
         {
             _logger = logger;
             this.zKillRedisQAPI = zKillRedisQAPI;
             this.services = services;
+            this.lastUpdatedService = lastUpdatedService;
         }
 
         public void Dispose()
@@ -86,9 +89,9 @@ namespace WHTracker.Services.Workers
                 List<Killmails> KillMails = lists.Select(c => new Killmails { KiilmailId = c.Package.KillId, KillmailHash = c.Package.Zkb.Hash, TimeStamp = c.Package.Killmail.KillmailTime }).ToList();
                 await context.AddRangeAsync(KillMails);
                 await context.SaveChangesAsync();
-
+                lastUpdatedService.UpdateTime();
             }
-            _logger.LogInformation("Zkill redisQ done working processed {0} WH kills", WHKills);
+            _logger.LogInformation("Zkill redisQ done working processed {0} WH kills, setting time to {1}", WHKills, lastUpdatedService.Time);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

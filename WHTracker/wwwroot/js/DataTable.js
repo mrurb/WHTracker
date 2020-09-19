@@ -22,13 +22,17 @@
         };
     };
 
-    var table = $('#whdata').DataTable({
+    var table = $('#whdata')
+        .on('xhr.dt', function (e, settings, json, xhr) {
+        $('#LastUpdated').html("Last updated: "+json.lastUpdated);
+        })
+        .DataTable({
         scrollY: 650,
         scrollY: '69VH',
         scrollCollapse: true,
         dom: "<'row'<'col-sm-12 col-md-1'l><'col-sm-12 col-md-1 dmpickplace'><'col-sm-12 col-md-1 dpick'><'col-sm-12 col-md-2 capick'><'col-sm-12 col-md-7'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "<'row'<'col-sm-12 col-md-5' i<'#LastUpdated' >><'col-sm-12 col-md-7'p>>",
         "deferRender": true,
         "lengthMenu": [10, 20, 30, 60, 120],
         pageLength: 30,
@@ -124,6 +128,8 @@
             },
         ]
     });
+
+    
 
     $('#whdata tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');

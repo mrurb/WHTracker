@@ -69,3 +69,11 @@ tr.shown td.details-control {
     cursor: pointer;
 }
 
+.dataTables_info{
+    display:inline;
+}
+
+#LastUpdated {
+    display:inline;
+    margin-left:10px;
+}

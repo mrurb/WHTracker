@@ -9,6 +9,7 @@ using WHTracker.API.Models;
 using WHTracker.Data.Models;
 using WHTracker.Services;
 using WHTracker.Services.Cache;
+using WHTracker.Services.MiscServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +20,14 @@ namespace WHTracker.Controllers
     [ResponseCache(Duration = 300, VaryByQueryKeys = new string[] { "date" })]
     public class AggregateController : ControllerBase
     {
+        private const string Format = "yyyy-MM-dd HH:mm";
         private readonly AggregateReposetory aggregateCacheManagerService;
+        private readonly LastUpdatedService lastUpdatedService;
 
-        public AggregateController(AggregateReposetory aggregateCacheManagerService)
+        public AggregateController(AggregateReposetory aggregateCacheManagerService, LastUpdatedService lastUpdatedService)
         {
             this.aggregateCacheManagerService = aggregateCacheManagerService;
+            this.lastUpdatedService = lastUpdatedService;
         }
 
         // GET: api/<ValuesController1>
@@ -31,8 +35,8 @@ namespace WHTracker.Controllers
         public JsonData<DailyAggregateCorporation> GetCorporationDay(DateTime date)
         {
             var p = aggregateCacheManagerService.GetDACFromDatabaseAsync(date);
-    
-            JsonData<DailyAggregateCorporation> jsonData = new JsonData<DailyAggregateCorporation> ( p );
+
+            JsonData<DailyAggregateCorporation> jsonData = new JsonData<DailyAggregateCorporation>(p, lastUpdatedService.Time.ToString(Format));
             return jsonData;
 
         }
@@ -41,7 +45,7 @@ namespace WHTracker.Controllers
         public JsonData<DailyAggregateAlliance> GetAllianceDay(DateTime date)
         {
             var p = aggregateCacheManagerService.GetDAAFromDatabaseAsync(date);
-            JsonData<DailyAggregateAlliance> jsonData = new JsonData<DailyAggregateAlliance>(p);
+            JsonData<DailyAggregateAlliance> jsonData = new JsonData<DailyAggregateAlliance>(p, lastUpdatedService.Time.ToString(Format));
             return jsonData;
 
         }
@@ -49,7 +53,7 @@ namespace WHTracker.Controllers
         public JsonData<MonthlyAggregateCorporation> GetCorporationMonth(DateTime date)
         {
             var p = aggregateCacheManagerService.GetMACFromDatabaseAsync(date);
-            JsonData<MonthlyAggregateCorporation> jsonData = new JsonData<MonthlyAggregateCorporation>(p);
+            JsonData<MonthlyAggregateCorporation> jsonData = new JsonData<MonthlyAggregateCorporation>(p, lastUpdatedService.Time.ToString(Format));
             return jsonData;
 
         }
@@ -58,7 +62,7 @@ namespace WHTracker.Controllers
         public JsonData<MonthlyAggregateAlliance> GetAllainceMonth(DateTime date)
         {
             var p = aggregateCacheManagerService.GetMAAFromDatabaseAsync(date);
-            JsonData<MonthlyAggregateAlliance> jsonData = new JsonData<MonthlyAggregateAlliance>(p);
+            JsonData<MonthlyAggregateAlliance> jsonData = new JsonData<MonthlyAggregateAlliance>(p, lastUpdatedService.Time.ToString(Format));
             return jsonData;
 
         }
