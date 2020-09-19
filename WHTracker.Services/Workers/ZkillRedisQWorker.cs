@@ -30,7 +30,7 @@ namespace WHTracker.Services.Workers
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _timer?.Dispose();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
