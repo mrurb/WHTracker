@@ -33,7 +33,7 @@
         "lengthMenu": [10, 20, 30, 60, 120],
         pageLength: 30,
         ajax: "/api/Aggregate/corporation/day/" + date,
-        "order": [[6, "desc"]],
+        "order": [[5, "desc"]],
         columns: [
             {
                 "className": 'details-control',
@@ -58,20 +58,20 @@
                 }
             },
             {
+                "data": "killsTotal",
+                orderSequence: ["desc", "asc"]
+            },
+            {
+                "data": "lossesTotal",
+                orderSequence: ["desc", "asc"]
+            },
+            {
                 render: function (data, type, row) {
                     if (row.lossesTotal == 0) {
                         return (row.killsTotal / 1).toFixed(2);
                     }
                     return (row.killsTotal / row.lossesTotal).toFixed(2);
                 },
-                orderSequence: ["desc", "asc"]
-            },
-            {
-                "data": "killsTotal",
-                orderSequence: ["desc", "asc"]
-            },
-            {
-                "data": "lossesTotal",
                 orderSequence: ["desc", "asc"]
             },
             {
