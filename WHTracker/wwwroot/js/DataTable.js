@@ -11,6 +11,17 @@
         };
     };
 
+    $.fn.dataTable.render.numberB = function () {
+        return function (data, type, row) {
+            if (type === 'display') {
+                return abbreviateNumber(data);
+            }
+
+            // Search, order and type can use the original data
+            return data;
+        };
+    };
+
     var table = $('#whdata').DataTable({
         scrollY: 650,
         scrollY: '69VH',
@@ -64,15 +75,6 @@
                 orderSequence: ["desc", "asc"]
             },
             {
-                render: function (data, type, row) {
-                    if (row.iskLostTotal == 0) {
-                        return (row.iskKilledTotal / 1).toFixed(2);
-                    }
-                    return (row.iskKilledTotal / row.iskLostTotal).toFixed(2);
-                },
-                orderSequence: ["desc", "asc"]
-            },
-            {
                 "data": "iskKilledTotal",
                 render: $.fn.dataTable.render.ISK(),
                 orderSequence: ["desc", "asc"]
@@ -84,10 +86,12 @@
             },
             {
                 "data": "damageDealtTotal",
+                render: $.fn.dataTable.render.numberB(),
                 orderSequence: ["desc", "asc"]
             },
             {
                 "data": "damageTakenTotal",
+                render: $.fn.dataTable.render.numberB(),
                 orderSequence: ["desc", "asc"]
             },
             {
@@ -166,21 +170,11 @@
 var SI_SYMBOL = ["", "K", "M", "B", "T", "P", "E"];
 
 function abbreviateNumber(number) {
-
-    // what tier? (determines SI symbol)
     var tier = Math.log10(number) / 3 | 0;
-
-    // if zero, we don't need a suffix
     if (tier == 0) return number;
-
-    // get suffix and determine scale
     var suffix = SI_SYMBOL[tier];
     var scale = Math.pow(10, tier * 3);
-
-    // scale the number
     var scaled = number / scale;
-
-    // format number and add suffix
     return scaled.toFixed(1) + suffix;
 }
 
