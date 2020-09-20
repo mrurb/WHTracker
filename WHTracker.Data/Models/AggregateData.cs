@@ -15,6 +15,8 @@ namespace WHTracker.Data.Models
         public int LossesTotal { get; set; }
         public int KillsSubCap { get; set; }
         public int LossesSubCap { get; set; }
+        public int KillsHic { get; set; }
+        public int LossesHic { get; set; }
         public int KillsPod { get; set; }
         public int LossesPod { get; set; }
         public int KillsCapital { get; set; }
@@ -29,6 +31,8 @@ namespace WHTracker.Data.Models
         public float ISKLostPod { get; set; }
         public float ISKKilledSubCap { get; set; }
         public float ISKLostSubCap { get; set; }
+        public float ISKkilledHic { get; set; }
+        public float ISKLostHic { get; set; }
         public float ISKKilledCapital { get; set; }
         public float ISKLostCapital { get; set; }
         public float ISKKilledStructure { get; set; }
@@ -40,6 +44,8 @@ namespace WHTracker.Data.Models
         public int DamageTakenPod { get; set; }
         public int DamageDealtSubCap { get; set; }
         public int DamageTakenSubCap { get; set; }
+        public int DamageDealtHic { get; set; }
+        public int DamageTakenHic { get; set; }
         public int DamageDealtCapital { get; set; }
         public int DamageTakenCapital { get; set; }
         public int DamageDealtStructure { get; set; }
