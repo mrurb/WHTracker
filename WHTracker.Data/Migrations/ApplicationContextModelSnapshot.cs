@@ -79,7 +79,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageDealtCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageDealtHic")
+                    b.Property<int>("DamageDealtDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageDealtPod")
@@ -97,7 +97,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageTakenCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageTakenHic")
+                    b.Property<int>("DamageTakenDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageTakenPod")
@@ -142,7 +142,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostCapital")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKLostHic")
+                    b.Property<float>("ISKLostDic")
                         .HasColumnType("float");
 
                     b.Property<float>("ISKLostPod")
@@ -157,13 +157,13 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostTotal")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKkilledHic")
+                    b.Property<float>("ISKkilledDic")
                         .HasColumnType("float");
 
                     b.Property<int>("KillsCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("KillsHic")
+                    b.Property<int>("KillsDic")
                         .HasColumnType("int");
 
                     b.Property<int>("KillsPod")
@@ -187,7 +187,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("LossesCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("LossesHic")
+                    b.Property<int>("LossesDic")
                         .HasColumnType("int");
 
                     b.Property<int>("LossesPod")
@@ -251,7 +251,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageDealtCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageDealtHic")
+                    b.Property<int>("DamageDealtDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageDealtPod")
@@ -269,7 +269,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageTakenCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageTakenHic")
+                    b.Property<int>("DamageTakenDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageTakenPod")
@@ -314,7 +314,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostCapital")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKLostHic")
+                    b.Property<float>("ISKLostDic")
                         .HasColumnType("float");
 
                     b.Property<float>("ISKLostPod")
@@ -329,13 +329,13 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostTotal")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKkilledHic")
+                    b.Property<float>("ISKkilledDic")
                         .HasColumnType("float");
 
                     b.Property<int>("KillsCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("KillsHic")
+                    b.Property<int>("KillsDic")
                         .HasColumnType("int");
 
                     b.Property<int>("KillsPod")
@@ -359,7 +359,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("LossesCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("LossesHic")
+                    b.Property<int>("LossesDic")
                         .HasColumnType("int");
 
                     b.Property<int>("LossesPod")
@@ -439,7 +439,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageDealtCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageDealtHic")
+                    b.Property<int>("DamageDealtDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageDealtPod")
@@ -457,7 +457,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageTakenCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageTakenHic")
+                    b.Property<int>("DamageTakenDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageTakenPod")
@@ -502,7 +502,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostCapital")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKLostHic")
+                    b.Property<float>("ISKLostDic")
                         .HasColumnType("float");
 
                     b.Property<float>("ISKLostPod")
@@ -517,13 +517,13 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostTotal")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKkilledHic")
+                    b.Property<float>("ISKkilledDic")
                         .HasColumnType("float");
 
                     b.Property<int>("KillsCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("KillsHic")
+                    b.Property<int>("KillsDic")
                         .HasColumnType("int");
 
                     b.Property<int>("KillsPod")
@@ -547,7 +547,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("LossesCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("LossesHic")
+                    b.Property<int>("LossesDic")
                         .HasColumnType("int");
 
                     b.Property<int>("LossesPod")
@@ -611,7 +611,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageDealtCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageDealtHic")
+                    b.Property<int>("DamageDealtDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageDealtPod")
@@ -629,7 +629,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("DamageTakenCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("DamageTakenHic")
+                    b.Property<int>("DamageTakenDic")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageTakenPod")
@@ -674,7 +674,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostCapital")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKLostHic")
+                    b.Property<float>("ISKLostDic")
                         .HasColumnType("float");
 
                     b.Property<float>("ISKLostPod")
@@ -689,13 +689,13 @@ namespace WHTracker.Data.Migrations
                     b.Property<float>("ISKLostTotal")
                         .HasColumnType("float");
 
-                    b.Property<float>("ISKkilledHic")
+                    b.Property<float>("ISKkilledDic")
                         .HasColumnType("float");
 
                     b.Property<int>("KillsCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("KillsHic")
+                    b.Property<int>("KillsDic")
                         .HasColumnType("int");
 
                     b.Property<int>("KillsPod")
@@ -719,7 +719,7 @@ namespace WHTracker.Data.Migrations
                     b.Property<int>("LossesCapital")
                         .HasColumnType("int");
 
-                    b.Property<int>("LossesHic")
+                    b.Property<int>("LossesDic")
                         .HasColumnType("int");
 
                     b.Property<int>("LossesPod")
@@ -794,7 +794,7 @@ namespace WHTracker.Data.Migrations
 
             modelBuilder.Entity("WHTracker.Data.Models.MonthlyAggregateCorporation", b =>
                 {
-                    b.HasOne("WHTracker.Data.Models.Corporation", "corporation")
+                    b.HasOne("WHTracker.Data.Models.Corporation", "Corporation")
                         .WithMany("MonthlyAggregateCorporations")
                         .HasForeignKey("CorporationID")
                         .OnDelete(DeleteBehavior.Cascade)

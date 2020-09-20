@@ -252,11 +252,11 @@ namespace WHTracker.Services
                     data.ISKKilledPod += value;
                     data.DamageDealtPod += damage;
                 }
-                else if (IsHic(type.TypeId))
+                else if (IsDic(type.TypeId))
                 {
-                    data.KillsHic += 1;
-                    data.ISKkilledHic += value;
-                    data.DamageDealtHic += damage;
+                    data.KillsDic += 1;
+                    data.ISKkilledDic += value;
+                    data.DamageDealtDic += damage;
                 }
                 else
                 {
@@ -320,11 +320,11 @@ namespace WHTracker.Services
                     data.ISKLostPod += value;
                     data.DamageTakenPod += damage;
                 }
-                else if (IsHic(type.TypeId))
+                else if (IsDic(type.TypeId))
                 {
-                    data.LossesHic += 1;
-                    data.ISKLostHic += value;
-                    data.DamageTakenHic += damage;
+                    data.LossesDic += 1;
+                    data.ISKLostDic += value;
+                    data.DamageTakenDic += damage;
                 }
                 else
                 {
@@ -337,7 +337,7 @@ namespace WHTracker.Services
             return data;
         }
 
-        private bool IsHic(int typeId)
+        private bool IsDic(int typeId)
         {
             return typeId == 22456 || typeId == 22452 || typeId == 22464 || typeId == 22460;
         }

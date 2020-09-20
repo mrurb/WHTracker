@@ -2,150 +2,150 @@
 
 namespace WHTracker.Data.Migrations
 {
-    public partial class Hic : Migration
+    public partial class Dic : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "MonthlyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "MonthlyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "MonthlyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "MonthlyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<int>(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "MonthlyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "MonthlyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "MonthlyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "MonthlyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "MonthlyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "MonthlyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<int>(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "MonthlyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "MonthlyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "DailyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "DailyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "DailyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "DailyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<int>(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "DailyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "DailyAggregateCorporations",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "DailyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "DailyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "DailyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<float>(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "DailyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0f);
 
             migrationBuilder.AddColumn<int>(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "DailyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "DailyAggregateAlliances",
                 nullable: false,
                 defaultValue: 0);
@@ -154,99 +154,99 @@ namespace WHTracker.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "MonthlyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "MonthlyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "MonthlyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "MonthlyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "MonthlyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "MonthlyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "MonthlyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "MonthlyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "MonthlyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "MonthlyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "MonthlyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "MonthlyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "DailyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "DailyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "DailyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "DailyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "DailyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "DailyAggregateCorporations");
 
             migrationBuilder.DropColumn(
-                name: "DamageDealtHic",
+                name: "DamageDealtDic",
                 table: "DailyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "DamageTakenHic",
+                name: "DamageTakenDic",
                 table: "DailyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "ISKLostHic",
+                name: "ISKLostDic",
                 table: "DailyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "ISKkilledHic",
+                name: "ISKkilledDic",
                 table: "DailyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "KillsHic",
+                name: "KillsDic",
                 table: "DailyAggregateAlliances");
 
             migrationBuilder.DropColumn(
-                name: "LossesHic",
+                name: "LossesDic",
                 table: "DailyAggregateAlliances");
         }
     }

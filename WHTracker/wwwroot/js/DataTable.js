@@ -99,6 +99,10 @@
                 orderSequence: ["desc", "asc"]
             },
             {
+                "data": "lossesDic",
+                orderSequence: ["desc", "asc"]
+            },
+            {
                 "data": "rorqualKills",
                 orderSequence: ["desc", "asc"]
             },
