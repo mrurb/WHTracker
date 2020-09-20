@@ -12,5 +12,7 @@ namespace WHTracker.Options
 
         public string ClientSecret { get; set; }
 
+
+        public int MarketRegion { get; set; }
     }
 }

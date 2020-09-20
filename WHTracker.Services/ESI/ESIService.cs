@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,19 @@ using WHTracker.Services.Models;
 
 namespace WHTracker.Services
 {
+    public static class ESICacheKeys
+    {
+        public static string TypeData { get { return "ESI::Cache::TypeData::"; } }
+        public static string MarketData { get { return "ESI::Cache::MarketData::"; } }
+    }
+
     public class ESIService
     {
         private readonly HttpClient client;
         private readonly ESISettings eSIsettings;
-        private readonly ESICache cache;
+        private readonly IMemoryCache memoryCache;
 
-        public ESIService(HttpClient httpClient, IConfiguration configuration, ESICache cache)
+        public ESIService(HttpClient httpClient, IConfiguration configuration, IMemoryCache memoryCache)
         {
             eSIsettings = configuration.GetSection("ESISettings").Get<ESISettings>();
 
@@ -28,7 +35,7 @@ namespace WHTracker.Services
             httpClient.DefaultRequestHeaders.Add("User-Agent", "WHTracker");
 
             this.client = httpClient;
-            this.cache = cache;
+            this.memoryCache = memoryCache;
         }
 
 
@@ -106,23 +113,56 @@ namespace WHTracker.Services
 
         public async Task<EveType> GetEveType(int typeId)
         {
-            var cacheType = cache.GetType(typeId);
-            if (cacheType != null)
+            EveType cachedType;
+
+            string cacheKey = ESICacheKeys.TypeData + typeId;
+
+            if (!memoryCache.TryGetValue(cacheKey, out cachedType))
             {
-                return cacheType;
+
+                string requestUri = $"/v3/universe/types/{typeId}/";
+                HttpResponseMessage response = await client.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                cachedType = await JsonSerializer.DeserializeAsync<EveType>(responseStream);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromDays(1));
+
+                memoryCache.Set(cacheKey, cachedType, cacheEntryOptions);
             }
 
-            string requestUri = $"/v3/universe/types/{typeId}/";
-            HttpResponseMessage response = await client.GetAsync(requestUri);
+            return cachedType;
+        }
 
-            response.EnsureSuccessStatusCode();
+        public async Task<IEnumerable<MarketHistoryData>> GetMarketHistory(int typeId)
+        {
+            IEnumerable<MarketHistoryData> cachedMarketData;
 
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            EveType type = await JsonSerializer.DeserializeAsync<EveType>(responseStream);
+            string cacheKey = ESICacheKeys.MarketData + typeId;
 
-            cache.AddType(typeId, type);
+            if (!memoryCache.TryGetValue(cacheKey, out cachedMarketData))
+            {
 
-            return type;
+                int regionId = this.eSIsettings.MarketRegion;
+
+                string requestUri = $"/v1//markets/{regionId }/history/?type_id={typeId}/";
+                HttpResponseMessage response = await client.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                cachedMarketData = await JsonSerializer.DeserializeAsync<IEnumerable<MarketHistoryData>>(responseStream);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromDays(1));
+
+                memoryCache.Set(cacheKey, cachedMarketData, cacheEntryOptions);
+            }
+
+            return cachedMarketData;
         }
     }
 }

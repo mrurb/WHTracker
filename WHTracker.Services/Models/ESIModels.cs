@@ -189,4 +189,25 @@ namespace WHTracker.Services.Models
         public bool IsDefault { get; set; }
     }
 
+    public class MarketHistoryData
+    {
+        [JsonPropertyName("average")]
+        public double Average { get; set; }
+
+        [JsonPropertyName("date")]
+        public string Date { get; set; }
+
+        [JsonPropertyName("highest")]
+        public double Highest { get; set; }
+
+        [JsonPropertyName("lowest")]
+        public double Lowest { get; set; }
+
+        [JsonPropertyName("order_count")]
+        public int OrderCount { get; set; }
+
+        [JsonPropertyName("volume")]
+        public int Volume { get; set; }
+    }
+
 }
