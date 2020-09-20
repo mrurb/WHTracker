@@ -1,22 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using System;
+
 using WHTracker.Data;
-using WHTracker.Data.Models;
 using WHTracker.Services;
-using WHTracker.Services.Cache;
-using WHTracker.Services.MiscServices;
 using WHTracker.Services.Workers;
 
 namespace WHTracker
@@ -41,13 +34,12 @@ namespace WHTracker
             services.AddAggregateServices();
             services.AddHostedService<ZkillRedisQWorker>();
 
-            services.AddSingleton<LastUpdatedService>();
-
-            services.AddDbContext<ApplicationContext>(options => {
+            services.AddDbContext<ApplicationContext>(options =>
+            {
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection"));
                 //options.EnableSensitiveDataLogging();
-                }
+            }
                 );
 
         }
