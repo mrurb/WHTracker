@@ -255,7 +255,7 @@ namespace WHTracker.Services
                 else if (IsDic(type.TypeId))
                 {
                     data.KillsDic += 1;
-                    data.ISKkilledDic += value;
+                    data.ISKKilledDic += value;
                     data.DamageDealtDic += damage;
                 }
                 else

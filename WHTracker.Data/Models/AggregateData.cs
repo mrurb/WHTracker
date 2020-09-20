@@ -31,7 +31,7 @@ namespace WHTracker.Data.Models
         public float ISKLostPod { get; set; }
         public float ISKKilledSubCap { get; set; }
         public float ISKLostSubCap { get; set; }
-        public float ISKkilledDic { get; set; }
+        public float ISKKilledDic { get; set; }
         public float ISKLostDic { get; set; }
         public float ISKKilledCapital { get; set; }
         public float ISKLostCapital { get; set; }
