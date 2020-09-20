@@ -37,7 +37,7 @@ namespace WHTracker.Services
 
         public List<MonthlyAggregateCorporation> GetMACFromDatabaseAsync(DateTime dateTime)
         {
-            List<MonthlyAggregateCorporation> lists = applicationContext.MonthlyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.corporation).FromCache(Tag.Monthly.ToString()).ToList();
+            List<MonthlyAggregateCorporation> lists = applicationContext.MonthlyAggregateCorporations.Where(c => c.TimeStamp.Date == dateTime.Date).Include(c => c.Corporation).FromCache(Tag.Monthly.ToString()).ToList();
             return lists;
         }
         public List<MonthlyAggregateAlliance> GetMAAFromDatabaseAsync(DateTime dateTime)

@@ -22,7 +22,6 @@ namespace WHTracker.Services
         private readonly ApplicationContext context;
         private readonly ESIService eSIService;
 
-
         public AggregateService(ILogger<AggregateService> _logger, ApplicationContext context, ESIService eSIService)
         {
             this._logger = _logger;
@@ -253,6 +252,12 @@ namespace WHTracker.Services
                     data.ISKKilledPod += value;
                     data.DamageDealtPod += damage;
                 }
+                else if (IsHic(type.TypeId))
+                {
+                    data.KillsHic += 1;
+                    data.ISKkilledHic += value;
+                    data.DamageDealtHic += damage;
+                }
                 else
                 {
                     data.KillsSubCap += 1;
@@ -315,6 +320,12 @@ namespace WHTracker.Services
                     data.ISKLostPod += value;
                     data.DamageTakenPod += damage;
                 }
+                else if (IsHic(type.TypeId))
+                {
+                    data.LossesHic += 1;
+                    data.ISKLostHic += value;
+                    data.DamageTakenHic += damage;
+                }
                 else
                 {
                     data.LossesSubCap += 1;
@@ -324,6 +335,11 @@ namespace WHTracker.Services
             }
 
             return data;
+        }
+
+        private bool IsHic(int typeId)
+        {
+            return typeId == 22456 || typeId == 22452 || typeId == 22464 || typeId == 22460;
         }
 
         #region Checkers

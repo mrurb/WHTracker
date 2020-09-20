@@ -58,7 +58,7 @@ namespace WHTracker.Data
             builder.Entity<MonthlyAggregateCorporation>()
                 .HasKey(k => k.MonthlyAggregateCorporationId);
             builder.Entity<MonthlyAggregateCorporation>()
-                .HasOne(c => c.corporation)
+                .HasOne(c => c.Corporation)
                 .WithMany(g => g.MonthlyAggregateCorporations)
                 .HasForeignKey(s => s.CorporationID);
 

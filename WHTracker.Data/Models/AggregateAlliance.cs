@@ -4,6 +4,7 @@ using System.Text;
 
 namespace WHTracker.Data.Models
 {
+#nullable disable
     public class AggregateAlliance : AggregateData
     {
 
