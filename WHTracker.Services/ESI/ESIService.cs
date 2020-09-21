@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -148,7 +149,7 @@ namespace WHTracker.Services
 
                 int regionId = this.eSIsettings.MarketRegion;
 
-                string requestUri = $"/v1//markets/{regionId }/history/?type_id={typeId}/";
+                string requestUri = $"/v1/markets/{regionId}/history/?type_id={typeId}";
                 HttpResponseMessage response = await client.GetAsync(requestUri);
 
                 response.EnsureSuccessStatusCode();
@@ -163,6 +164,20 @@ namespace WHTracker.Services
             }
 
             return cachedMarketData;
+        }
+
+        public async Task<MarketHistoryData> GetMarketHistoryPoint(int typeId, DateTime date)
+        {
+            var marketData = await GetMarketHistory(typeId);
+
+            if(date > marketData.Min(d => d.Date))
+            {
+                return marketData.Where(d => d.Date < date).OrderByDescending(d => d.Date).First();
+            }
+            else
+            {
+                return marketData.OrderBy(d => d.Date).First();
+            }
         }
     }
 }
