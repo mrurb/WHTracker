@@ -138,8 +138,8 @@ namespace WHTracker.Services
 
         public async Task ProcessKillmail(Killmail killmail)
         {
-            float value = await CalculateKillmailValue(killmail);
-            await ProcessKillmailValue(killmail, value);
+            double value = await CalculateKillmailValue(killmail);
+            await ProcessKillmailValue(killmail, (float)value);
         }
 
         public async Task ProcessKillmailValue(Killmail killmail, float value)
@@ -454,10 +454,62 @@ namespace WHTracker.Services
 
             return typeId == 670 || typeId == 33328;
         }
-
-        public async Task<float> CalculateKillmailValue(Killmail killmail)
+        public bool IsSkin(EveType type)
         {
-            throw new NotImplementedException();
+
+            return type.GroupId == 1950 || type.GroupId == 1951;
+        }
+
+        public bool IsTypeExcludedFromValue(EveType type)
+        {
+            if (IsPod(type.TypeId) || IsSkin(type))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<double> CalculateKillmailValue(Killmail killmail)
+        {
+            double value = 0;
+
+
+            var shipTypeData = await eSIService.GetEveType(killmail.Victim.ShipTypeId);
+
+            if (!IsTypeExcludedFromValue(shipTypeData))
+            {
+                double itemValue = await eSIService.GetMarketHistoryAverageValue(killmail.Victim.ShipTypeId, killmail.KillmailTime);
+                value += itemValue;
+            }
+
+            if (killmail.Victim.Items != null)
+            {
+                foreach (var item in killmail.Victim.Items)
+                {
+                    var typeData = await eSIService.GetEveType(item.ItemTypeId);
+                    if (item.Singleton != 2 && !IsTypeExcludedFromValue(typeData))
+                    {
+                        double itemValue = await eSIService.GetMarketHistoryAverageValue(item.ItemTypeId, killmail.KillmailTime);
+                        value += itemValue * (item.QuantityDestroyed ?? 0 + item.QuantityDropped ?? 0);
+                    }
+
+                    if (item.Items != null && item.Items.Count() > 0)
+                    {
+                        foreach (var subItem in item.Items)
+                        {
+                            var subTypeData = await eSIService.GetEveType(subItem.ItemTypeId);
+                            if (subItem.Singleton != 2 && !IsTypeExcludedFromValue(subTypeData))
+                            {
+                                double itemValue = await eSIService.GetMarketHistoryAverageValue(subItem.ItemTypeId, killmail.KillmailTime);
+                                value += itemValue * (subItem.QuantityDestroyed ?? 0 + subItem.QuantityDropped ?? 0);
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            return value;
         }
 
         public bool IsWormholeKill(Killmail killmail)

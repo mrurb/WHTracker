@@ -166,17 +166,23 @@ namespace WHTracker.Services
             return cachedMarketData;
         }
 
-        public async Task<MarketHistoryData> GetMarketHistoryPoint(int typeId, DateTime date)
+        public async Task<double> GetMarketHistoryAverageValue(int typeId, DateTime date)
         {
             var marketData = await GetMarketHistory(typeId);
 
+            if (marketData.Count() == 0)
+            {
+                // Todo: Log no value
+                return 0.0;
+            }
+
             if(date > marketData.Min(d => d.Date))
             {
-                return marketData.Where(d => d.Date < date).OrderByDescending(d => d.Date).First();
+                return marketData.Where(d => d.Date < date).OrderByDescending(d => d.Date).First().Average;
             }
             else
             {
-                return marketData.OrderBy(d => d.Date).First();
+                return marketData.OrderBy(d => d.Date).First().Average;
             }
         }
     }
