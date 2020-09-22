@@ -14,6 +14,10 @@ namespace WHTracker.Services
             services.AddHttpClient<ZKillRedisQAPIService>()
                 .AddTransientHttpErrorPolicy(p => p.RetryAsync(3))
                 .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+
+            services.AddHttpClient<ZKillHistoryAPIService>()
+                .AddTransientHttpErrorPolicy(p => p.RetryAsync(3))
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
             //services.AddHttpClient
             return services;
         }
