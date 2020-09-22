@@ -21,12 +21,14 @@ namespace WHTracker.Services
         private readonly ILogger<AggregateService> _logger;
         private readonly ApplicationContext context;
         private readonly ESIService eSIService;
+        private readonly ZKillHistoryAPIService zKillHistoryAPIService;
 
-        public AggregateService(ILogger<AggregateService> _logger, ApplicationContext context, ESIService eSIService)
+        public AggregateService(ILogger<AggregateService> _logger, ApplicationContext context, ESIService eSIService, ZKillHistoryAPIService zKillHistoryAPIService)
         {
             this._logger = _logger;
             this.context = context;
             this.eSIService = eSIService;
+            this.zKillHistoryAPIService = zKillHistoryAPIService;
         }
 
         public async Task<T> GetAggregateCorporation<T>(int corporationId, DateTime date) where T : AggregateCorporation
@@ -134,6 +136,39 @@ namespace WHTracker.Services
             }
 
             return alliance;
+        }
+
+        public async Task<int> ProcessHistoryDay(DateTime day)
+        {
+            var killmailsDetails = await zKillHistoryAPIService.GetHistoryData(day);
+            var list = killmailsDetails.Where(killmail => !context.Killmails.Any(dbK => killmail.Key == dbK.KiilmailId)).ToList();
+
+            int WHKills = 0;
+
+            List<Killmails> processedKills = new List<Killmails>();
+
+            foreach (var killmailDetails in list)
+            {
+                var killmail = await eSIService.GetKillmail(killmailDetails.Key, killmailDetails.Value);
+                if (IsWormholeKill(killmail))
+                {
+                    await ProcessKillmail(killmail);
+                    _logger.LogDebug("WH system kill {0}", killmailDetails.Key);
+                    WHKills += 1;
+                }
+                else
+                {
+                    _logger.LogDebug("kspace {0}", killmailDetails.Key);
+
+                }
+
+                processedKills.Add(new Killmails { KiilmailId = killmailDetails.Key, KillmailHash = killmailDetails.Value, TimeStamp = killmail.KillmailTime });
+            }
+
+            await context.AddRangeAsync(processedKills);
+            await context.SaveChangesAsync();
+
+            return WHKills;
         }
 
         public async Task ProcessKillmail(Killmail killmail)
@@ -478,7 +513,7 @@ namespace WHTracker.Services
 
             if (!IsTypeExcludedFromValue(shipTypeData))
             {
-                double itemValue = await eSIService.GetMarketHistoryAverageValue(killmail.Victim.ShipTypeId, killmail.KillmailTime);
+                double itemValue = await eSIService.GetMarketHistoryValue(killmail.Victim.ShipTypeId, killmail.KillmailTime);
                 value += itemValue;
             }
 
@@ -487,9 +522,9 @@ namespace WHTracker.Services
                 foreach (var item in killmail.Victim.Items)
                 {
                     var typeData = await eSIService.GetEveType(item.ItemTypeId);
-                    if (item.Singleton != 2 && !IsTypeExcludedFromValue(typeData))
+                    if (item.Singleton != 2 && typeData.MarketGroupId != null && !IsTypeExcludedFromValue(typeData))
                     {
-                        double itemValue = await eSIService.GetMarketHistoryAverageValue(item.ItemTypeId, killmail.KillmailTime);
+                        double itemValue = await eSIService.GetMarketHistoryValue(item.ItemTypeId, killmail.KillmailTime);
                         value += itemValue * (item.QuantityDestroyed ?? 0 + item.QuantityDropped ?? 0);
                     }
 
@@ -498,9 +533,9 @@ namespace WHTracker.Services
                         foreach (var subItem in item.Items)
                         {
                             var subTypeData = await eSIService.GetEveType(subItem.ItemTypeId);
-                            if (subItem.Singleton != 2 && !IsTypeExcludedFromValue(subTypeData))
+                            if (subItem.Singleton != 2 && typeData.MarketGroupId != null && !IsTypeExcludedFromValue(subTypeData))
                             {
-                                double itemValue = await eSIService.GetMarketHistoryAverageValue(subItem.ItemTypeId, killmail.KillmailTime);
+                                double itemValue = await eSIService.GetMarketHistoryValue(subItem.ItemTypeId, killmail.KillmailTime);
                                 value += itemValue * (subItem.QuantityDestroyed ?? 0 + subItem.QuantityDropped ?? 0);
 
                             }

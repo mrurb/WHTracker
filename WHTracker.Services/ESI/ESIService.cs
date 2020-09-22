@@ -138,9 +138,9 @@ namespace WHTracker.Services
             return cachedType;
         }
 
-        public async Task<IEnumerable<MarketHistoryData>> GetMarketHistory(int typeId)
+        public async Task<IEnumerable<MarketHistoryData>?> GetMarketHistory(int typeId)
         {
-            IEnumerable<MarketHistoryData> cachedMarketData;
+            IEnumerable<MarketHistoryData>? cachedMarketData;
 
             string cacheKey = ESICacheKeys.MarketData + typeId;
 
@@ -150,12 +150,20 @@ namespace WHTracker.Services
                 int regionId = this.eSIsettings.MarketRegion;
 
                 string requestUri = $"/v1/markets/{regionId}/history/?type_id={typeId}";
-                HttpResponseMessage response = await client.GetAsync(requestUri);
 
-                response.EnsureSuccessStatusCode();
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(requestUri);
 
-                using var responseStream = await response.Content.ReadAsStreamAsync();
-                cachedMarketData = await JsonSerializer.DeserializeAsync<IEnumerable<MarketHistoryData>>(responseStream);
+                    response.EnsureSuccessStatusCode();
+
+                    using var responseStream = await response.Content.ReadAsStreamAsync();
+                    cachedMarketData = await JsonSerializer.DeserializeAsync<IEnumerable<MarketHistoryData>>(responseStream);
+                }
+                catch (System.Net.Http.HttpRequestException requestException)
+                {
+                    cachedMarketData = null;
+                }
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromDays(1));
@@ -166,11 +174,11 @@ namespace WHTracker.Services
             return cachedMarketData;
         }
 
-        public async Task<double> GetMarketHistoryAverageValue(int typeId, DateTime date)
+        public async Task<double> GetMarketHistoryValue(int typeId, DateTime date)
         {
             var marketData = await GetMarketHistory(typeId);
 
-            if (marketData.Count() == 0)
+            if (marketData == null || marketData.Count() == 0)
             {
                 // Todo: Log no value
                 return 0.0;
@@ -178,11 +186,11 @@ namespace WHTracker.Services
 
             if(date > marketData.Min(d => d.Date))
             {
-                return marketData.Where(d => d.Date < date).OrderByDescending(d => d.Date).First().Average;
+                return marketData.Where(d => d.Date < date).OrderByDescending(d => d.Date).First().Lowest;
             }
             else
             {
-                return marketData.OrderBy(d => d.Date).First().Average;
+                return marketData.OrderBy(d => d.Date).First().Lowest;
             }
         }
     }

@@ -19,10 +19,14 @@ namespace WHTracker.Controllers
         private const string Format = "yyyy-MM-dd HH:mm";
         private const string Path = "./wwwroot/time.txt";
         private readonly AggregateReposetory aggregateCacheManagerService;
+        private readonly ESIService eSIService;
+        private readonly AggregateService aggregateService;
 
-        public AggregateController(AggregateReposetory aggregateCacheManagerService)
+        public AggregateController(AggregateReposetory aggregateCacheManagerService, ESIService eSIService, AggregateService aggregateService)
         {
             this.aggregateCacheManagerService = aggregateCacheManagerService;
+            this.eSIService = eSIService;
+            this.aggregateService = aggregateService;
         }
 
         // GET: api/<ValuesController1>
@@ -61,6 +65,24 @@ namespace WHTracker.Controllers
             string v = await System.IO.File.ReadAllTextAsync(Path);
             JsonData<MonthlyAggregateAlliance> jsonData = new JsonData<MonthlyAggregateAlliance>(p, v);
             return jsonData;
+
+        }
+
+
+        [HttpGet("KillmailHistory/{date}")]
+        public async Task<int> ProcessKillmailHistory(DateTime date)
+        {
+            var value = await aggregateService.ProcessHistoryDay(date);
+            return value;
+
+        }
+        [HttpGet("KillmailValue/{killId}/{hash}/")]
+        public async Task<double> GetKillmailValue(int killId, string hash)
+        {
+            var killmail = await eSIService.GetKillmail(killId, hash);
+
+            var value = await aggregateService.CalculateKillmailValue(killmail);
+            return value;
 
         }
     }

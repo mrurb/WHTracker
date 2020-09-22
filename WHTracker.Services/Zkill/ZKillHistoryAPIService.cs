@@ -36,8 +36,18 @@ namespace WHTracker.Services
             response.EnsureSuccessStatusCode();
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            Dictionary<int, string> hashData = await JsonSerializer.DeserializeAsync<Dictionary<int, string>>(responseStream);
-            return hashData;
+            Dictionary<string, string> hashData = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(responseStream);
+
+            var sanitizedHashData = new Dictionary<int, string>();
+            foreach (var item in hashData)
+            {
+                if(int.TryParse(item.Key, out int id))
+                {
+                    sanitizedHashData.Add(id, item.Value);
+                }
+            }
+
+            return sanitizedHashData;
         }
     }
 }
