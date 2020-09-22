@@ -34,16 +34,21 @@ namespace WHTracker.Controllers
         public async Task<JsonData<DailyAggregateCorporation>> GetCorporationDayAsync(DateTime date)
         {
             var p = aggregateCacheManagerService.GetDACFromDatabaseAsync(date);
-            string v = await System.IO.File.ReadAllTextAsync(Path);
+            string v = await GetTime();
             JsonData<DailyAggregateCorporation> jsonData = new JsonData<DailyAggregateCorporation>(p, v);
             return jsonData;
+        }
+
+        private static async Task<string> GetTime()
+        {
+            return System.IO.File.Exists(Path) ? await System.IO.File.ReadAllTextAsync(Path) : "";
         }
 
         [HttpGet("Alliance/day/{date}")]
         public async Task<JsonData<DailyAggregateAlliance>> GetAllianceDayAsync(DateTime date)
         {
             var p = aggregateCacheManagerService.GetDAAFromDatabaseAsync(date);
-            string v = await System.IO.File.ReadAllTextAsync(Path);
+            string v = await GetTime();
             JsonData<DailyAggregateAlliance> jsonData = new JsonData<DailyAggregateAlliance>(p, v);
             return jsonData;
 
@@ -52,7 +57,7 @@ namespace WHTracker.Controllers
         public async Task<JsonData<MonthlyAggregateCorporation>> GetCorporationMonthAsync(DateTime date)
         {
             var p = aggregateCacheManagerService.GetMACFromDatabaseAsync(date);
-            string v = await System.IO.File.ReadAllTextAsync(Path);
+            string v = await GetTime();
             JsonData<MonthlyAggregateCorporation> jsonData = new JsonData<MonthlyAggregateCorporation>(p, v);
             return jsonData;
 
@@ -62,7 +67,7 @@ namespace WHTracker.Controllers
         public async Task<JsonData<MonthlyAggregateAlliance>> GetAllainceMonthAsync(DateTime date)
         {
             var p = aggregateCacheManagerService.GetMAAFromDatabaseAsync(date);
-            string v = await System.IO.File.ReadAllTextAsync(Path);
+            string v = await GetTime();
             JsonData<MonthlyAggregateAlliance> jsonData = new JsonData<MonthlyAggregateAlliance>(p, v);
             return jsonData;
 

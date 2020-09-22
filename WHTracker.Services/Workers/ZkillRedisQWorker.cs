@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +21,8 @@ namespace WHTracker.Services.Workers
         private readonly ILogger<ZkillRedisQWorker> _logger;
         private readonly ZKillRedisQAPIService zKillRedisQAPI;
         private readonly IServiceProvider services;
-        private Timer? _timer;
+        private Timer _timer;
+        private int running;
 
         public ZkillRedisQWorker(ILogger<ZkillRedisQWorker> logger, ZKillRedisQAPIService zKillRedisQAPI, IServiceProvider services)
         {
@@ -37,61 +39,82 @@ namespace WHTracker.Services.Workers
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Timed Hosted Service running.");
-
-            //_timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(15));
-
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(15));
             return Task.CompletedTask;
         }
 
         private async void DoWork(object? state)
         {
+            if (running == 1)
+            {
+                _logger.LogInformation("Skipping allready running");
+                return;
+            }
+
+            Interlocked.Exchange(ref running, 1);
+
 
             var killmails = new List<RedisQZkill>();
-
-            RedisQZkill res;
-            while ((res = await zKillRedisQAPI.GetRedisQCall(3)).Package is not null)
+            try
             {
-                if (!killmails.Any(c => c.Package.KillId == res.Package.KillId))
+                RedisQZkill res;
+                while ((res = await zKillRedisQAPI.GetRedisQCall(3)).Package is not null)
                 {
-                    killmails.Add(res);
-                    _logger.LogDebug("Killmail: {0}", res.Package.KillId);
-                }
-            }
-            List<RedisQZkill> lists;
-            int WHKills = 0;
-            if (killmails.Any())
-            {
-                using var scope = services.CreateScope();
-                var context =
-                    scope.ServiceProvider
-                        .GetRequiredService<ApplicationContext>();
-                var aggregateService =
-                    scope.ServiceProvider
-                        .GetRequiredService<AggregateService>();
-                lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
-                foreach (var killmail in lists)
-                {
-                    await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);
-                    if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
+                    if (!killmails.Any(c => c.Package.KillId == res.Package.KillId))
                     {
-                        WHKills += 1;
-                        _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
-                    }
-                    else
-                    {
-                        _logger.LogDebug("kspace {0}", killmail.Package?.KillId);
-
+                        killmails.Add(res);
+                        _logger.LogDebug("Killmail: {0}", res.Package.KillId);
                     }
                 }
 
-                List<Killmails> KillMails = lists.Select(c => new Killmails { KiilmailId = c.Package.KillId, KillmailHash = c.Package.Zkb.Hash, TimeStamp = c.Package.Killmail.KillmailTime }).ToList();
-                await context.AddRangeAsync(KillMails);
-                await context.SaveChangesAsync();
-                //lastUpdatedService.UpdateTime();
-                await File.WriteAllTextAsync("./wwwroot/time.txt", $"{DateTime.UtcNow:yyyy-MM-dd HH:mm}");
+                List<RedisQZkill> lists;
+                int WHKills = 0;
+                if (killmails.Any())
+                {
+                    using var scope = services.CreateScope();
+                    var context =
+                        scope.ServiceProvider
+                            .GetRequiredService<ApplicationContext>();
+                    var aggregateService =
+                        scope.ServiceProvider
+                            .GetRequiredService<AggregateService>();
+                    lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
+                    foreach (var killmail in lists)
+                    {
+                        await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);
+                        if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
+                        {
+                            WHKills += 1;
+                            _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
+                        }
+                        else
+                        {
+                            _logger.LogDebug("kspace {0}", killmail.Package?.KillId);
+
+                        }
+                    }
+
+                    List<Killmails> KillMails = lists.Select(c => new Killmails { KiilmailId = c.Package.KillId, KillmailHash = c.Package.Zkb.Hash, TimeStamp = c.Package.Killmail.KillmailTime }).ToList();
+                    await context.AddRangeAsync(KillMails);
+                    await context.SaveChangesAsync();
+                    //lastUpdatedService.UpdateTime();
+                    await File.WriteAllTextAsync("./wwwroot/time.txt", $"{DateTime.UtcNow:yyyy-MM-dd HH:mm}");
+                    _logger.LogInformation("Zkill redisQ done working processed {0} WH kills out of {1}, setting time to {2}", WHKills, killmails.Count, DateTime.UtcNow);
+
+                }
+
             }
-            _logger.LogInformation("Zkill redisQ done working processed {0} WH kills, setting time to {1}", WHKills, DateTime.UtcNow);
+            catch (HttpRequestException e)
+            {
+
+                _logger.LogCritical("Failed to get killmail from redisq error: {1}", e);
+            }
+            finally
+            {
+                Interlocked.Exchange(ref running, 0);
+            }
         }
+
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
