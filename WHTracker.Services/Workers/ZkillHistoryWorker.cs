@@ -36,7 +36,7 @@ namespace WHTracker.Services.Workers
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Timed Hosted Service running.");
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromDays(1));
+            _timer = new Timer(DoWork, null, TimeSpan.FromMinutes(10), TimeSpan.FromDays(1));
             return Task.CompletedTask;
         }
 
@@ -52,7 +52,7 @@ namespace WHTracker.Services.Workers
 
             try
             {
-                for(var i = 1; i <=1; i++)
+                for(var i = 1; i <=3; i++)
                 {
                     using var scope = services.CreateScope();
                     var killmailHistoryService =
