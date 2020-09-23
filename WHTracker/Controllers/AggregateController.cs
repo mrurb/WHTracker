@@ -73,14 +73,6 @@ namespace WHTracker.Controllers
 
         }
 
-
-        [HttpGet("KillmailHistory/{date}")]
-        public async Task<int> ProcessKillmailHistory(DateTime date)
-        {
-            await aggregateService.GetKillmailHistoryDay(date);
-            return 1;
-
-        }
         [HttpGet("KillmailValue/{killId}/{hash}/")]
         public async Task<double> GetKillmailValue(int killId, string hash)
         {
