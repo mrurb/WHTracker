@@ -138,47 +138,29 @@ namespace WHTracker.Services
             return alliance;
         }
 
-        public async Task<int> ProcessHistoryDay(DateTime day)
+        public IEnumerable<KillmailValue> GetMissingKillmails(IEnumerable<KillmailValue> original)
+        {
+            return original.Where(x => !context.Killmails.Any(c => x.KillmailId == c.KiilmailId));
+        }
+
+        public async Task AddProcessedKillmails(IEnumerable<KillmailValue> list)
+        {
+            List<Killmails> KillMails = list.Select(c => new Killmails { KiilmailId = c.KillmailId, KillmailHash = c.KillmailHash, TimeStamp = c.Killmail.KillmailTime }).ToList();
+            await context.AddRangeAsync(KillMails);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task ProcessHistoryDay(DateTime day)
         {
             var killmailsDetails = await zKillHistoryAPIService.GetHistoryData(day);
             var list = killmailsDetails.Where(killmail => !context.Killmails.Any(dbK => killmail.Key == dbK.KiilmailId)).ToList();
 
-            int WHKills = 0;
-
-            List<Killmails> processedKills = new List<Killmails>();
-
-            foreach (var killmailDetails in list)
-            {
-                var killmail = await eSIService.GetKillmail(killmailDetails.Key, killmailDetails.Value);
-                if (IsWormholeKill(killmail))
-                {
-                    await ProcessKillmail(killmail);
-                    _logger.LogDebug("WH system kill {0}", killmailDetails.Key);
-                    WHKills += 1;
-                }
-                else
-                {
-                    _logger.LogDebug("kspace {0}", killmailDetails.Key);
-
-                }
-
-                processedKills.Add(new Killmails { KiilmailId = killmailDetails.Key, KillmailHash = killmailDetails.Value, TimeStamp = killmail.KillmailTime });
-            }
-
-            await context.AddRangeAsync(processedKills);
-            await context.SaveChangesAsync();
-
-            return WHKills;
         }
 
-        public async Task ProcessKillmail(Killmail killmail)
+        public async Task ProcessKillmailValue(KillmailValue killmailValue)
         {
-            double value = await CalculateKillmailValue(killmail);
-            await ProcessKillmailValue(killmail, (float)value);
-        }
-
-        public async Task ProcessKillmailValue(Killmail killmail, float value)
-        {
+            Killmail killmail = killmailValue.Killmail;
+            float value = killmailValue.Value;
             // Check wormmhole kill
             if (IsWormholeKill(killmail))
             {

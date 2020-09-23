@@ -32,7 +32,7 @@ namespace WHTracker
             services.AddZKillRedisQAPI();
             services.AddESIService();
             services.AddAggregateServices();
-            services.AddHostedService<ZkillRedisQWorker>();
+            services.AddZKillWorkers();
 
             services.AddDbContext<ApplicationContext>(options =>
             {

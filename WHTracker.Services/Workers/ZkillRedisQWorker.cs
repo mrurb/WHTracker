@@ -21,14 +21,16 @@ namespace WHTracker.Services.Workers
         private readonly ILogger<ZkillRedisQWorker> _logger;
         private readonly ZKillRedisQAPIService zKillRedisQAPI;
         private readonly IServiceProvider services;
+        private readonly IBackgroundTaskQueue<IEnumerable<KillmailValue>> killmailValueQueue;
         private Timer _timer;
         private int running;
 
-        public ZkillRedisQWorker(ILogger<ZkillRedisQWorker> logger, ZKillRedisQAPIService zKillRedisQAPI, IServiceProvider services)
+        public ZkillRedisQWorker(ILogger<ZkillRedisQWorker> logger, ZKillRedisQAPIService zKillRedisQAPI, IServiceProvider services, IBackgroundTaskQueue<IEnumerable<KillmailValue>> killmailValueQueue)
         {
             _logger = logger;
             this.zKillRedisQAPI = zKillRedisQAPI;
             this.services = services;
+            this.killmailValueQueue = killmailValueQueue;
         }
 
         public void Dispose()
@@ -67,7 +69,6 @@ namespace WHTracker.Services.Workers
                     }
                 }
 
-                List<RedisQZkill> lists;
                 int WHKills = 0;
                 if (killmails.Any())
                 {
@@ -78,28 +79,14 @@ namespace WHTracker.Services.Workers
                     var aggregateService =
                         scope.ServiceProvider
                             .GetRequiredService<AggregateService>();
-                    lists = killmails.Where(x => !context.Killmails.Any(c => x.Package.KillId == c.KiilmailId)).ToList();
-                    foreach (var killmail in lists)
-                    {
-                        await aggregateService.ProcessKillmailValue(killmail.Package.Killmail, killmail.Package.Zkb.TotalValue);
-                        if (killmail.Package?.Killmail.SolarSystemId >= 31000000 && killmail.Package.Killmail.SolarSystemId <= 32000000)
-                        {
-                            WHKills += 1;
-                            _logger.LogDebug("WH system kill {0}", killmail.Package?.KillId);
-                        }
-                        else
-                        {
-                            _logger.LogDebug("kspace {0}", killmail.Package?.KillId);
 
-                        }
-                    }
+                    IEnumerable<KillmailValue> data = killmails.Select(rkill => new KillmailValue(rkill.Package.KillId, rkill.Package.Zkb.Hash, rkill.Package.Killmail, rkill.Package.Zkb.TotalValue)).ToList();
 
-                    List<Killmails> KillMails = lists.Select(c => new Killmails { KiilmailId = c.Package.KillId, KillmailHash = c.Package.Zkb.Hash, TimeStamp = c.Package.Killmail.KillmailTime }).ToList();
-                    await context.AddRangeAsync(KillMails);
-                    await context.SaveChangesAsync();
+                    killmailValueQueue.QueueBackgroundWorkItem(data);
+
                     //lastUpdatedService.UpdateTime();
                     await File.WriteAllTextAsync("./wwwroot/time.txt", $"{DateTime.UtcNow:yyyy-MM-dd HH:mm}");
-                    _logger.LogInformation("Zkill redisQ done working processed {0} WH kills out of {1}, setting time to {2}", WHKills, killmails.Count, DateTime.UtcNow);
+                    _logger.LogInformation("Zkill redisQ done working processed {0} WH kills out of {1}, setting time to {2}", killmails.Count(k => aggregateService.IsWormholeKill(k.Package.Killmail)), killmails.Count, DateTime.UtcNow);
 
                 }
 
