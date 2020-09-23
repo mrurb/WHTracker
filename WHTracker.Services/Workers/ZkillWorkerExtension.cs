@@ -12,6 +12,7 @@ namespace WHTracker.Services.Workers
         {
 
             services.AddHostedService<ZkillRedisQWorker>();
+            services.AddHostedService<ZkillHistoryWorker>();
 
             services.AddSingleton<IBackgroundTaskQueue<IEnumerable<KillmailHash>>, BackgroundTaskQueue<IEnumerable<KillmailHash>>>();
             services.AddHostedService<KillmailHashWorker>();

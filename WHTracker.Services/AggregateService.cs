@@ -138,6 +138,10 @@ namespace WHTracker.Services
             return alliance;
         }
 
+        public IEnumerable<KillmailHash> GetMissingKillmails(IEnumerable<KillmailHash> original)
+        {
+            return original.Where(x => !context.Killmails.Any(c => x.KillId == c.KiilmailId));
+        }
         public IEnumerable<KillmailValue> GetMissingKillmails(IEnumerable<KillmailValue> original)
         {
             return original.Where(x => !context.Killmails.Any(c => x.KillmailId == c.KiilmailId));

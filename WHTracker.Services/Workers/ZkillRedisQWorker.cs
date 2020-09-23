@@ -72,9 +72,6 @@ namespace WHTracker.Services.Workers
                 if (killmails.Any())
                 {
                     using var scope = services.CreateScope();
-                    var context =
-                        scope.ServiceProvider
-                            .GetRequiredService<ApplicationContext>();
                     var aggregateService =
                         scope.ServiceProvider
                             .GetRequiredService<AggregateService>();
