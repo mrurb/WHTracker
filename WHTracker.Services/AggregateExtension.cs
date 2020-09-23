@@ -10,6 +10,8 @@ namespace WHTracker.Services
             services.AddScoped<AggregateService>();
             services.AddScoped<AggregateReposetory>();
 
+            services.AddScoped<KillmailHistoryService>();
+
             return services;
         }
     }

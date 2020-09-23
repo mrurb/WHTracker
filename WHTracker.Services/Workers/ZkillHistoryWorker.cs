@@ -55,24 +55,13 @@ namespace WHTracker.Services.Workers
                 for(var i = 1; i <=1; i++)
                 {
                     using var scope = services.CreateScope();
-                    var aggregateService =
+                    var killmailHistoryService =
                         scope.ServiceProvider
-                            .GetRequiredService<AggregateService>();
+                            .GetRequiredService<KillmailHistoryService>();
 
                     DateTime day = DateTime.UtcNow.AddDays((-1) * i);
 
-                    var history = await aggregateService.GetKillmailHistoryDay(day);
-
-                    var hashes = aggregateService.GetMissingKillmails(history);
-
-                    var hashBatches = hashes.Batch(50);
-
-                    foreach (var batch in hashBatches)
-                    {
-                        killmailHashQueue.QueueBackgroundWorkItem(batch);
-                    }
-
-                    _logger.LogInformation("Zkill history queued {0} hashes out of {1} for {2}", hashes.Count(), history.Count(), day);
+                    await killmailHistoryService.QueueHistoricalDay(day);
 
                 }
 
