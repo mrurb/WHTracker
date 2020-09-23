@@ -5,7 +5,7 @@
 
 <h1>Index</h1>
 
-Hash:<span id="KillMailHash">@ViewData["KillMailHash"]</span>
+Hash:<span id="KillMailHash">@ViewData["KillMailHash"]</span> Approx killmails: <span id="KillMailHashApprox"></span>
 <br />
 Value: <span id="KillMailValue">@ViewData["KillMailValue"]</span>
 <br />
@@ -20,6 +20,7 @@ LastUpdate: <span id="LastUpdated"></span>
                     "/api/monitorapi/",
                     function (data) {
                         $("#KillMailHash").html(data.hashLength);
+                        $("#KillMailHashApprox").html(data.hashLength*50);
                         $("#KillMailValue").html(data.valueLength);
                     }
                 );
