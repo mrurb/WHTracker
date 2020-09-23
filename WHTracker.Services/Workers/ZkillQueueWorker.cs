@@ -17,6 +17,7 @@ namespace WHTracker.Services.Workers
 
         Task<T> DequeueAsync(
             CancellationToken cancellationToken);
+        int GetQueueLength();
     }
 
     public class BackgroundTaskQueue<T> : IBackgroundTaskQueue<T>
@@ -44,6 +45,11 @@ namespace WHTracker.Services.Workers
             _workItems.TryDequeue(out var workItem);
 
             return workItem;
+        }
+
+        public int GetQueueLength()
+        {
+            return _workItems.Count;
         }
     }
 

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+Hash:<span id="KillMailHash">@ViewData["KillMailHash"]</span>
+<br />
+Value: <span id="KillMailValue">@ViewData["KillMailValue"]</span>
+<br />
+LastUpdate: <span id="LastUpdated"></span>
+<br />
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            window.setInterval(function () {
+                $.getJSON(
+                    "/api/monitorapi/",
+                    function (data) {
+                        $("#KillMailHash").html(data.hashLength);
+                        $("#KillMailValue").html(data.valueLength);
+                    }
+                );
+
+                $.get(
+                    "/time.txt",
+                    function (data) {
+                        $("#LastUpdated").html(data);
+                    }
+                )
+            }, 2000);
+        });
+    </script>
+}
