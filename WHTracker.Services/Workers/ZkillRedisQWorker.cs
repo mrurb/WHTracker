@@ -69,7 +69,6 @@ namespace WHTracker.Services.Workers
                     }
                 }
 
-                int WHKills = 0;
                 if (killmails.Any())
                 {
                     using var scope = services.CreateScope();

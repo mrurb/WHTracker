@@ -150,11 +150,10 @@ namespace WHTracker.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task ProcessHistoryDay(DateTime day)
+        public async Task<IEnumerable<KillmailHash>> GetKillmailHistoryDay(DateTime day)
         {
             var killmailsDetails = await zKillHistoryAPIService.GetHistoryData(day);
-            var list = killmailsDetails.Where(killmail => !context.Killmails.Any(dbK => killmail.Key == dbK.KiilmailId)).ToList();
-
+            return killmailsDetails.Select(kv => new KillmailHash(kv.Key, kv.Value)).ToList();
         }
 
         public async Task ProcessKillmailValue(KillmailValue killmailValue)
