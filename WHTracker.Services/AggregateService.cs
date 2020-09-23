@@ -163,6 +163,7 @@ namespace WHTracker.Services
         public async Task ProcessKillmailValue(KillmailValue killmailValue)
         {
             Killmail killmail = killmailValue.Killmail;
+            DateTime monthlyDateTime = new DateTime(killmail.KillmailTime.Date.Year, killmail.KillmailTime.Date.Month, 1);
             float value = killmailValue.Value;
             // Check wormmhole kill
             if (IsWormholeKill(killmail))
@@ -176,7 +177,7 @@ namespace WHTracker.Services
 
                     var corp = await GetOrCreateCorporation(killmail.Victim.CorporationId.Value);
                     DailyAggregateCorporation victimAggregate = await GetOrCreateAggregateCorporation<DailyAggregateCorporation>(corp, killmail.KillmailTime.Date);
-                    MonthlyAggregateCorporation victimAggregateMonthly = await GetOrCreateAggregateCorporation<MonthlyAggregateCorporation>(corp, killmail.KillmailTime.Date);
+                    MonthlyAggregateCorporation victimAggregateMonthly = await GetOrCreateAggregateCorporation<MonthlyAggregateCorporation>(corp, monthlyDateTime);
                     IncrementAggregate(victimAggregate, victimType, value, killmail.Victim.DamageTaken, false);
                     IncrementAggregate(victimAggregateMonthly, victimType, value, killmail.Victim.DamageTaken, false);
                 }
@@ -185,7 +186,7 @@ namespace WHTracker.Services
                 {
                     var alliance = await GetOrCreateAlliance(killmail.Victim.AllianceId.Value);
                     DailyAggregateAlliance victimAggregate = await GetOrCreateAggregateAlliance<DailyAggregateAlliance>(alliance, killmail.KillmailTime.Date);
-                    MonthlyAggregateAlliance victimAggregateMonthly = await GetOrCreateAggregateAlliance<MonthlyAggregateAlliance>(alliance, killmail.KillmailTime.Date);
+                    MonthlyAggregateAlliance victimAggregateMonthly = await GetOrCreateAggregateAlliance<MonthlyAggregateAlliance>(alliance, monthlyDateTime);
                     IncrementAggregate(victimAggregate, victimType, value, killmail.Victim.DamageTaken, false);
                     IncrementAggregate(victimAggregateMonthly, victimType, value, killmail.Victim.DamageTaken, false);
                 }
@@ -198,7 +199,7 @@ namespace WHTracker.Services
                     var corp = await GetOrCreateCorporation(corporationId);
                     _logger.LogDebug("Kill for corp: {0}", killmail.Victim.CorporationId);
                     DailyAggregateCorporation attackerAggregate = await GetOrCreateAggregateCorporation<DailyAggregateCorporation>(corp, killmail.KillmailTime.Date);
-                    MonthlyAggregateCorporation monthlyAggregateCorporation = await GetOrCreateAggregateCorporation<MonthlyAggregateCorporation>(corp, killmail.KillmailTime.Date);
+                    MonthlyAggregateCorporation monthlyAggregateCorporation = await GetOrCreateAggregateCorporation<MonthlyAggregateCorporation>(corp, monthlyDateTime);
                     IncrementAggregate(attackerAggregate, victimType, value, killmail.Attackers.Where(a => a.CorporationId == corp.Id).Sum(a => a.DamageDone), true);
                     IncrementAggregate(monthlyAggregateCorporation, victimType, value, killmail.Attackers.Where(a => a.CorporationId == corp.Id).Sum(a => a.DamageDone), true);
                 }
@@ -208,7 +209,7 @@ namespace WHTracker.Services
                 {
                     var alliance = await GetOrCreateAlliance(allianceId);
                     DailyAggregateAlliance attackerAggregate = await GetOrCreateAggregateAlliance<DailyAggregateAlliance>(alliance, killmail.KillmailTime.Date);
-                    MonthlyAggregateAlliance monthlyAggregateAlliance = await GetOrCreateAggregateAlliance<MonthlyAggregateAlliance>(alliance, killmail.KillmailTime.Date);
+                    MonthlyAggregateAlliance monthlyAggregateAlliance = await GetOrCreateAggregateAlliance<MonthlyAggregateAlliance>(alliance, monthlyDateTime);
                     IncrementAggregate(attackerAggregate, victimType, value, killmail.Attackers.Where(a => a.AllianceId == alliance.Id).Sum(a => a.DamageDone), true);
                     IncrementAggregate(monthlyAggregateAlliance, victimType, value, killmail.Attackers.Where(a => a.AllianceId == alliance.Id).Sum(a => a.DamageDone), true);
                 }
