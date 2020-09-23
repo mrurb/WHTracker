@@ -21,12 +21,14 @@ namespace WHTracker.Controllers
         private readonly AggregateReposetory aggregateCacheManagerService;
         private readonly ESIService eSIService;
         private readonly AggregateService aggregateService;
+        private readonly KillmailHistoryService killmailHistoryService;
 
-        public AggregateController(AggregateReposetory aggregateCacheManagerService, ESIService eSIService, AggregateService aggregateService)
+        public AggregateController(AggregateReposetory aggregateCacheManagerService, ESIService eSIService, AggregateService aggregateService, KillmailHistoryService killmailHistoryService)
         {
             this.aggregateCacheManagerService = aggregateCacheManagerService;
             this.eSIService = eSIService;
             this.aggregateService = aggregateService;
+            this.killmailHistoryService = killmailHistoryService;
         }
 
         // GET: api/<ValuesController1>
@@ -81,6 +83,14 @@ namespace WHTracker.Controllers
             var value = await aggregateService.CalculateKillmailValue(killmail);
             return value;
 
+        }
+
+        [HttpGet("runallkillmailsforday/{date}/")]
+        public async Task<OkResult> RunAllKillMailsForDay(DateTime date)
+        {
+            await killmailHistoryService.QueueHistoricalDay(date);
+
+            return new OkResult();
         }
     }
 }
