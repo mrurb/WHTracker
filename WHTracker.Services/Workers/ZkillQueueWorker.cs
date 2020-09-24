@@ -1,9 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using MoreLinq;
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +18,8 @@ namespace WHTracker.Services.Workers
 {
     public interface IBackgroundTaskQueue<T>
     {
+        List<long> LastExecutionTime { get; set; }
+
         void QueueBackgroundWorkItem(T workItem);
 
         Task<T> DequeueAsync(
@@ -25,6 +32,14 @@ namespace WHTracker.Services.Workers
         private ConcurrentQueue<T> _workItems = new ConcurrentQueue<T>();
 
         private SemaphoreSlim _signal = new SemaphoreSlim(0);
+
+        public BackgroundTaskQueue()
+        {
+            LastExecutionTime = new List<long>();
+            LastExecutionTime.Capacity = 10;
+        }
+
+        public List<long> LastExecutionTime { get; set; }
 
         public void QueueBackgroundWorkItem(
             T workItem)
@@ -77,6 +92,8 @@ namespace WHTracker.Services.Workers
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
                 var workItem =
                     await TaskQueue.DequeueAsync(stoppingToken);
 
@@ -88,6 +105,12 @@ namespace WHTracker.Services.Workers
                 {
                     _logger.LogError(ex,
                         "Error occurred executing {WorkItem}.", nameof(workItem));
+                }
+                finally
+                {
+                    stopwatch.Stop();
+                    TaskQueue.LastExecutionTime.Insert(0, stopwatch.ElapsedMilliseconds);
+                    TaskQueue.LastExecutionTime.TrimExcess();
                 }
             }
         }

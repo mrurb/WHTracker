@@ -7,10 +7,23 @@
 
 Hash:<span id="KillMailHash">@ViewData["KillMailHash"]</span> Approx killmails: <span id="KillMailHashApprox"></span>
 <br />
+Hash Last Execution Time: <span id="HLET"></span>
+<br />
+Hash Average Execution Time: <span id="HAET"></span>
+<br />
+Hash Approx Finish: <span id="HAF"></span>
+<br />
+<br />
 Value: <span id="KillMailValue">@ViewData["KillMailValue"]</span>
+<br />
+Value Last Execution Time: <span id="VLET"></span>
+<br />
+Value Average Execution Time: <span id="VAET"></span>
+<br />
 <br />
 LastUpdate: <span id="LastUpdated"></span>
 <br />
+
 
 @section Scripts{
     <script>
@@ -20,8 +33,13 @@ LastUpdate: <span id="LastUpdated"></span>
                     "/api/monitorapi/",
                     function (data) {
                         $("#KillMailHash").html(data.hashLength);
-                        $("#KillMailHashApprox").html(data.hashLength*50);
+                        $("#KillMailHashApprox").html(data.hashLength * 50);
                         $("#KillMailValue").html(data.valueLength);
+                        $("#HLET").html(msToTime(data.hashLastExecutionTime));
+                        $("#HAET").html(msToTime(data.hashAverageExecutionTime));
+                        $("#HAF").html(msToTime(data.hashAverageExecutionTime * data.hashLength));
+                        $("#VLET").html(msToTime(data.valueLastExecutionTime));
+                        $("#VAET").html(msToTime(data.valueAverageExecutionTime));
                     }
                 );
 
@@ -33,5 +51,23 @@ LastUpdate: <span id="LastUpdated"></span>
                 )
             }, 2000);
         });
+
+        function msToTime(s) {
+
+            // Pad to 2 or 3 digits, default is 2
+            function pad(n, z) {
+                z = z || 2;
+                return ('00' + n).slice(-z);
+            }
+
+            var ms = s % 1000;
+            s = (s - ms) / 1000;
+            var secs = s % 60;
+            s = (s - secs) / 60;
+            var mins = s % 60;
+            var hrs = (s - mins) / 60;
+
+            return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) + '.' + pad(ms, 3);
+        }
     </script>
 }
