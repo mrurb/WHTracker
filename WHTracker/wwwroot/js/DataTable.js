@@ -37,7 +37,7 @@
             "lengthMenu": [10, 20, 30, 60, 120],
             pageLength: 30,
             ajax: "/api/Aggregate/corporation/day/" + date,
-            "order": [[5, "desc"]],
+            "order": [[6, "desc"]],
             columns: [
                 {
                     "className": 'details-control',
