@@ -1,5 +1,10 @@
 ﻿$(document).ready(function () {
-
+    var SortOrderArray = [[6, "desc"]];
+    if (SortOrder != "") {
+       var ta = []
+        SortOrder.split(";").forEach(OL => ta.push(OL.split(",")));
+        SortOrderArray = ta;
+    }
     $.fn.dataTable.render.ISK = function () {
         return function (data, type, row) {
             if (type === 'display') {
@@ -36,8 +41,8 @@
             "deferRender": true,
             "lengthMenu": [10, 20, 30, 60, 120],
             pageLength: 30,
-            ajax: "/api/Aggregate/corporation/day/" + date,
-            "order": [[6, "desc"]],
+            ajax: "/api/Aggregate/" + ACString + "/" + DMString + "/" + date,
+            "order": SortOrderArray,
             columns: [
                 {
                     "className": 'details-control',
@@ -154,6 +159,10 @@
         });
     }).draw();
 
+    table.on('order.dt', function () {
+        ChangeUrl();
+    });
+
     $('#whdata tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
@@ -173,10 +182,10 @@
     $(".dpick").html($("#dmptemp")[0].innerHTML);
     $(".capick").html($("#dptemp")[0].innerHTML);
     $(".picker").change(function () {
-        table.ajax.url("/api/Aggregate/" + $("#CAType").val() + "/" + $("#DMPick").val() + "/" + $("#date").val()).load();
+        ChangeTable();
 
     })
-    $("#date")[0].value = getDay();
+    $("#date")[0].value = date;
 
 
     $("#DMPick").change(function () {
@@ -187,9 +196,29 @@
             $("#date")[0].type = "date";
             $("#date")[0].value = getDay();
         }
-        table.ajax.url("/api/Aggregate/" + $("#CAType").val() + "/" + $("#DMPick").val() + "/" + $("#date").val()).load();
-
+        ChangeTable();
     })
+
+    function ChangeUrl() {
+        var order = table.order();
+        var orderString = "";
+        for (var i = 0; i < order.length; i++) {
+            const newLocal = order[i][0];
+            const newLocal_1 = order[i][1];
+            const newLocal_2 = i == order.length-1 ? "" : ";";
+            orderString += "" + newLocal + "," + newLocal_1 + newLocal_2;
+        }
+        var urlOptions = [$("#CAType").val(), $("#DMPick").val(), $("#date").val(), orderString]
+
+        window.history.replaceState("", "", "/Home/Index/" + urlOptions.join("/")+"/")
+    }
+
+    function ChangeTable() {
+        var urlOptions = [$("#CAType").val(), $("#DMPick").val(), $("#date").val()]
+        ChangeUrl()
+        table.ajax.url("/api/Aggregate/" + urlOptions.join("/")+"/").load();
+
+    }
 
 
 });

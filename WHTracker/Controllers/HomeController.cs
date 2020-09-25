@@ -19,8 +19,12 @@ namespace WHTracker.Controllers
         {
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string ACString, string DMString, string DateString, string SortOrder)
         {
+            ViewData["ACString"] = ACString;
+            ViewData["DMString"] = DMString;
+            ViewData["DateString"] = DateString;
+            ViewData["SortOrder"] = SortOrder;
             return View();
         }
 

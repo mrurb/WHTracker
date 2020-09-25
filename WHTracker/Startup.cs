@@ -85,6 +85,9 @@ namespace WHTracker
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "test",
+                    pattern: "{controller=Home}/{action=Index}/{ACString?}/{DMString?}/{DateString?}/{SortOrder?}/");
             });
         }
     }
