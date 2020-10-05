@@ -112,6 +112,13 @@
     <template id="dptemp">
         <input type="@(DMString == "day" ?  "date" : "month")" class="picker form-control form-control-sm" id="date" />
     </template>
+
+    <template id="ExcludeStructure">
+        <input class="form-check-input ExckudeStrcture" type="checkbox" value="" id="ExcludeStrctureInput">
+        <label class="form-check-label" for="ExcludeStrctureInput">
+            Exclude Strctures
+        </label>
+    </template>
     <template id="ChildTemplate">
         <div class="card border-success" style="max-width: 15rem;display:inline-block;vertical-align:top;">
             <div class="card-header">Info</div>
@@ -242,7 +249,7 @@
                     </tbody>
                 </table>
             </div>
-            </div>
+        </div>
         <div class="card border-success" style="max-width: 25rem;display:inline-block;vertical-align:top;">
             <div class="card-header">Structure</div>
             <div class="card-body">
@@ -273,8 +280,8 @@
                     </tbody>
                 </table>
             </div>
-            </div>
-</template>
+        </div>
+    </template>
     <script src="~/js/DataTable.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>

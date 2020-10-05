@@ -1,12 +1,17 @@
 ﻿$(document).ready(function () {
+
+    var ExculdeStructure = false;
     var SortOrderArray = [[6, "desc"]];
     if (SortOrder != "") {
        var ta = []
         SortOrder.split(";").forEach(OL => ta.push(OL.split(",")));
         SortOrderArray = ta;
     }
-    $.fn.dataTable.render.ISK = function () {
-        return function (data, type, row) {
+    $.fn.dataTable.render.ISK = function (exclude) {
+        return function (data, type, row, meta) {
+            if (ExculdeStructure && exclude != undefined) {
+                data = data - row[exclude];
+            }
             if (type === 'display') {
                 return abbreviateNumber(data) + " ISK";
             }
@@ -16,8 +21,11 @@
         };
     };
 
-    $.fn.dataTable.render.numberB = function () {
+    $.fn.dataTable.render.numberB = function (exclude) {
         return function (data, type, row) {
+            if (ExculdeStructure && exclude != undefined) {
+                data = data - row[exclude];
+            }
             if (type === 'display') {
                 return abbreviateNumber(data);
             }
@@ -34,8 +42,8 @@
         .DataTable({
             scrollY: 650,
             scrollY: '69VH',
-            scrollCollapse: true,
-            dom: "<'row'<'col-sm-12 col-md-1'l><'col-sm-12 col-md-1 dmpickplace'><'col-sm-12 col-md-1 dpick'><'col-sm-12 col-md-2 capick'><'col-sm-12 col-md-7'f>>" +
+            scrollCollapse: true, 
+            dom: "<'row'<'col-sm-12 col-md-1'l><'col-sm-12 col-md-1 dmpickplace'><'col-sm-12 col-md-1 dpick'><'col-sm-12 col-md-2 capick'><'col-sm-12 col-md-1 strexc'><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5' i<'#LastUpdated' >><'col-sm-12 col-md-7'p>>",
             "deferRender": true,
@@ -76,39 +84,54 @@
                 },
                 {
                     "data": "killsTotal",
+                    render: function (data, type, row, meta) {
+                        if (ExculdeStructure) {
+                            data = data - row.killsStructure;
+                        }
+                        return type === 'display' ? data : data;
+                    },
                     orderSequence: ["desc", "asc"]
                 },
                 {
                     "data": "lossesTotal",
+                    render: function (data, type, row, meta) {
+                        if (ExculdeStructure) {
+                            data = data - row.lossesStructure;
+                        }
+                        return type === 'display' ? data : data;
+                    },
                     orderSequence: ["desc", "asc"]
                 },
                 {
                     render: function (data, type, row) {
-                        if (row.lossesTotal == 0) {
-                            return (row.killsTotal / 1).toFixed(2);
+                        var losses = row.lossesTotal;
+                        var kills = row.killsTotal;
+                        if (ExculdeStructure) {
+                            losses - row.lossesStructure;
+                            kills - row.killsStructure;
                         }
-                        return (row.killsTotal / row.lossesTotal).toFixed(2);
+                        return losses == 0 ? (kills / 1).toFixed(2) : (kills / losses).toFixed(2);
                     },
                     orderSequence: ["desc", "asc"]
                 },
                 {
                     "data": "iskKilledTotal",
-                    render: $.fn.dataTable.render.ISK(),
+                    render: $.fn.dataTable.render.ISK("iskKilledStructure"),
                     orderSequence: ["desc", "asc"]
                 },
                 {
                     "data": "iskLostTotal",
-                    render: $.fn.dataTable.render.ISK(),
+                    render: $.fn.dataTable.render.ISK("iskLostStructure"),
                     orderSequence: ["desc", "asc"]
                 },
                 {
                     "data": "damageDealtTotal",
-                    render: $.fn.dataTable.render.numberB(),
+                    render: $.fn.dataTable.render.numberB("damageDealtStructure"),
                     orderSequence: ["desc", "asc"]
                 },
                 {
                     "data": "damageTakenTotal",
-                    render: $.fn.dataTable.render.numberB(),
+                    render: $.fn.dataTable.render.numberB("damageTakenStructure"),
                     orderSequence: ["desc", "asc"]
                 },
                 {
@@ -181,6 +204,15 @@
     $(".dmpickplace").html($("#cattemp")[0].innerHTML);
     $(".dpick").html($("#dmptemp")[0].innerHTML);
     $(".capick").html($("#dptemp")[0].innerHTML);
+    $(".strexc").html($("#ExcludeStructure")[0].innerHTML);
+
+    $("#ExcludeStrctureInput").change(function () {
+        ExculdeStructure = !ExculdeStructure;
+        table.draw();
+        console.log(ExculdeStructure);
+
+    })
+
     $(".picker").change(function () {
         ChangeTable();
 
